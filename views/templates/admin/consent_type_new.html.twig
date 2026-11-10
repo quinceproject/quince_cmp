@@ -1,0 +1,77 @@
+{# Nowy rodzaj zgody — dodanie. Osobny ekran, poza listą i poza kartą edycji:
+   karta edycji zakłada istniejący rodzaj (wersje, mapowanie, dziennik) na
+   każdym kroku, więc tryb „nowy" tam byłby połową pustych zakładek. #}
+{% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/fields.html.twig' as fields %}
+
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{% block quince_body %}
+<div class="qc-screen">
+
+    <div style="margin-bottom:18px">
+        <a href="{{ path(backRoute) }}"
+           style="display:inline-block;font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--fg-2);margin-bottom:6px">
+            {{ '← Back'|trans }}
+        </a>
+        <div class="qc-head-title" style="font-size:20px">{{ 'New consent type'|trans }}</div>
+        <div class="qc-head-desc">
+            {{ 'Set its code and kind once — the wording and the first version come next, on its own card.'|trans }}
+        </div>
+    </div>
+
+    <form method="post" action="{{ path('quince_cmp_type_create') }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_type_create') }}">
+        <div class="qc-grid qc-formcol" style="padding:18px">
+
+            <div class="qc-form-grid qc-form-grid-2">
+                <div class="qc-field">
+                    <label class="qc-label" for="code">{{ 'Code'|trans }}</label>
+                    <input class="qc-field-base qc-focusable" type="text" id="code" name="code"
+                           value="" placeholder="loyalty_program" pattern="[a-z][a-z0-9_]{1,63}" required>
+                    <div class="qc-hint">
+                        {{ 'Lowercase letters, digits and underscores only — it never changes once saved.'|trans }}
+                    </div>
+                </div>
+
+                <div class="qc-field">
+                    <label class="qc-label" for="kind">{{ 'Kind'|trans }}</label>
+                    {% if lockedKind %}
+                        <input type="hidden" name="kind" value="{{ lockedKind }}">
+                        <input class="qc-field-base" type="text" value="{{ lockedKindLabel|trans }}" disabled>
+                    {% else %}
+                        <div class="qc-select-wrap">
+                            <select class="qc-field-base qc-select qc-focusable" id="kind" name="kind">
+                                {% for code, label in kinds %}
+                                    <option value="{{ code }}">{{ label|trans }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                    <div class="qc-hint">{{ 'Decides how this consent is collected on the shop — it never changes once saved.'|trans }}</div>
+                </div>
+            </div>
+
+            {{ fields.multilang('name', 'Working name'|trans, languages, {},
+                '', 'For this panel only — the customer reads the wording you publish next, not this name.'|trans) }}
+
+            <label class="qc-toggle">
+                <input type="checkbox" name="required" value="1">
+                <span class="qc-toggle-track"></span>
+                <span class="qc-toggle-text">{{ 'Required — the shop cannot work without it'|trans }}</span>
+            </label>
+        </div>
+
+        <div class="qc-actions qc-formcol">
+            <a href="{{ path(backRoute) }}" class="qc-btn qc-btn-text">{{ 'Cancel'|trans }}</a>
+            <button type="submit" class="qc-btn qc-btn-primary">
+                {{ icons.icon('check', 14) }} {{ 'Add'|trans }}
+            </button>
+        </div>
+    </form>
+
+</div>
+{% endblock %}
+
+{% block quince_actionbar %}{% endblock %}

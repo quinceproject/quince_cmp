@@ -1,0 +1,150 @@
+{# Podgląd banera z odczytem kontrastu. Wstawka ekranu „Banner & preferences". #}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{# Wstawka nie dziedziczy domeny po szablonie, ktory ja wlacza — bez tej
+   linii `|trans` szuka w domenie `messages` i oddaje angielski oryginal. #}
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{% set width = device == 'mobile' ? '390px' : '100%' %}
+
+{#
+   Podgląd odwzorowuje wybrane umiejscowienie, a nie zawsze kartę pośrodku.
+   Domyślnym ustawieniem jest pasek przy dolnej krawędzi — bez tego sprzedawca
+   projektuje jedno, a na sklepie dostaje coś innego.
+
+   `bar`    — pasek na całą szerokość, przy dolnej krawędzi okna
+   `modal`  — okno pośrodku, z przyciemnieniem strony pod spodem
+   `corner` — wąska karta w rogu, nad treścią sklepu
+#}
+{% set ramka = {
+    'bar':    'align-items:flex-end;padding:14px',
+    'modal':  'align-items:center;justify-content:center;padding:24px;background:oklch(20% 0 0 / .45)',
+    'corner': 'align-items:flex-end;justify-content:flex-start;padding:16px'
+} %}
+
+{% set karta = {
+    'bar':    'width:100%;border-radius:var(--radius-lg)',
+    'modal':  'width:min(520px,100%);border-radius:var(--radius-lg)',
+    'corner': 'width:min(380px,100%);border-radius:var(--radius-lg)'
+} %}
+
+<div class="qc-grid" style="padding:20px;background:var(--surface-sunken)">
+    <div style="max-width:{{ width }};margin:0 auto">
+
+        {# ---------- warstwa pierwsza ---------- #}
+        {% if layer == 'one' %}
+            {# Makieta okna sklepu: podgląd ma pokazać, gdzie baner siada względem
+               strony, a nie sam baner wyjęty z kontekstu. #}
+            <div style="position:relative;min-height:280px;display:flex;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);{{ ramka[placement]|default(ramka.bar) }}">
+                <div style="position:absolute;inset:0;padding:18px 20px;pointer-events:none">
+                    <div style="height:10px;width:38%;border-radius:3px;background:var(--border);margin-bottom:10px"></div>
+                    <div style="height:8px;width:64%;border-radius:3px;background:var(--surface-sunken);margin-bottom:6px"></div>
+                    <div style="height:8px;width:52%;border-radius:3px;background:var(--surface-sunken)"></div>
+                </div>
+
+            <div style="position:relative;background:{{ colourSurface }};color:{{ colourText }};border:1px solid var(--border);padding:18px 20px;box-shadow:var(--shadow-md);{{ karta[placement]|default(karta.bar) }}">
+                <div style="font-size:var(--text-md);font-weight:var(--weight-bold);margin-bottom:6px">
+                    {{ preview.b1_title }}
+                </div>
+                <div style="font-size:var(--text-xs);opacity:.85;margin-bottom:14px">
+                    {{ preview.b1_body }}
+                    <a href="#" style="color:{{ colourAccent }};font-weight:var(--weight-semibold)">{{ 'Privacy policy'|trans }}</a>
+                </div>
+
+                {#
+                   Trzy przyciski o jednakowej wysokości, wadze napisu i szerokości.
+                   Różnica ogranicza się do wypełnienia kontra obrys.
+                #}
+                <div class="qc-bpv-actions {{ device == 'mobile' ? 'is-stacked' : '' }}">
+                    <span class="qc-bpv-btn" style="border:1.5px solid {{ colourText }};color:{{ colourText }}">
+                        {{ preview.b1_reject }}
+                    </span>
+                    <span class="qc-bpv-btn" style="border:1.5px solid var(--border-strong);color:{{ colourText }}">
+                        {{ preview.b1_prefs }}
+                    </span>
+                    <span class="qc-bpv-btn" style="background:{{ colourAccent }};color:{{ onAccent }}">
+                        {{ preview.b1_accept }}
+                    </span>
+                </div>
+            </div>
+            </div>
+
+        {# ---------- warstwa druga ---------- #}
+        {% elseif layer == 'two' %}
+            <div style="background:{{ colourSurface }};color:{{ colourText }};border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);overflow:hidden">
+                <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
+                    <div style="font-size:var(--text-md);font-weight:var(--weight-bold)">{{ preview.b2_title }}</div>
+                    <div style="font-size:var(--text-xs);opacity:.85;margin-top:4px">{{ preview.b2_body }}</div>
+                </div>
+
+                {% for code, name in categories %}
+                    <div style="padding:12px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px">
+                        <div>
+                            <div style="font-size:var(--text-xs);font-weight:var(--weight-semibold)">{{ name }}</div>
+                            <div class="qc-sub">{{ code }}</div>
+                        </div>
+                        {% if loop.first %}
+                            <span style="font-size:11px;font-weight:var(--weight-bold);opacity:.6">{{ 'Always active'|trans }}</span>
+                        {% else %}
+                            <span class="qc-toggle-track" style="flex:none"></span>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="qc-empty" style="padding:20px">
+                        <div class="qc-empty-text">{{ 'No cookie category defined yet.'|trans }}</div>
+                    </div>
+                {% endfor %}
+
+                <div style="padding:14px 20px;display:flex;gap:8px;justify-content:flex-end">
+                    <span style="height:36px;padding:0 14px;display:flex;align-items:center;border:1.5px solid {{ colourText }};border-radius:var(--radius-md);font-size:var(--text-xs);font-weight:var(--weight-bold)">
+                        {{ preview.b1_reject }}
+                    </span>
+                    <span style="height:36px;padding:0 14px;display:flex;align-items:center;border:1.5px solid var(--border-strong);border-radius:var(--radius-md);font-size:var(--text-xs);font-weight:var(--weight-bold)">
+                        {{ preview.b2_save }}
+                    </span>
+                    <span style="height:36px;padding:0 14px;display:flex;align-items:center;background:{{ colourAccent }};border-radius:var(--radius-md);font-size:var(--text-xs);font-weight:var(--weight-bold);color:{{ onAccent }}">
+                        {{ preview.b1_accept }}
+                    </span>
+                </div>
+            </div>
+
+        {# ---------- pływający przycisk ---------- #}
+        {% else %}
+            <div style="min-height:160px;display:flex;align-items:flex-end;justify-content:{{ fabPosition == 'right' ? 'flex-end' : 'flex-start' }}">
+                {% if fabOn %}
+                    <span style="height:40px;padding:0 {{ fabMode == 'icon' ? '12px' : '16px' }};display:inline-flex;align-items:center;gap:8px;background:{{ colourAccent }};color:{{ onAccent }};border-radius:var(--radius-pill);font-size:var(--text-xs);font-weight:var(--weight-bold);box-shadow:var(--shadow-md)">
+{{ fabSvg ? fabSvg|raw : icons.icon(fabIcon, 16) }}{{ fabMode != 'icon' ? ' ' ~ preview.fab_label : '' }}
+                    </span>
+                {% else %}
+                    <div class="qc-empty" style="width:100%">
+                        <div class="qc-empty-text">
+                            {{ 'The floating button is off — a visitor who rejected has no way back to the settings.'|trans }}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{# ---------- odczyt kontrastu ---------- #}
+<div class="qc-grid" style="padding:14px 18px;margin-top:14px">
+    <div style="font-size:11px;font-weight:var(--weight-semibold);color:var(--fg-3);text-transform:uppercase;margin-bottom:10px">
+        {{ 'Measured contrast'|trans }}
+    </div>
+
+    <div class="qc-hstack" style="gap:16px">
+        {% for row in contrast %}
+            <div class="qc-hstack" style="gap:5px;flex-wrap:nowrap;font-size:var(--text-xs);font-weight:var(--weight-semibold);color:{{ row.pass ? 'var(--success)' : 'var(--warning)' }}">
+                {{ icons.message(row.pass ? 'success' : 'warn', 13) }}
+                {{ row.label|trans }} {{ row.ratio }}:1
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if contrast|filter(r => not r.pass)|length %}
+        <div class="qc-hint" style="margin-top:8px">
+            {{ 'WCAG 2.1 AA asks for 4.5:1 on button labels. A label below that is hard to read for part of your customers.'|trans }}
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,269 @@
+{# Wsparcie: czym moduł jest, gdzie szukać pomocy, aktualizacje i przenoszenie konfiguracji. #}
+{% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{% block quince_body %}
+<div class="qc-screen">
+
+    {# --- wizytówka --- #}
+    <div class="qc-grid qc-about">
+        <div class="qc-about-mark">{{ icons.icon('shield', 26) }}</div>
+        <div class="qc-about-name">Quince CMP</div>
+        <span class="qc-badge qc-badge-accent">{{ version }}</span>
+        {# Hasło modułu. Streszcza to, co odróżnia go od banera: zgoda nie jest
+           zdarzeniem w przeglądarce, tylko historią konkretnej osoby. #}
+        <div class="qc-about-tagline">{{ 'One person, one history.'|trans }}</div>
+
+        <div class="qc-about-claim">
+            {{ 'One place for every consent in the shop — cookies, marketing, terms and form consents, with proof of what was shown and when.'|trans }}
+        </div>
+    </div>
+
+    {# Dwie kolumny wg przeznaczenia: po lewej to, co się ustawia, po prawej to,
+       co się czyta. Wspólna lista w jednej wąskiej kolumnie kazała przewijać
+       przez opisy, żeby dojść do pola. #}
+    <div class="qc-cols" style="margin-top:20px">
+
+    <div class="qc-settings-list">
+
+        {# --- aktualizacje --- #}
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-hstack" style="justify-content:space-between;margin-bottom:12px">
+                <div class="qc-set-title">{{ 'Updates'|trans }}</div>
+
+                {% if release.configured %}
+                    <button type="submit" form="check" class="qc-btn qc-btn-sm qc-btn-outline">
+                        {{ icons.icon('refresh', 13) }} {{ 'Check now'|trans }}
+                    </button>
+                {% endif %}
+            </div>
+
+            {% if pendingUpgrade %}
+                {# Pliki są już nowe, baza jeszcze nie. Migracja idzie z przycisku,
+                   nie sama przy wyświetleniu strony. #}
+                <div class="qc-alert qc-alert-warning" style="margin-bottom:12px">
+                    {{ icons.message('warn', 18, 'qc-alert-icon') }}
+                    <div>
+                        {{ 'The files are on version %to%, the database still on %from%.'|trans({'%from%': pendingUpgrade, '%to%': version}) }}
+                        <button type="submit" form="finish-upgrade" class="qc-linkbtn">{{ 'Finish the update'|trans }}</button>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if not release.configured %}
+                <div class="qc-alert qc-alert-info">
+                    {{ icons.icon('info', 18, 'qc-alert-icon') }}
+                    <div>{{ 'Releases are not published yet, so there is nothing to check against. This module updates the usual way, through the module manager.'|trans }}</div>
+                </div>
+            {% elseif release.error %}
+                <div class="qc-alert qc-alert-warning">
+                    {{ icons.message('warn', 18, 'qc-alert-icon') }}
+                    <div>{{ release.error }}</div>
+                </div>
+            {% elseif release.newer %}
+                <div class="qc-alert qc-alert-warning" style="margin-bottom:12px">
+                    {{ icons.message('warn', 18, 'qc-alert-icon') }}
+                    <div>
+                        {{ 'Version %v% is available. You are running %c%.'|trans({'%v%': release.latest, '%c%': release.current}) }}
+                        <a href="{{ release.notes ?: release.url ~ '/releases' }}" target="_blank" rel="noopener">{{ 'Release notes'|trans }}</a>
+                    </div>
+                </div>
+
+                {# Przycisk pojawia się tylko wtedy, gdy serwer udźwignie podmianę
+                   plików. Inaczej sprzedawca dowiedziałby się o brakach dopiero
+                   po kliknięciu, w połowie operacji. #}
+                {% if obstacles %}
+                    <div class="qc-line" style="margin-bottom:12px">
+                        {{ 'This server cannot replace the files:'|trans }}
+                        {{ obstacles|join(' ') }}
+                        {{ 'Download the release and install it through the module manager.'|trans }}
+                    </div>
+                {% else %}
+                    <div class="qc-actions" style="margin-bottom:12px">
+                        <button type="submit" form="update" class="qc-btn qc-btn-primary"
+                                data-qc-confirm="{{ 'Replace the module files with version %v%? The shop keeps running, but the panel will be a moment slower right after.'|trans({'%v%': release.latest}) }}">
+                            {{ icons.icon('download', 14) }} {{ 'Install version %v%'|trans({'%v%': release.latest}) }}
+                        </button>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="qc-line" style="margin-bottom:12px">
+                    {{ 'You are on the latest version.'|trans }}
+                    {% if release.checked %}
+                        {{ 'Checked %when%.'|trans({'%when%': release.checked|slice(0, 16)}) }}
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if release.configured and release.url %}
+                <div class="qc-hint">
+                    {{ 'Source'|trans }}: <span class="qc-mono">{{ release.url }}</span>.
+                    {{ 'The module never updates on its own — it only tells you a newer version exists.'|trans }}
+                </div>
+            {% endif %}
+        </div>
+
+        {# --- wywóz --- #}
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-title" style="margin-bottom:8px">{{ 'Export the configuration'|trans }}</div>
+
+            <div class="qc-line" style="margin-bottom:10px">
+                {{ 'Everything you set up in this shop, as one file: consent types, the cookie table, services, Consent Mode mapping, banner wording and settings.'|trans }}
+            </div>
+
+            <div class="qc-line" style="margin-bottom:14px">
+                <strong>{{ 'In the file'|trans }}:</strong>
+                {{ '%t% consent types · %c% cookies · %s% services'|trans({
+                    '%t%': transfer.types|length,
+                    '%c%': transfer.cookies|length,
+                    '%s%': transfer.scripts|length
+                }) }}
+            </div>
+
+            {# Trzy rzeczy zostają na miejscu i sprzedawca musi o tym wiedzieć,
+               zanim uzna plik za pełną kopię sklepu. #}
+            <div class="qc-hint" style="margin-bottom:14px">
+                {{ 'Not included: the consent log and published clause versions — they say something about the past of this shop — and the signing keys, which are secrets. Each shop gets its own.'|trans }}
+            </div>
+
+            <div class="qc-actions" style="margin:0">
+                <a href="{{ path('quince_cmp_support_export') }}" class="qc-btn qc-btn-sm qc-btn-primary">
+                    {{ icons.icon('download', 13) }} {{ 'Download the file'|trans }}
+                </a>
+            </div>
+        </div>
+
+        {# --- wgranie --- #}
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-title" style="margin-bottom:8px">{{ 'Import a configuration'|trans }}</div>
+
+            <div class="qc-line" style="margin-bottom:14px">
+                {{ 'Takes a file exported from another shop and puts that setup here — replacing what is configured now. The consent log and published clause versions are left untouched.'|trans }}
+            </div>
+
+            {# Dwa kroki, bo nadpisanie skonfigurowanego sklepu jednym kliknięciem
+               to strata pracy, której nie da się cofnąć. Napis na przycisku mówi,
+               który krok właśnie robimy. #}
+            <form method="post" action="{{ path('quince_cmp_support_import') }}" enctype="multipart/form-data"
+                  x-data="{ plik: '', zastap: false }">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_support_import') }}">
+
+                <div class="qc-hstack" style="gap:10px;margin-bottom:12px">
+                    <label class="qc-btn qc-btn-sm qc-btn-outline" style="margin:0">
+                        {{ icons.icon('folder', 13) }} {{ 'Choose a file'|trans }}
+                        <input type="file" name="config" accept="application/json,.json" required
+                               style="position:absolute;opacity:0;width:0;height:0"
+                               @change="plik = $event.target.files.length ? $event.target.files[0].name : ''">
+                    </label>
+
+                    <span class="qc-mono qc-sub" x-text="plik || '{{ 'no file chosen'|trans }}'"></span>
+                </div>
+
+                <label class="qc-opt" style="margin-bottom:6px">
+                    <input type="checkbox" name="confirm" value="1" class="qc-cm-box" x-model="zastap">
+                    {{ 'Yes, replace what is configured here now'|trans }}
+                </label>
+
+                <div class="qc-hint" style="margin-bottom:12px"
+                     x-text="zastap
+                        ? '{{ 'The current setup of this shop will be overwritten.'|trans }}'
+                        : '{{ 'Leave this unticked to only see what the file contains — nothing will change.'|trans }}'"></div>
+
+                <div class="qc-actions" style="margin:0">
+                    <button type="submit" class="qc-btn qc-btn-sm"
+                            :class="zastap ? 'qc-btn-primary' : 'qc-btn-outline'"
+                            x-text="zastap ? '{{ 'Replace the configuration'|trans }}' : '{{ 'Check the file'|trans }}'">
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="qc-settings-list">
+
+        {# --- co moduł robi --- #}
+        {% include '@Modules/quince_cmp/views/templates/admin/_support_about.html.twig' %}
+
+        {# --- pomoc --- #}
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-title" style="margin-bottom:12px">{{ 'Getting help'|trans }}</div>
+
+            {% if release.configured %}
+                <div class="qc-hstack" style="gap:10px;flex-wrap:wrap">
+                    <a class="qc-btn qc-btn-sm qc-btn-outline" href="{{ release.url }}/wiki" target="_blank" rel="noopener">
+                        {{ icons.icon('layout', 13) }} {{ 'Documentation'|trans }}
+                    </a>
+                    <a class="qc-btn qc-btn-sm qc-btn-outline" href="{{ release.url }}/issues" target="_blank" rel="noopener">
+                        {{ icons.icon('alertCircle', 13) }} {{ 'Report a problem'|trans }}
+                    </a>
+                    <a class="qc-btn qc-btn-sm qc-btn-outline" href="{{ release.url }}/discussions" target="_blank" rel="noopener">
+                        {{ icons.icon('info', 13) }} {{ 'Discussions'|trans }}
+                    </a>
+                </div>
+            {% else %}
+                <div class="qc-line" style="margin:0">
+                    {{ 'Set the repository above and the links to documentation, issues and discussions appear here.'|trans }}
+                </div>
+            {% endif %}
+        </div>
+
+        {# --- integracja z silnikiem ---
+           Nazwa katalogu modułu nikomu nic nie mówi. Sprzedawcę interesuje jedna
+           rzecz: skąd baner bierze kolory — i to jest napisane wprost. #}
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-title" style="margin-bottom:8px">{{ 'Where the banner takes its colours'|trans }}</div>
+
+            <div class="qc-hstack" style="gap:8px;margin-bottom:8px">
+                <span class="qc-dot {{ engineDetected ? 'is-on' : '' }}"></span>
+                <span style="font-size:var(--text-sm);font-weight:var(--weight-semibold)">
+                    {{ engineDetected
+                        ? 'From the shared Quince palette'|trans
+                        : 'From its own settings'|trans }}
+                </span>
+            </div>
+
+            <div class="qc-line" style="margin:0">
+                {{ engineDetected
+                    ? 'Quince Engine is installed, so the banner can follow the palette used by the rest of the shop. You can still pick your own colours on the Banner screen.'|trans
+                    : 'Quince Engine is not installed. The banner uses the colours you set on the Banner screen, and nothing else is needed.'|trans }}
+            </div>
+        </div>
+
+        {# --- środowisko --- #}
+        <div class="qc-grid" style="padding:16px 18px" x-data="{ open: false }">
+            <div class="qc-hstack" style="justify-content:space-between">
+                <div>
+                    <div class="qc-set-title">{{ 'System information'|trans }}</div>
+                    <div class="qc-line" style="margin:2px 0 0">{{ 'Paste this into a bug report.'|trans }}</div>
+                </div>
+
+                <button type="button" class="qc-btn qc-btn-sm qc-btn-outline" @click="open = !open">
+                    {{ icons.icon('chevronDown', 13) }}
+                    <span x-text="open ? '{{ 'Hide'|trans }}' : '{{ 'Show'|trans }}'"></span>
+                </button>
+            </div>
+
+            <div x-show="open" x-cloak class="qc-mono qc-pre" style="margin-top:14px">Quince CMP {{ version }}
+{% for klucz, wartosc in system %}{{ klucz }}: {{ wartosc }}
+{% endfor %}quince_engine: {{ engineDetected ? 'detected' : 'not installed' }}</div>
+        </div>
+    </div>
+    </div>
+</div>
+
+{# Osobne żądanie, żeby sprawdzenie aktualizacji nie zapisywało przy okazji ustawień. #}
+<form id="check" method="post" action="{{ path('quince_cmp_support_check') }}" hidden>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_support_check') }}">
+</form>
+<form id="finish-upgrade" method="post" action="{{ path('quince_cmp_support_finish_upgrade') }}" hidden>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_support_finish_upgrade') }}">
+</form>
+<form id="update" method="post" action="{{ path('quince_cmp_support_update') }}" hidden>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_support_update') }}">
+</form>
+{% endblock %}
+
+{% block quince_actionbar %}{% endblock %}

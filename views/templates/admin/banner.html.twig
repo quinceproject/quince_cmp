@@ -1,0 +1,278 @@
+{# Baner i okno ustawień. Układ wg prototypy/BannerSettings.dc.html #}
+{% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/fields.html.twig' as fields %}
+
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{% block quince_body %}
+<div class="qc-screen" style="display:flex;gap:24px;align-items:flex-start">
+
+    {# ================= kolumna ustawień ================= #}
+    <form method="post" action="{{ path('quince_cmp_banner_save') }}" enctype="multipart/form-data" style="width:420px;flex:none">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_banner_save') }}">
+        <div class="qc-head-title" style="margin-bottom:18px">{{ 'Banner & preferences'|trans }}</div>
+
+        <div class="qc-grid" style="margin-bottom:14px">
+            <div style="padding:12px 16px">
+                <label class="qc-toggle">
+                    <input type="checkbox" name="banner_on" value="1" {{ bannerOn ? 'checked' : '' }}>
+                    <span class="qc-toggle-track"></span>
+                    <span class="qc-toggle-text" style="font-weight:var(--weight-bold)">{{ 'Show the banner'|trans }}</span>
+                </label>
+            </div>
+        </div>
+
+        {# --- warstwa pierwsza --- #}
+        <div class="qc-grid qc-fold" style="margin-bottom:14px" x-data="{ open: true }">
+            <button type="button" class="qc-fold-head" @click="open = !open" :aria-expanded="open">
+                <span>{{ 'First layer'|trans }}</span>
+                {{ icons.icon('chevronDown', 14, 'qc-fold-mark') }}
+            </button>
+            <div x-show="open" x-cloak style="padding:14px 16px">
+                {{ fields.multilang('b1_title', 'Title'|trans, languages, values.b1_title, defaults.b1_title) }}
+                {{ fields.multilangArea('b1_body', 'Body'|trans, languages, values.b1_body, defaults.b1_body, '', 3) }}
+            </div>
+        </div>
+
+        {# --- przyciski --- #}
+        <div class="qc-grid qc-fold" style="margin-bottom:14px" x-data="{ open: true }">
+            <button type="button" class="qc-fold-head" @click="open = !open" :aria-expanded="open">
+                <span>{{ 'Buttons'|trans }}</span>
+                {{ icons.icon('chevronDown', 14, 'qc-fold-mark') }}
+            </button>
+            <div x-show="open" x-cloak style="padding:14px 16px">
+                {{ fields.multilang('b1_accept', 'Accept all'|trans, languages, values.b1_accept, defaults.b1_accept) }}
+                {{ fields.multilang('b1_reject', 'Reject all'|trans, languages, values.b1_reject, defaults.b1_reject) }}
+                {{ fields.multilang('b1_prefs', 'Preferences'|trans, languages, values.b1_prefs, defaults.b1_prefs) }}
+
+                <div style="font-size:var(--text-xs);color:var(--fg-2);margin-top:10px">
+                    {{ 'All three buttons share one visual weight. Rejecting must be as easy as accepting.'|trans }}
+                </div>
+            </div>
+        </div>
+
+        {# --- warstwa druga --- #}
+        <div class="qc-grid qc-fold" style="margin-bottom:14px" x-data="{ open: true }">
+            <button type="button" class="qc-fold-head" @click="open = !open" :aria-expanded="open">
+                <span>{{ 'Second layer'|trans }}</span>
+                {{ icons.icon('chevronDown', 14, 'qc-fold-mark') }}
+            </button>
+            <div x-show="open" x-cloak style="padding:14px 16px">
+                {{ fields.multilang('b2_title', 'Title'|trans, languages, values.b2_title, defaults.b2_title) }}
+                {{ fields.multilangArea('b2_body', 'Intro'|trans, languages, values.b2_body, defaults.b2_body, '', 3) }}
+                {{ fields.multilang('b2_save', 'Save button'|trans, languages, values.b2_save, defaults.b2_save) }}
+
+                <div style="font-size:var(--text-xs);color:var(--fg-2);margin-top:10px">
+                    {{ 'Categories and their cookie tables come from Consent types and Cookies — they are not repeated here.'|trans }}
+                </div>
+            </div>
+        </div>
+
+        {# --- umiejscowienie --- #}
+        <div class="qc-grid qc-fold" style="margin-bottom:14px" x-data="{ open: true }">
+            <button type="button" class="qc-fold-head" @click="open = !open" :aria-expanded="open">
+                <span>{{ 'Placement'|trans }}</span>
+                {{ icons.icon('chevronDown', 14, 'qc-fold-mark') }}
+            </button>
+            <div x-show="open" x-cloak style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+                {% for value in placements %}
+                    <label class="qc-hstack" style="gap:8px;font-size:var(--text-xs);font-weight:var(--weight-semibold);cursor:pointer">
+                        <input type="radio" name="placement" value="{{ value }}" {{ placement == value ? 'checked' : '' }}>
+                        {{ ('placement.' ~ value)|trans({}, 'Modules.Quincecmp.Admin') != ('placement.' ~ value)
+                            ? ('placement.' ~ value)|trans
+                            : value|capitalize }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# --- kolory --- #}
+        <div class="qc-grid qc-fold" style="margin-bottom:14px" x-data="{ open: true }">
+            <button type="button" class="qc-fold-head" @click="open = !open" :aria-expanded="open">
+                <span>{{ 'Colours'|trans }}</span>
+                {{ icons.icon('chevronDown', 14, 'qc-fold-mark') }}
+            </button>
+            <div x-show="open" x-cloak style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+                <label class="qc-hstack" style="gap:8px;font-size:var(--text-xs);font-weight:var(--weight-semibold);cursor:pointer;{{ engineDetected ? '' : 'opacity:.5' }}">
+                    <input type="radio" name="colours" value="engine"
+                           {{ colours == 'engine' ? 'checked' : '' }} {{ engineDetected ? '' : 'disabled' }}>
+                    {{ 'Use quince_engine tokens'|trans }}
+                </label>
+                {% if not engineDetected %}
+                    <div class="qc-hint" style="margin:-6px 0 0 22px">{{ 'quince_engine is not installed in this shop.'|trans }}</div>
+                {% endif %}
+
+                <label class="qc-hstack" style="gap:8px;font-size:var(--text-xs);font-weight:var(--weight-semibold);cursor:pointer">
+                    <input type="radio" name="colours" value="own" {{ colours == 'own' or not engineDetected ? 'checked' : '' }}>
+                    {{ 'Own colours'|trans }}
+                </label>
+
+                <div class="qc-hstack" style="gap:12px;margin-left:22px">
+                    <label class="qc-hstack" style="gap:6px;font-size:11px;color:var(--fg-2)">
+                        <input type="color" name="colour_accent" value="{{ colourAccent }}" style="width:28px;height:24px;border:0;background:none;padding:0">
+                        {{ 'Accent'|trans }}
+                    </label>
+                    <label class="qc-hstack" style="gap:6px;font-size:11px;color:var(--fg-2)">
+                        <input type="color" name="colour_surface" value="{{ colourSurface }}" style="width:28px;height:24px;border:0;background:none;padding:0">
+                        {{ 'Surface'|trans }}
+                    </label>
+                    <label class="qc-hstack" style="gap:6px;font-size:11px;color:var(--fg-2)">
+                        <input type="color" name="colour_text" value="{{ colourText }}" style="width:28px;height:24px;border:0;background:none;padding:0">
+                        {{ 'Text'|trans }}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        {# --- pływający przycisk --- #}
+        <div class="qc-grid qc-fold" style="margin-bottom:14px" x-data="{ open: true }">
+            <button type="button" class="qc-fold-head" @click="open = !open" :aria-expanded="open">
+                <span>{{ 'Floating button'|trans }}</span>
+                {{ icons.icon('chevronDown', 14, 'qc-fold-mark') }}
+            </button>
+            <div x-show="open" x-cloak style="padding:14px 16px">
+                <label class="qc-toggle" style="margin-bottom:12px">
+                    <input type="checkbox" name="fab_on" value="1" {{ fabOn ? 'checked' : '' }}>
+                    <span class="qc-toggle-track"></span>
+                    <span class="qc-toggle-text">{{ 'Show a way back to the settings'|trans }}</span>
+                </label>
+
+                <div class="qc-field" style="margin-bottom:10px">
+                    <label class="qc-label">{{ 'Position'|trans }}</label>
+                    <div class="qc-seg">
+                        {% for value in fabPositions %}
+                            <label class="qc-seg-btn">
+                                <input type="radio" name="fab_position" value="{{ value }}" {{ fabPosition == value ? 'checked' : '' }}>
+                                {{ value|capitalize }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {# Osobno dla telefonu, bo tam przyklejone paski przy dolnej krawędzi
+                   są dużo częstsze niż na komputerze. #}
+                <div class="qc-field" style="margin-bottom:10px">
+                    <label class="qc-label">{{ 'Distance from the bottom edge'|trans }}</label>
+                    <div class="qc-form-grid qc-form-grid-2">
+                        <div>
+                            <label class="qc-label" for="fab_offset_desktop">{{ 'Desktop (px)'|trans }}</label>
+                            <input type="number" id="fab_offset_desktop" name="fab_offset_desktop"
+                                   class="qc-field-base qc-field-sm qc-focusable"
+                                   min="0" max="{{ fabOffsetMax }}" step="1" value="{{ fabOffsetDesktop }}">
+                        </div>
+                        <div>
+                            <label class="qc-label" for="fab_offset_mobile">{{ 'Mobile (px)'|trans }}</label>
+                            <input type="number" id="fab_offset_mobile" name="fab_offset_mobile"
+                                   class="qc-field-base qc-field-sm qc-focusable"
+                                   min="0" max="{{ fabOffsetMax }}" step="1" value="{{ fabOffsetMobile }}">
+                        </div>
+                    </div>
+                    <div class="qc-hint">
+                        {{ 'Raise it when a chat window, a back-to-top button or a sticky cart bar sits in the same corner. Phones get their own value because sticky bars are far more common there.'|trans }}
+                    </div>
+                </div>
+
+                {# `x-data` siedzi tu, nie przy samym polu „Label" niżej: nasłuch
+                   `@change` łapie tylko zdarzenia z własnych potomków, a te
+                   radiowe przyciski są wcześniej w drzewie, nie w środku tamtego
+                   diva — bez wspólnego rodzica `mode` nigdy by się nie zmieniał. #}
+                <div x-data="{ mode: '{{ fabMode }}' }" @change="mode = $event.target.name === 'fab_mode' ? $event.target.value : mode">
+                <div class="qc-field" style="margin-bottom:10px">
+                    <label class="qc-label">{{ 'Shows'|trans }}</label>
+                    <div class="qc-optrow" style="padding-top:0">
+                        {% for value in fabModes %}
+                            <label class="qc-opt">
+                                <input type="radio" name="fab_mode" value="{{ value }}" class="qc-radio"
+                                       {{ fabMode == value ? 'checked' : '' }}>
+                                {{ value == 'icon' ? 'Icon only'|trans : 'Icon and label'|trans }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {# Ikona bez napisu musi sama powiedzieć, o co chodzi — stąd wybór
+                   zamiast jednego znaku na sztywno. #}
+                <div class="qc-field" style="margin-bottom:10px">
+                    <label class="qc-label">{{ 'Icon'|trans }}</label>
+                    <div class="qc-iconpick">
+                        {% if fabSvg %}
+                            <label class="qc-iconpick-item" title="{{ 'Your own icon'|trans }}">
+                                <input type="radio" name="fab_icon" value="custom" checked>
+                                <span>{{ fabSvg|raw }}</span>
+                            </label>
+                        {% endif %}
+                        {% for name in fabIcons %}
+                            <label class="qc-iconpick-item" title="{{ name }}">
+                                <input type="radio" name="fab_icon" value="{{ name }}" {{ fabIcon == name ? 'checked' : '' }}>
+                                <span>{{ icons.icon(name, 18) }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {# Wgrany plik nie ląduje na dysku: po oczyszczeniu zapisujemy samą
+                   treść, więc nie ma czego podać pod adresem ani czego zapomnieć
+                   przy odinstalowaniu modułu. #}
+                <div class="qc-field" style="margin-bottom:10px" x-data="{ plik: '' }">
+                    <label class="qc-label" for="fab_svg">{{ 'Or upload your own SVG'|trans }}</label>
+                    <div class="qc-hstack" style="gap:10px">
+                        <label class="qc-btn qc-btn-sm qc-btn-outline" style="margin:0">
+                            {{ icons.icon('folder', 13) }} {{ 'Choose a file'|trans }}
+                            <input type="file" id="fab_svg" name="fab_svg" accept=".svg,image/svg+xml"
+                                   style="position:absolute;opacity:0;width:0;height:0"
+                                   @change="plik = $event.target.files.length ? $event.target.files[0].name : ''">
+                        </label>
+                        <span class="qc-mono qc-sub" x-text="plik || '{{ 'no file chosen'|trans }}'"></span>
+                    </div>
+                    <div class="qc-hint">
+                        {{ 'Up to 32 kB, with a viewBox. Scripts, links and external references are stripped — an SVG is a document, not a picture.'|trans }}
+                    </div>
+
+                    {% if fabSvg %}
+                        <label class="qc-opt" style="margin-top:8px">
+                            <input type="checkbox" name="fab_svg_remove" value="1" class="qc-cm-box">
+                            {{ 'Remove the uploaded icon'|trans }}
+                        </label>
+                    {% endif %}
+                </div>
+
+                <div x-show="mode !== 'icon'">
+                    {{ fields.multilang('fab_label', 'Label'|trans, languages, values.fab_label, defaults.fab_label) }}
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="qc-actions">
+            <button type="submit" class="qc-btn qc-btn-primary">
+                {{ icons.icon('check', 14) }} {{ 'Save'|trans }}
+            </button>
+        </div>
+    </form>
+
+    {# ================= podgląd ================= #}
+    <div style="flex:1;position:sticky;top:28px;align-self:flex-start;min-width:0">
+        <div class="qc-hstack" style="gap:8px;margin-bottom:14px">
+            <div class="qc-segbar">
+                {% for value, label in {'one': 'Layer 1', 'two': 'Layer 2', 'fab': 'Floating button'} %}
+                    <a class="{{ layer == value ? 'is-active' : '' }}"
+                       href="{{ path('quince_cmp_banner', {'layer': value, 'device': device}) }}">{{ label|trans }}</a>
+                {% endfor %}
+            </div>
+
+            <div class="qc-segbar">
+                {% for value, label in {'desktop': 'Desktop', 'mobile': 'Mobile'} %}
+                    <a class="{{ device == value ? 'is-active' : '' }}"
+                       href="{{ path('quince_cmp_banner', {'layer': layer, 'device': value}) }}">{{ label|trans }}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% include '@Modules/quince_cmp/views/templates/admin/_banner_preview.html.twig' %}
+    </div>
+
+</div>
+{% endblock %}
+
+{% block quince_actionbar %}{% endblock %}

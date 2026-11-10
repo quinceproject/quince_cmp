@@ -1,0 +1,144 @@
+{# Przegląd. Układ wg prototypy/Overview.dc.html #}
+{% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{% block quince_body %}
+<div class="qc-screen">
+
+    <div class="qc-head" style="margin-bottom:24px">
+        <div>
+            <div class="qc-head-title">{{ 'Overview'|trans }}</div>
+            <div class="qc-head-desc">{{ 'Is it working, and am I clean.'|trans }}</div>
+        </div>
+        <div class="qc-hstack" style="gap:8px;align-self:flex-start">
+            {# Osobnego „uruchom diagnostykę" nie ma: sprawdzenia liczą się przy
+               każdym wejściu na ten ekran, więc przycisk kazałby klikać po to,
+               co i tak już widać. #}
+            <form method="post" action="{{ path('quince_cmp_sync_run') }}">
+                <button type="submit" class="qc-btn qc-btn-primary">
+                    {{ icons.icon('refresh', 14) }} {{ 'Sync now'|trans }}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    {# --- stan wdrożenia --- #}
+    <div class="qc-grid" style="margin-bottom:20px">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border)">
+            <div style="font-size:var(--text-sm);font-weight:var(--weight-bold)">{{ 'Deployment status'|trans }}</div>
+            <div style="font-size:11px;color:var(--fg-2);margin-top:2px">
+                {{ 'Each shop is set up on its own. A row that is not green is a shop that is not covered.'|trans }}
+            </div>
+        </div>
+
+        <div style="display:flex;padding:8px 16px;background:var(--surface-sunken);border-bottom:1px solid var(--border);font-size:11px;font-weight:var(--weight-semibold);color:var(--fg-2)">
+            <div style="flex:1;min-width:150px">{{ 'Shop'|trans }}</div>
+            {% for column in columns %}
+                <div style="width:128px;flex:none">{{ column|trans }}</div>
+            {% endfor %}
+        </div>
+
+        {% for row in rows %}
+            <div style="display:flex;align-items:center;padding:11px 16px;{{ not loop.last ? 'border-bottom:1px solid var(--border)' : '' }}">
+                <div style="flex:1;min-width:150px;font-size:var(--text-sm);font-weight:var(--weight-semibold)">{{ row.name }}</div>
+                {% for cell in row.cells %}
+                    <div style="width:128px;flex:none;display:flex;align-items:center;gap:6px">
+                        {# Kropka nigdy nie stoi sama — obok jest napis mówiący to samo. #}
+                        <div style="width:8px;height:8px;border-radius:99px;flex:none;background:{{
+                            cell.state == 'ok' ? 'var(--success)' : (cell.state == 'warn' ? 'var(--warning)' : 'var(--fg-3)') }}"></div>
+                        <div style="font-size:var(--text-xs);font-weight:var(--weight-semibold)">{{ cell.value|trans(cell.params|default({})) }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    {# --- diagnostyka --- #}
+    <div class="qc-grid" style="margin-bottom:20px">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border);font-size:var(--text-sm);font-weight:var(--weight-bold)">
+            {{ 'Diagnostics'|trans }}
+        </div>
+
+        {% for finding in diagnostics %}
+            <div style="padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:16px;background:{{
+                finding.level == 'danger' ? 'var(--danger-soft)' : 'var(--warning-soft)' }}">
+                <div style="font-size:var(--text-sm);display:flex;gap:8px;align-items:flex-start">
+                    <span style="flex:none;margin-top:2px;color:{{ finding.level == 'danger' ? 'var(--danger)' : 'var(--warning)' }}">
+                        {{ icons.message(finding.level, 14) }}
+                    </span>
+                    {# Klucz z podstawieniami, nie gotowe zdanie: komunikat sklejony w PHP
+                       trafiałby tu z liczbami w środku i żaden katalog by go nie rozpoznał. #}
+                    {{ finding.text|trans(finding.params|default({})) }}
+                </div>
+                {% if finding.action and finding.route %}
+                    <a href="{{ path(finding.route, finding.routeParams|default({})) }}"
+                       style="font-size:var(--text-xs);font-weight:var(--weight-bold);white-space:nowrap;color:{{
+                        finding.level == 'danger' ? 'var(--danger)' : 'var(--warning)' }}">{{ finding.action|trans }}</a>
+                {% elseif finding.action %}
+                    <div style="font-size:var(--text-xs);font-weight:var(--weight-bold);white-space:nowrap;color:{{
+                        finding.level == 'danger' ? 'var(--danger)' : 'var(--warning)' }}">{{ finding.action|trans }}</div>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="qc-empty" style="padding:24px 20px">
+                {{ icons.icon('checkCircle', 28, 'qc-empty-icon') }}
+                <div class="qc-empty-text">{{ 'Nothing to fix right now.'|trans }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# --- decyzje i synchronizacja --- #}
+    <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:16px">
+        <div class="qc-grid" style="padding:16px 18px">
+            <div style="font-size:var(--text-sm);font-weight:var(--weight-bold);margin-bottom:12px">
+                {{ 'Decisions — last 30 days'|trans }}
+            </div>
+
+            {% set total = decisions.total ?: 1 %}
+            <div style="display:flex;height:14px;border-radius:99px;overflow:hidden;margin-bottom:10px;background:var(--surface-sunken)">
+                <div style="width:{{ (decisions.accept / total * 100)|round }}%;background:var(--accent)"></div>
+                <div style="width:{{ (decisions.reject / total * 100)|round }}%;background:var(--border-strong)"></div>
+                <div style="width:{{ (decisions.custom / total * 100)|round }}%;background:var(--fg-3)"></div>
+            </div>
+
+            <div style="display:flex;gap:20px;font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--fg-2);margin-bottom:12px">
+                <div>{{ 'Accept all'|trans }} {{ (decisions.accept / total * 100)|round }}%</div>
+                <div>{{ 'Reject all'|trans }} {{ (decisions.reject / total * 100)|round }}%</div>
+                <div>{{ 'Custom'|trans }} {{ (decisions.custom / total * 100)|round }}%</div>
+            </div>
+
+            <div style="display:flex;gap:24px;font-size:var(--text-base);font-weight:var(--weight-bold)">
+                <div>{{ decisions.total }} {{ 'decisions'|trans }}</div>
+                <div>{{ decisions.withdrawals }} {{ 'withdrawals'|trans }}</div>
+            </div>
+        </div>
+
+        <div class="qc-grid" style="padding:16px 18px">
+            <div style="font-size:var(--text-sm);font-weight:var(--weight-bold);margin-bottom:10px">{{ 'Last sync'|trans }}</div>
+
+            {% if lastSync %}
+                <div style="font-size:var(--text-xs);color:var(--fg-2);margin-bottom:6px">{{ lastSync.date|slice(0, 16) }}</div>
+                <div style="font-size:var(--text-sm)">
+                    {{ 'Sent'|trans }} {{ lastSync.sent }} · {{ 'Accepted'|trans }} {{ lastSync.accepted }}
+                </div>
+                {% if lastSync.failed %}
+                    <div style="font-size:var(--text-sm);font-weight:var(--weight-bold);color:var(--danger);margin-top:4px;display:flex;align-items:center;gap:4px">
+                        {{ icons.icon('alertCircle', 14) }} {{ lastSync.failed }} {{ 'failed'|trans }}
+                    </div>
+                {% endif %}
+            {% else %}
+                <div style="font-size:var(--text-xs);color:var(--fg-3)">{{ 'Never — no external system configured.'|trans }}</div>
+            {% endif %}
+
+            <div style="margin-top:10px">
+                <a href="{{ path('quince_cmp_sync') }}" class="qc-btn qc-btn-sm qc-btn-outline">{{ 'Open sync'|trans }}</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block quince_actionbar %}{% endblock %}

@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{
+--font-sans:"Manrope",-apple-system,"Segoe UI",sans-serif;
+--font-mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+--text-xs:12px;--lh-xs:16px;
+--text-sm:13px;--lh-sm:18px;
+--text-base:14px;--lh-base:20px;
+--text-md:15px;--lh-md:22px;
+--text-lg:18px;--lh-lg:26px;
+--text-xl:22px;--lh-xl:30px;
+--text-2xl:28px;--lh-2xl:36px;
+--weight-regular:400;--weight-medium:500;--weight-semibold:600;--weight-bold:700;--weight-extrabold:800;
+}

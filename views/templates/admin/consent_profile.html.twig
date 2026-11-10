@@ -1,0 +1,352 @@
+{# Profil po adresie.
+
+   Odstępstwo od prototypu `prototypy/LogProfile.dc.html`: prototyp trzymał
+   szczegół zdarzenia w osobnej kolumnie po prawej, wybieranej przeładowaniem
+   strony. Tutaj oba wykazy rozwijają wiersz w miejscu — widać, który rekord
+   jest otwarty, i nie gubi się pozycja na długiej liście.
+
+   Wartości dowodowe — skrót treści, klucz przeglądarki, user agent — pokazujemy
+   w całości. Skrócony skrót niczego nie dowodzi, a to jest ekran, z którego
+   przepisuje się dane do odpowiedzi na żądanie osoby albo do akt sprawy. #}
+{% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{# `dlugi` zajmuje całą szerokość siatki i łamie wartość w dowolnym miejscu —
+   inaczej sześćdziesięcioznakowy skrót rozpycha układ na bok. #}
+{% macro fakt(etykieta, wartosc, mono = false, dlugi = false) %}
+    {% if wartosc is not empty %}
+        <div{% if dlugi %} style="grid-column:1/-1"{% endif %}>
+            <span style="color:var(--fg-3)">{{ etykieta }}</span>
+            <span class="{{ mono ? 'qc-mono' : '' }}"
+                  style="color:var(--fg-1){% if dlugi %};word-break:break-all{% endif %}">{{ wartosc }}</span>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{# Makra w Twigu 3 nie widzą importów spoza własnego ciała, stąd import w środku. #}
+{% macro chevron() %}
+    {% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as i %}
+    <div class="qc-rowchevron" style="width:16px;flex:none;padding-top:3px;color:var(--fg-3)"
+         :style="open ? 'transform:rotate(180deg)' : ''">
+        {{ i.icon('chevronDown', 12) }}
+    </div>
+{% endmacro %}
+
+{# Blok do wklejenia w odpowiedzi na żądanie osoby. Kopiujemy przez pole
+   tekstowe zamiast przez schowek przeglądarki: `navigator.clipboard` działa
+   tylko po HTTPS, a panele sklepów bywają na zwykłym połączeniu. #}
+{% macro dowod(w, kod, sklep, email, kiedy) %}
+    {% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as i %}
+    <div x-data="{ pokaz: false }" style="margin-top:10px">
+        <button type="button" @click="pokaz = !pokaz" class="qc-linkbtn">
+            {{ i.icon('folder', 12) }}
+            <span x-text="pokaz ? '{{ 'Hide the proof block'|trans }}' : '{{ 'Copy as proof'|trans }}'">{{ 'Copy as proof'|trans }}</span>
+        </button>
+
+        <textarea x-show="pokaz" x-cloak readonly rows="9"
+                  @click="$el.select()"
+                  class="qc-field-base qc-mono"
+                  style="width:100%;margin-top:8px;font-size:10px;line-height:1.6"
+>{{ 'Consent record'|trans }}
+{{ 'Person'|trans }}: {{ email ?: 'anonymous visitor'|trans }}
+{{ 'Consent'|trans }}: {{ kod }}
+{{ 'Answer'|trans }}: {{ w.granted ? 'granted'|trans : 'withdrawn'|trans }}
+{{ 'Recorded'|trans }}: {{ kiedy }}
+{{ 'Shop'|trans }}: {{ sklep }}
+{{ 'Version'|trans }}: {{ w.version ?: '—' }}
+{{ 'Text hash'|trans }}: {{ w.text_hash ?: '—' }}
+{{ 'Source'|trans }}: {{ w.source ?: '—' }} / {{ w.origin }}
+{{ 'IP'|trans }}: {{ w.ip ?: '—' }}
+{{ 'Browser key'|trans }}: {{ w.visitor_key ?: '—' }}
+{% if w.staff.name %}{{ 'Recorded by'|trans }}: {{ w.staff.name }}
+{% endif %}{% if w.note %}{{ 'Based on'|trans }}: {{ w.note }}
+{% endif %}{% if w.short_label %}
+{{ 'Wording shown'|trans }}: „{{ w.short_label }}"
+{{ w.full_clause }}{% endif %}</textarea>
+    </div>
+{% endmacro %}
+
+{% block quince_body %}
+{% import _self as f %}
+
+<div class="qc-screen qc-screen--wide">
+
+    <div style="margin-bottom:18px">
+        <a href="{{ path('quince_cmp_log', {'email': email}) }}"
+           style="display:inline-block;font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--fg-2);margin-bottom:6px">
+            {{ '← Back to the log'|trans }}
+        </a>
+        <div class="qc-head-title" style="font-size:20px">{{ email }}</div>
+        <div style="font-size:var(--text-xs);color:var(--fg-2);margin-top:4px">
+            {% if customerId %}
+                <a href="{{ customerLink }}" target="_blank" rel="noopener">{{ 'View in shop customers →'|trans }}</a>
+                ·
+            {% else %}
+                {# Zgody zbieramy też od osób bez konta — brak karty jest zwykłym stanem. #}
+                <span title="{{ 'This address has no customer account in the shop.'|trans }}">{{ 'no customer account'|trans }}</span>
+                ·
+            {% endif %}
+            {{ scopeLabel }}
+            · {{ visitorKeys|length }} {{ 'visitor keys'|trans }}
+            {% if timeline is not empty %}
+                · {{ 'first seen'|trans }} {{ timeline|last.date_add|slice(0, 10) }}
+                · {{ 'last activity'|trans }} {{ timeline|first.date_add|slice(0, 10) }}
+            {% endif %}
+        </div>
+    </div>
+
+    {# ---------------------------------------------------------------- stan na dziś #}
+    <div class="qc-grid" style="margin-bottom:18px">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border)">
+            <div style="font-size:var(--text-sm);font-weight:var(--weight-bold)">{{ 'Current state'|trans }}</div>
+            <div style="font-size:11px;color:var(--fg-2);margin-top:2px">
+                {% if shops|length > 1 %}
+                    {{ 'One person across the whole shop group. A consent given to one shop is not a consent given to another.'|trans }}
+                {% else %}
+                    {{ 'The last recorded answer for each consent.'|trans }}
+                {% endif %}
+            </div>
+        </div>
+
+        {% if codes is empty %}
+            <div class="qc-empty" style="padding:24px 20px">
+                <div class="qc-empty-text">{{ 'Nothing recorded for this address.'|trans }}</div>
+            </div>
+        {% else %}
+            <div style="display:flex;gap:8px;padding:8px 16px;background:var(--surface-sunken);border-bottom:1px solid var(--border);font-size:11px;font-weight:var(--weight-semibold);color:var(--fg-2)">
+                <div style="flex:1;min-width:0">{{ 'Consent'|trans }}</div>
+                {% for shop in shops %}
+                    <div style="width:150px;flex:none">{{ shop.name }}</div>
+                {% endfor %}
+                <div style="width:16px;flex:none"></div>
+            </div>
+
+            {% for code in codes %}
+                {% set opis = names[code]|default(null) %}
+                {# Twig 3 nie ma `for ... if`, a `set` w pętli nie wychodzi poza nią. #}
+                {% set przeterminowane = shops|filter(s => cells[code][s.id_shop] is defined and cells[code][s.id_shop].outdated) %}
+
+                <div x-data="{ open: false }" style="border-top:1px solid var(--border)">
+                    <button type="button" @click="open = !open"
+                            class="qc-rowtoggle"
+                            style="display:flex;gap:8px;align-items:flex-start;width:100%;padding:10px 16px;background:none;border:0;text-align:left;cursor:pointer">
+                        <div style="flex:1;min-width:0">
+                            <div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--fg-0)">
+                                {{ opis.name|default(code) }}
+                                {% if opis and opis.required %}
+                                    <span class="qc-badge">{{ 'required'|trans }}</span>
+                                {% endif %}
+                                {% if przeterminowane is not empty %}
+                                    <span class="qc-badge qc-badge-warning">{{ 'older wording'|trans }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="qc-mono" style="font-size:11px;color:var(--fg-3);margin-top:2px">{{ code }}</div>
+                        </div>
+
+                        {% for shop in shops %}
+                            {% set cell = cells[code][shop.id_shop]|default(null) %}
+                            <div style="width:150px;flex:none">
+                                {% if cell is null %}
+                                    <div style="font-size:var(--text-xs);color:var(--fg-3)"
+                                         title="{{ 'Never recorded in this shop'|trans }}">—</div>
+                                {% else %}
+                                    {% if cell.granted %}
+                                        <span class="qc-badge qc-badge-success">{{ icons.icon('check', 11) }} {{ 'Granted'|trans }}</span>
+                                    {% else %}
+                                        <span class="qc-badge qc-badge-danger">{{ icons.icon('x', 11) }} {{ 'Withdrawn'|trans }}</span>
+                                    {% endif %}
+                                    <div class="qc-sub" style="margin-top:3px">
+                                        {{ cell.version ?: '—' }} · {{ cell.date|slice(0, 10) }}
+                                    </div>
+                                    <div class="qc-sub" style="margin-top:1px;color:var(--fg-3)">{{ cell.source ?: '—' }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        {{ f.chevron() }}
+                    </button>
+
+                    <div x-show="open" x-cloak style="padding:0 16px 14px 16px">
+                        {% for shop in shops %}
+                            {% set cell = cells[code][shop.id_shop]|default(null) %}
+                            {% if cell %}
+                                <div style="padding:12px 14px;background:var(--surface-sunken);border-radius:var(--radius-sm);margin-bottom:8px">
+                                    {% if shops|length > 1 %}
+                                        <div style="font-size:11px;font-weight:var(--weight-semibold);color:var(--fg-2);margin-bottom:8px">{{ shop.name }}</div>
+                                    {% endif %}
+
+                                    {% if cell.short_label %}
+                                        <div style="font-size:var(--text-xs);color:var(--fg-1);font-style:italic">„{{ cell.short_label }}"</div>
+                                    {% endif %}
+                                    {% if cell.full_clause %}
+                                        <div style="font-size:11px;color:var(--fg-2);line-height:1.55;margin-top:6px">{{ cell.full_clause }}</div>
+                                    {% endif %}
+
+                                    {% if cell.outdated %}
+                                        {# Powód, dla którego trzeba kogoś zapytać ponownie. #}
+                                        <div class="qc-alert qc-alert-warning" style="margin:10px 0 0">
+                                            {{ icons.message('warn', 16, 'qc-alert-icon') }}
+                                            <div>{{ 'Answered version %had%, the shop now publishes %now%.'|trans({'%had%': cell.version, '%now%': cell.current_version}) }}</div>
+                                        </div>
+                                    {% endif %}
+
+                                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px 16px;font-size:11px;line-height:1.9;margin-top:10px">
+                                        {{ f.fakt('Answered'|trans ~ ':', cell.date) }}
+                                        {{ f.fakt('Version'|trans ~ ':', cell.version ?: '—') }}
+                                        {{ f.fakt('Source'|trans ~ ':', cell.source ?: '—') }}
+                                        {{ f.fakt('Origin'|trans ~ ':', cell.origin) }}
+                                        {{ f.fakt('IP'|trans ~ ':', cell.ip ?: '—', true) }}
+                                        {{ f.fakt('Recorded by'|trans ~ ':', cell.staff.name ?: '') }}
+                                        {{ f.fakt('Browser key'|trans ~ ':', cell.visitor_key ?: '—', true, true) }}
+                                        {{ f.fakt('Text hash'|trans ~ ':', cell.text_hash ?: '—', true, true) }}
+                                        {{ f.fakt('Based on'|trans ~ ':', cell.note ?: '', false, true) }}
+                                        {{ f.fakt('User agent'|trans ~ ':', cell.user_agent ?: '—', false, true) }}
+                                    </div>
+
+                                    {{ f.dowod(cell, code, shop.name, email, cell.date) }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        {# Żądanie przychodzi mailem albo telefonicznie i musi zostawić
+                           taki sam ślad jak kliknięcie. Podstawa jest wymagana, bo bez
+                           niej za rok nikt nie odtworzy, skąd wpis się wziął. #}
+                        <form method="post" action="{{ path('quince_cmp_log_withdraw') }}"
+                              style="padding:12px 14px;border:1px dashed var(--border);border-radius:var(--radius-sm)">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_log_withdraw') }}">
+                            <input type="hidden" name="email" value="{{ email }}">
+                            <input type="hidden" name="code" value="{{ code }}">
+
+                            <div style="font-size:11px;font-weight:var(--weight-semibold);color:var(--fg-2);margin-bottom:8px">
+                                {{ 'Record a withdrawal the person asked for'|trans }}
+                            </div>
+
+                            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
+                                <label style="flex:1;min-width:240px;margin:0">
+                                    <span class="qc-caption">{{ 'What is this based on'|trans }}</span>
+                                    <input type="text" name="note" required maxlength="255"
+                                           class="qc-field-base qc-field-sm qc-focusable"
+                                           placeholder="{{ 'Ticket 4821, e-mail of 2026-08-28'|trans }}">
+                                </label>
+
+                                {% if shops|length > 1 %}
+                                    <label class="qc-toggle qc-toggle-sm" style="height:32px;margin:0">
+                                        <input type="checkbox" name="whole_group" value="1">
+                                        <span class="qc-toggle-track"></span>
+                                        <span class="qc-toggle-text" style="font-size:var(--text-xs)">{{ 'Whole group'|trans }}</span>
+                                    </label>
+                                {% endif %}
+
+                                <button type="submit" class="qc-btn qc-btn-sm qc-btn-outline"
+                                        data-qc-confirm="{{ 'Record a withdrawal of %code% for %email%?'|trans({'%code%': code, '%email%': email}) }}">
+                                    {{ icons.icon('x', 13) }} {{ 'Record withdrawal'|trans }}
+                                </button>
+                            </div>
+
+                            <div class="qc-hint">
+                                {{ 'Saved as an event signed with your name. It goes out to connected systems on the next sync run.'|trans }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {# ---------------------------------------------------------------- historia #}
+    <div class="qc-grid">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border)">
+            <div style="font-size:var(--text-sm);font-weight:var(--weight-bold)">{{ 'History'|trans }}</div>
+            <div style="font-size:11px;color:var(--fg-2);margin-top:2px">
+                {{ 'Every answer this person gave, newest first. Nothing here is ever overwritten.'|trans }}
+            </div>
+        </div>
+
+        {% for entry in timeline %}
+            {% set opis = names[entry.code]|default(null) %}
+
+            <div x-data="{ open: false }" style="border-top:1px solid var(--border)">
+                <button type="button" @click="open = !open"
+                        class="qc-rowtoggle"
+                        style="display:flex;gap:10px;align-items:flex-start;width:100%;padding:9px 16px;background:none;border:0;text-align:left;cursor:pointer">
+                    <div class="qc-mono" style="font-size:11px;color:var(--fg-3);width:118px;flex:none;padding-top:2px">
+                        {{ entry.date_add|slice(0, 16) }}
+                    </div>
+
+                    <div style="width:106px;flex:none">
+                        {% if entry.granted %}
+                            <span class="qc-badge qc-badge-success">{{ icons.icon('check', 11) }} {{ 'Granted'|trans }}</span>
+                        {% else %}
+                            <span class="qc-badge qc-badge-danger">{{ icons.icon('x', 11) }} {{ 'Withdrawn'|trans }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div style="flex:1;min-width:0">
+                        <div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--fg-0)">
+                            {{ opis.name|default(entry.code) }}
+                            {% if entry.version %}<span style="color:var(--fg-3);font-weight:var(--weight-normal)">{{ entry.version }}</span>{% endif %}
+                        </div>
+                        <div style="font-size:11px;color:var(--fg-3);margin-top:2px">
+                            <span class="qc-mono">{{ entry.code }}</span>
+                            · {{ entry.source ?: '—' }}
+                            {% if shops|length > 1 %} · {{ entry.shop_name }}{% endif %}
+
+                            {# Zdarzenie zapisane, zanim sklep poznał adres. Bez tego
+                               znacznika historia sugerowałaby, że osoba była znana
+                               od pierwszego kliknięcia. #}
+                            {% if not entry.email %}
+                                <span class="qc-badge">{{ 'anonymous at the time'|trans }}</span>
+                            {% endif %}
+                            {% if entry.origin == 'staff' %}
+                                <span class="qc-badge qc-badge-warning">{{ 'entered by staff'|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {{ f.chevron() }}
+                </button>
+
+                <div x-show="open" x-cloak style="padding:0 16px 14px 16px">
+                    <div style="padding:12px 14px;background:var(--surface-sunken);border-radius:var(--radius-sm)">
+                        {% if entry.short_label %}
+                            <div style="font-size:var(--text-xs);color:var(--fg-1);font-style:italic">„{{ entry.short_label }}"</div>
+                        {% endif %}
+                        {% if entry.full_clause %}
+                            <div style="font-size:11px;color:var(--fg-2);line-height:1.55;margin-top:6px">{{ entry.full_clause }}</div>
+                        {% endif %}
+                        {% if not entry.short_label and not entry.full_clause %}
+                            <div style="font-size:11px;color:var(--fg-3)">{{ 'No wording was published for this consent, so none was shown.'|trans }}</div>
+                        {% endif %}
+
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px 16px;font-size:11px;line-height:1.9;margin-top:10px">
+                            {{ f.fakt('Shop'|trans ~ ':', entry.shop_name) }}
+                            {{ f.fakt('Answered'|trans ~ ':', entry.date_add) }}
+                            {{ f.fakt('Version'|trans ~ ':', entry.version ?: '—') }}
+                            {{ f.fakt('Source'|trans ~ ':', entry.source ?: '—') }}
+                            {{ f.fakt('Origin'|trans ~ ':', entry.origin) }}
+                            {{ f.fakt('IP'|trans ~ ':', entry.ip ?: '—', true) }}
+                            {{ f.fakt('Recorded as'|trans ~ ':', entry.email ?: 'anonymous visitor'|trans) }}
+                            {{ f.fakt('Browser key'|trans ~ ':', entry.visitor_key ?: '—', true, true) }}
+                            {{ f.fakt('Recorded by'|trans ~ ':', entry.staff.name ?: '') }}
+                            {{ f.fakt('Text hash'|trans ~ ':', entry.text_hash ?: '—', true, true) }}
+                            {{ f.fakt('External id'|trans ~ ':', entry.external_id ?: '—', true, true) }}
+                            {{ f.fakt('Form'|trans ~ ':', entry.form_id ?: '—', true, true) }}
+                            {{ f.fakt('Based on'|trans ~ ':', entry.note ?: '', false, true) }}
+                            {{ f.fakt('User agent'|trans ~ ':', entry.user_agent ?: '—', false, true) }}
+                        </div>
+
+                        {{ f.dowod(entry, entry.code, entry.shop_name, email, entry.date_add) }}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="qc-empty" style="padding:24px 20px"><div class="qc-empty-text">{{ 'No events.'|trans }}</div></div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
+
+{% block quince_actionbar %}{% endblock %}

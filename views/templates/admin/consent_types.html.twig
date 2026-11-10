@@ -1,0 +1,159 @@
+{# Rodzaje zgód — lista. Układ wg prototypy/ConsentTypesList.dc.html #}
+{% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{% set cols = '20px 1.4fr 1.4fr 90px 80px 1fr 1fr 90px 60px 60px' %}
+
+{% block quince_body %}
+<div class="qc-screen">
+
+    <div class="qc-head">
+        <div>
+            <div class="qc-head-title">{{ 'Consent types'|trans }}</div>
+            <div class="qc-head-desc">{{ 'Every distinct thing this shop can ask consent for.'|trans }}</div>
+        </div>
+        <a href="{{ path('quince_cmp_type_new') }}" class="qc-btn qc-btn-primary">{{ 'New consent type'|trans }}</a>
+    </div>
+
+    {# Formularz GET: przeglądarka przy wysłaniu odrzuca zapytanie z `action`
+       i buduje nowe wyłącznie z pól formularza — token z adresu `path()` ginie,
+       więc musi wejść jako pole, inaczej trafiamy na „Invalid token". #}
+    <form method="get" action="{{ path('quince_cmp_types') }}" class="qc-filters">
+        <input type="hidden" name="_token" value="{{ path('quince_cmp_types')|split('?_token=')[1] }}">
+        <input class="qc-field-base qc-focusable {{ search ? 'is-set' : '' }}" type="text" name="search"
+               style="width:280px;height:36px" value="{{ search }}"
+               placeholder="{{ 'Search consent types…'|trans }}">
+
+        <div class="qc-segbar" style="height:36px">
+            {% for value, label in kindFilters %}
+                <a class="{{ kind == value ? 'is-active' : '' }}"
+                   href="{{ path('quince_cmp_types', {'search': search, 'kind': value}) }}">{{ label|trans }}</a>
+            {% endfor %}
+        </div>
+    </form>
+
+    {% if types is empty %}
+        <div class="qc-grid">
+            <div class="qc-empty">
+                {{ icons.icon('folder', 36, 'qc-empty-icon') }}
+                <div class="qc-empty-text">
+                    {% if search or kind %}
+                        {{ 'Nothing matches.'|trans }}
+                    {% else %}
+                        {{ 'No consent type yet. Nothing is being recorded in this shop until you add one.'|trans }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {# Przeciąganie wierszy na nowe miejsce nie robi nic samo z siebie —
+           dopiero `reorder.js` spisuje układ DOM do pola `order` tuż przed
+           wysłaniem tego formularza, tak jak rozstawianie strony głównej
+           w `quince_engine` (ten sam mechanizm `x-sort`, ten sam wzorzec
+           zapisu). Każdy wiersz ma `data-id` — po tym go odczytuje. #}
+        <div class="qc-grid">
+            <div class="qc-grid-head" style="display:grid;grid-template-columns:{{ cols }};gap:8px">
+                <div></div>
+                <div>{{ 'Code'|trans }}</div>
+                <div>{{ 'Name'|trans }}</div>
+                <div>{{ 'Kind'|trans }}</div>
+                <div>{{ 'Required'|trans }}</div>
+                <div>{{ 'Current version'|trans }}</div>
+                <div>{{ 'In force since'|trans }}</div>
+                <div>{{ 'Collected (30d)'|trans }}</div>
+                <div>{{ 'Active'|trans }}</div>
+                <div></div>
+            </div>
+
+            <div x-data x-sort x-sort:group="types" data-quince-reorder>
+                {% for type in types %}
+                    <div class="qc-grid-row" style="display:grid;grid-template-columns:{{ cols }};gap:8px;cursor:grab"
+                         x-sort:item="'{{ type.id_cmp_type }}'" data-id="{{ type.id_cmp_type }}">
+                        <div style="color:var(--border-strong)">{{ icons.icon('drag', 14) }}</div>
+
+                        <div class="qc-mono" style="font-size:12px;color:var(--fg-1)">{{ type.code }}</div>
+
+                        <div style="font-size:var(--text-sm)">{{ type.name }}</div>
+
+                        <div><span class="qc-badge qc-badge-accent">{{ kinds[type.kind]|default(type.kind)|trans }}</span></div>
+
+                        <div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--fg-2)">
+                            {{ type.required ? 'Required'|trans : '—' }}
+                        </div>
+
+                        <div style="font-size:var(--text-sm)">
+                            {{ type.version ?: (versionCounts[type.id_cmp_type]|default(0) > 0
+                                ? 'Not in force yet'|trans
+                                : 'Draft — never published'|trans) }}
+                        </div>
+
+                        <div style="font-size:var(--text-xs);color:var(--fg-2)">
+                            {{ type.date_from ? type.date_from|slice(0, 10) : '—' }}
+                        </div>
+
+                        <div style="font-size:var(--text-xs);color:var(--fg-2)">
+                            {{ type.version ? type.collected : '—' }}
+                        </div>
+
+                        <div>
+                            {# Wymaganej zgody nie da się zgasić — przełącznik jest wtedy
+                               wygaszony i nie klika się, zamiast znikać bez wyjaśnienia. #}
+                            {% if type.required %}
+                                <span class="qc-toggle-track" style="opacity:.5;cursor:not-allowed"
+                                      title="{{ 'Required — cannot be disabled'|trans }}"></span>
+                            {% else %}
+                                <button type="submit" form="toggle-{{ type.id_cmp_type }}"
+                                        class="qc-toggle-track qc-focusable"
+                                        style="border:0;padding:0;cursor:pointer;{{ type.active ? 'background:var(--accent)' : '' }}"
+                                        title="{{ type.active ? 'Active'|trans : 'Inactive'|trans }}"></button>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <a href="{{ path('quince_cmp_type_edit', {'idType': type.id_cmp_type}) }}"
+                               style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--accent-active)">
+                                {{ 'Edit'|trans }}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="qc-actions" style="padding:12px 14px">
+                <button type="submit" form="reorder-form" class="qc-btn qc-btn-sm qc-btn-outline">
+                    {{ 'Save order'|trans }}
+                </button>
+            </div>
+        </div>
+
+        {% for type in types %}
+            {% if not type.required %}
+                <form id="toggle-{{ type.id_cmp_type }}" method="post" hidden
+                      action="{{ path('quince_cmp_type_toggle', {'idType': type.id_cmp_type}) }}">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_type_toggle') }}">
+                </form>
+            {% endif %}
+        {% endfor %}
+
+        <form id="reorder-form" method="post" hidden action="{{ path('quince_cmp_types_reorder') }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_types_reorder') }}">
+            <input type="hidden" name="order" value="">
+        </form>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{# Blok nadpisany w całości, nie przez `{{ parent() }}`: paczka sortowania
+   musi wejść PRZED Alpine, a layout modułu ładuje Alpine na końcu swojego
+   własnego bloku — doklejenie po `parent()` wstawiłoby ją za nim. #}
+{% block javascripts %}
+    <script src="{{ asset('../modules/quince_cmp/views/js/vendor/alpine-sort.min.js') ~ qcVer }}" defer></script>
+    <script src="{{ asset('../modules/quince_cmp/views/js/panel.js') ~ qcVer }}" defer></script>
+    <script src="{{ asset('../modules/quince_cmp/views/js/vendor/alpine.min.js') ~ qcVer }}" defer></script>
+    <script src="{{ asset('../modules/quince_cmp/views/js/reorder.js') ~ qcVer }}" defer></script>
+{% endblock %}
+
+{% block quince_actionbar %}{% endblock %}

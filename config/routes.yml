@@ -1,0 +1,430 @@
+# Trasy panelu Quince CMP.
+#
+# `_legacy_controller` wskazuje zakładkę tego ekranu, a nie
+# zakładkę silnika — moduł stoi samodzielnie i musi mieć gdzie sprawdzać
+# uprawnienia także wtedy, gdy `quince_engine` nie jest zainstalowany.
+#
+# Trasy dochodzą razem z ekranami, których dotyczą. Trasa wskazująca kontroler,
+# którego jeszcze nie ma, wywraca router całego panelu — a nie tylko tę jedną
+# podstronę. Pozycje bocznego paska bez trasy rysują się jako niedostępne.
+
+quince_cmp_overview:
+  path: quince/cmp
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\OverviewController::indexAction
+    _legacy_controller: 'AdminQuinceCmpOverview'
+    _legacy_link: 'AdminQuinceCmpOverview'
+
+quince_cmp_types:
+  path: quince/cmp/types
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ConsentTypesController::indexAction
+    _legacy_controller: 'AdminQuinceCmpTypes'
+    _legacy_link: 'AdminQuinceCmpTypes'
+
+quince_cmp_type_new:
+  path: quince/cmp/types/new
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ConsentTypesController::newAction
+    _legacy_controller: 'AdminQuinceCmpTypes'
+    _legacy_link: 'AdminQuinceCmpTypes'
+
+quince_cmp_type_create:
+  path: quince/cmp/types/new
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ConsentTypesController::createAction
+    _legacy_controller: 'AdminQuinceCmpTypes'
+    _legacy_link: 'AdminQuinceCmpTypes:save'
+
+quince_cmp_type_edit:
+  path: quince/cmp/types/{idType}
+  methods: [GET]
+  requirements: {idType: '\d+'}
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ConsentTypesController::editAction
+    _legacy_controller: 'AdminQuinceCmpTypes'
+    _legacy_link: 'AdminQuinceCmpTypes'
+
+quince_cmp_type_save:
+  path: quince/cmp/types/{idType}/save
+  methods: [POST]
+  requirements: {idType: '\d+'}
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ConsentTypesController::saveAction
+    _legacy_controller: 'AdminQuinceCmpTypes'
+    _legacy_link: 'AdminQuinceCmpTypes:save'
+
+quince_cmp_type_publish:
+  path: quince/cmp/types/{idType}/publish
+  methods: [POST]
+  requirements: {idType: '\d+'}
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ConsentTypesController::publishAction
+    _legacy_controller: 'AdminQuinceCmpTypes'
+    _legacy_link: 'AdminQuinceCmpTypes:save'
+
+quince_cmp_type_toggle:
+  path: quince/cmp/types/{idType}/toggle
+  methods: [POST]
+  requirements: {idType: '\d+'}
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ConsentTypesController::toggleAction
+    _legacy_controller: 'AdminQuinceCmpTypes'
+    _legacy_link: 'AdminQuinceCmpTypes:save'
+
+quince_cmp_types_reorder:
+  path: quince/cmp/types/reorder
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ConsentTypesController::reorderAction
+    _legacy_controller: 'AdminQuinceCmpTypes'
+    _legacy_link: 'AdminQuinceCmpTypes:save'
+
+quince_cmp_log:
+  path: quince/cmp/log
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ConsentLogController::indexAction
+    _legacy_controller: 'AdminQuinceCmpLog'
+    _legacy_link: 'AdminQuinceCmpLog'
+
+quince_cmp_log_export:
+  path: quince/cmp/log/export
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ConsentLogController::exportAction
+    _legacy_controller: 'AdminQuinceCmpLog'
+    _legacy_link: 'AdminQuinceCmpLog'
+
+quince_cmp_log_profile:
+  path: quince/cmp/log/profile
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ConsentLogController::profileAction
+    _legacy_controller: 'AdminQuinceCmpLog'
+    _legacy_link: 'AdminQuinceCmpLog'
+
+quince_cmp_cookies:
+  path: quince/cmp/cookies
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\CookiesController::indexAction
+    _legacy_controller: 'AdminQuinceCmpCookies'
+    _legacy_link: 'AdminQuinceCmpCookies'
+
+quince_cmp_cookie_save:
+  path: quince/cmp/cookies/save
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\CookiesController::saveAction
+    _legacy_controller: 'AdminQuinceCmpCookies'
+    _legacy_link: 'AdminQuinceCmpCookies:save'
+
+quince_cmp_cookie_delete:
+  path: quince/cmp/cookies/{idCookie}/delete
+  methods: [POST]
+  requirements: {idCookie: '\d+'}
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\CookiesController::deleteAction
+    _legacy_controller: 'AdminQuinceCmpCookies'
+    _legacy_link: 'AdminQuinceCmpCookies:save'
+
+quince_cmp_cookie_edit:
+  path: quince/cmp/cookies/{idCookie}/edit
+  methods: [GET]
+  requirements: {idCookie: '\d+'}
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\CookiesController::editAction
+    _legacy_controller: 'AdminQuinceCmpCookies'
+    _legacy_link: 'AdminQuinceCmpCookies'
+
+quince_cmp_scripts:
+  path: quince/cmp/scripts
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ScriptsController::indexAction
+    _legacy_controller: 'AdminQuinceCmpScripts'
+    _legacy_link: 'AdminQuinceCmpScripts'
+
+quince_cmp_script_edit:
+  path: quince/cmp/scripts/{idScript}/edit
+  methods: [GET]
+  requirements: {idScript: '\d+'}
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ScriptsController::editAction
+    _legacy_controller: 'AdminQuinceCmpScripts'
+    _legacy_link: 'AdminQuinceCmpScripts'
+
+quince_cmp_script_save:
+  path: quince/cmp/scripts/save
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ScriptsController::saveAction
+    _legacy_controller: 'AdminQuinceCmpScripts'
+    _legacy_link: 'AdminQuinceCmpScripts:save'
+
+quince_cmp_script_toggle:
+  path: quince/cmp/scripts/{idScript}/toggle
+  methods: [POST]
+  requirements: {idScript: '\d+'}
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ScriptsController::toggleAction
+    _legacy_controller: 'AdminQuinceCmpScripts'
+    _legacy_link: 'AdminQuinceCmpScripts:save'
+
+quince_cmp_script_delete:
+  path: quince/cmp/scripts/{idScript}/delete
+  methods: [POST]
+  requirements: {idScript: '\d+'}
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ScriptsController::deleteAction
+    _legacy_controller: 'AdminQuinceCmpScripts'
+    _legacy_link: 'AdminQuinceCmpScripts:save'
+
+quince_cmp_scripts_matrix:
+  path: quince/cmp/scripts/matrix
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ScriptsController::matrixAction
+    _legacy_controller: 'AdminQuinceCmpScripts'
+    _legacy_link: 'AdminQuinceCmpScripts:save'
+
+quince_cmp_placeholder:
+  path: quince/cmp/scripts/placeholder
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ScriptsController::placeholderAction
+    _legacy_controller: 'AdminQuinceCmpScripts'
+    _legacy_link: 'AdminQuinceCmpScripts'
+
+quince_cmp_placeholder_save:
+  path: quince/cmp/scripts/placeholder/save
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ScriptsController::placeholderSaveAction
+    _legacy_controller: 'AdminQuinceCmpScripts'
+    _legacy_link: 'AdminQuinceCmpScripts:save'
+
+quince_cmp_banner:
+  path: quince/cmp/banner
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\BannerController::indexAction
+    _legacy_controller: 'AdminQuinceCmpBanner'
+    _legacy_link: 'AdminQuinceCmpBanner'
+
+quince_cmp_banner_save:
+  path: quince/cmp/banner/save
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\BannerController::saveAction
+    _legacy_controller: 'AdminQuinceCmpBanner'
+    _legacy_link: 'AdminQuinceCmpBanner:save'
+
+quince_cmp_sync:
+  path: quince/cmp/sync
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SyncController::indexAction
+    _legacy_controller: 'AdminQuinceCmpSync'
+    _legacy_link: 'AdminQuinceCmpSync'
+
+quince_cmp_sync_save:
+  path: quince/cmp/sync/save
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SyncController::saveAction
+    _legacy_controller: 'AdminQuinceCmpSync'
+    _legacy_link: 'AdminQuinceCmpSync:save'
+
+quince_cmp_sync_rotate:
+  path: quince/cmp/sync/rotate
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SyncController::rotateAction
+    _legacy_controller: 'AdminQuinceCmpSync'
+    _legacy_link: 'AdminQuinceCmpSync:rotate'
+
+quince_cmp_sync_run:
+  path: quince/cmp/sync/run
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SyncController::runAction
+    _legacy_controller: 'AdminQuinceCmpSync'
+    _legacy_link: 'AdminQuinceCmpSync:run'
+
+quince_cmp_sync_retry:
+  path: quince/cmp/sync/retry/{idSync}
+  methods: [GET]
+  requirements:
+    idSync: '\d+'
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SyncController::retryAction
+    _legacy_controller: 'AdminQuinceCmpSync'
+    _legacy_link: 'AdminQuinceCmpSync:retry'
+
+quince_cmp_sync_retry_all:
+  path: quince/cmp/sync/retry-all
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SyncController::retryAllAction
+    _legacy_controller: 'AdminQuinceCmpSync'
+    _legacy_link: 'AdminQuinceCmpSync:retryAll'
+
+quince_cmp_sync_backlog:
+  path: quince/cmp/sync/backlog
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SyncController::backlogAction
+    _legacy_controller: 'AdminQuinceCmpSync'
+    _legacy_link: 'AdminQuinceCmpSync:backlog'
+
+quince_cmp_settings:
+  path: quince/cmp/settings
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SettingsController::indexAction
+    _legacy_controller: 'AdminQuinceCmpSettings'
+    _legacy_link: 'AdminQuinceCmpSettings'
+
+quince_cmp_settings_save:
+  path: quince/cmp/settings/save
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SettingsController::saveAction
+    _legacy_controller: 'AdminQuinceCmpSettings'
+    _legacy_link: 'AdminQuinceCmpSettings:save'
+
+quince_cmp_scan_start:
+  path: quince/cmp/cookies/scan
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\CookiesController::scanStartAction
+    _legacy_controller: 'AdminQuinceCmpCookies'
+    _legacy_link: 'AdminQuinceCmpCookies:scan'
+
+quince_cmp_scan_mark:
+  path: quince/cmp/cookies/scan/{idFinding}
+  methods: [GET]
+  requirements:
+    idFinding: '\d+'
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\CookiesController::scanMarkAction
+    _legacy_controller: 'AdminQuinceCmpCookies'
+    _legacy_link: 'AdminQuinceCmpCookies:scanMark'
+
+quince_cmp_scan_reset:
+  path: quince/cmp/cookies/scan-reset
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\CookiesController::scanResetAction
+    _legacy_controller: 'AdminQuinceCmpCookies'
+    _legacy_link: 'AdminQuinceCmpCookies:scanReset'
+
+quince_cmp_settings_reask:
+  path: quince/cmp/settings/reask
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SettingsController::reaskAction
+    _legacy_controller: 'AdminQuinceCmpSettings'
+    _legacy_link: 'AdminQuinceCmpSettings:reask'
+
+quince_cmp_support:
+  path: quince/cmp/support
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SupportController::indexAction
+    _legacy_controller: 'AdminQuinceCmpSupport'
+    _legacy_link: 'AdminQuinceCmpSupport'
+
+quince_cmp_support_update:
+  path: quince/cmp/support/update
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SupportController::updateAction
+    _legacy_controller: 'AdminQuinceCmpSupport'
+    _legacy_link: 'AdminQuinceCmpSupport:update'
+
+quince_cmp_support_check:
+  path: quince/cmp/support/check
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SupportController::checkAction
+    _legacy_controller: 'AdminQuinceCmpSupport'
+    _legacy_link: 'AdminQuinceCmpSupport:check'
+
+quince_cmp_support_export:
+  path: quince/cmp/support/export
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SupportController::exportAction
+    _legacy_controller: 'AdminQuinceCmpSupport'
+    _legacy_link: 'AdminQuinceCmpSupport:export'
+
+quince_cmp_support_import:
+  path: quince/cmp/support/import
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SupportController::importAction
+    _legacy_controller: 'AdminQuinceCmpSupport'
+    _legacy_link: 'AdminQuinceCmpSupport:import'
+
+quince_cmp_settings_purge:
+  path: quince/cmp/settings/purge
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SettingsController::purgeAction
+    _legacy_controller: 'AdminQuinceCmpSettings'
+    _legacy_link: 'AdminQuinceCmpSettings:purge'
+
+quince_cmp_log_withdraw:
+  path: quince/cmp/log/withdraw
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ConsentLogController::withdrawAction
+    _legacy_controller: 'AdminQuinceCmpLog'
+    _legacy_link: 'AdminQuinceCmpLog:withdraw'
+
+quince_cmp_support_finish_upgrade:
+  path: quince/cmp/support/finish-upgrade
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\SupportController::finishUpgradeAction
+    _legacy_controller: 'AdminQuinceCmpSupport'
+    _legacy_link: 'AdminQuinceCmpSupport:finishUpgrade'
+
+quince_cmp_api:
+  path: quince/cmp/api
+  methods: [GET]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ApiController::indexAction
+    _legacy_controller: 'AdminQuinceCmpApi'
+    _legacy_link: 'AdminQuinceCmpApi'
+
+quince_cmp_api_enable:
+  path: quince/cmp/api/enable
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ApiController::enableAction
+    _legacy_controller: 'AdminQuinceCmpApi'
+    _legacy_link: 'AdminQuinceCmpApi:enable'
+
+quince_cmp_api_client:
+  path: quince/cmp/api/client
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ApiController::createClientAction
+    _legacy_controller: 'AdminQuinceCmpApi'
+    _legacy_link: 'AdminQuinceCmpApi:client'
+
+quince_cmp_api_forget:
+  path: quince/cmp/api/forget
+  methods: [POST]
+  defaults:
+    _controller: Quince\Cmp\Controller\Admin\ApiController::forgetSecretAction
+    _legacy_controller: 'AdminQuinceCmpApi'
+    _legacy_link: 'AdminQuinceCmpApi:forget'

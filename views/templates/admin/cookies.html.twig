@@ -1,0 +1,239 @@
+{# Ciasteczka. Układ wg prototypy/Cookies.dc.html #}
+{% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{% set cols = '1.2fr 1fr 1fr 0.8fr 0.7fr 2fr 60px' %}
+{% set catCols = '1fr 1fr 100px 1.4fr 70px 60px' %}
+
+{% block quince_body %}
+<div class="qc-screen">
+
+    <div class="qc-head-title">{{ 'Cookies'|trans }}</div>
+    <div class="qc-head-desc" style="margin-bottom:18px">
+        {{ 'What the second layer of the banner shows the customer.'|trans }}
+        {% if shopScoped %}
+            <strong>{{ '(%shop%)'|trans({'%shop%': shopName}) }}</strong>
+        {% endif %}
+    </div>
+
+    {# --- kategorie bannera: zgoda z własną treścią i wersją, jak regulamin
+       czy newsletter — tylko tutaj widoczna i edytowalna. --- #}
+    <div class="qc-grid" style="margin-bottom:20px">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+            <div>
+                <div style="font-size:var(--text-sm);font-weight:var(--weight-bold)">{{ 'Banner categories'|trans }}</div>
+                <div style="font-size:var(--text-xs);color:var(--fg-2)">
+                    {{ 'What the first layer of the banner asks consent for — each cookie below belongs to one.'|trans }}
+                </div>
+            </div>
+            <a href="{{ path('quince_cmp_type_new', {'kind': 'cookie'}) }}" class="qc-btn qc-btn-sm qc-btn-outline">
+                {{ icons.icon('plus', 13) }} {{ 'New category'|trans }}
+            </a>
+        </div>
+
+        <div class="qc-grid-head" style="display:grid;grid-template-columns:{{ catCols }};gap:8px;font-size:11px;padding:10px 14px">
+            <div>{{ 'Code'|trans }}</div>
+            <div>{{ 'Name'|trans }}</div>
+            <div>{{ 'Required'|trans }}</div>
+            <div>{{ 'Current version'|trans }}</div>
+            <div>{{ 'Active'|trans }}</div>
+            <div></div>
+        </div>
+
+        {% for type in categoryTypes %}
+            <div class="qc-grid-row" style="display:grid;grid-template-columns:{{ catCols }};gap:8px;padding:11px 14px">
+                <div class="qc-mono" style="font-size:12px;color:var(--fg-1)">{{ type.code }}</div>
+                <div style="font-size:var(--text-sm)">{{ type.name }}</div>
+                <div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--fg-2)">
+                    {{ type.required ? 'Required'|trans : '—' }}
+                </div>
+                <div style="font-size:var(--text-sm)">
+                    {{ type.version ?: 'Draft — never published'|trans }}
+                </div>
+                <div>
+                    {% if type.required %}
+                        <span class="qc-toggle-track" style="opacity:.5;cursor:not-allowed"
+                              title="{{ 'Required — cannot be disabled'|trans }}"></span>
+                    {% else %}
+                        <button type="submit" form="toggle-cat-{{ type.id_cmp_type }}"
+                                class="qc-toggle-track qc-focusable"
+                                style="border:0;padding:0;cursor:pointer;{{ type.active ? 'background:var(--accent)' : '' }}"
+                                title="{{ type.active ? 'Active'|trans : 'Inactive'|trans }}"></button>
+                    {% endif %}
+                </div>
+                <div>
+                    <a href="{{ path('quince_cmp_type_edit', {'idType': type.id_cmp_type}) }}"
+                       style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--accent-active)">
+                        {{ 'Edit'|trans }}
+                    </a>
+                </div>
+            </div>
+            {% if not type.required %}
+                <form id="toggle-cat-{{ type.id_cmp_type }}" method="post" hidden
+                      action="{{ path('quince_cmp_type_toggle', {'idType': type.id_cmp_type}) }}">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_type_toggle') }}">
+                </form>
+            {% endif %}
+        {% else %}
+            <div class="qc-empty" style="padding:24px 20px">
+                {{ icons.icon('box', 32, 'qc-empty-icon') }}
+                <div class="qc-empty-text">{{ 'No category yet — the banner has nothing to ask consent for.'|trans }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# --- tabela ciasteczek --- #}
+    <div class="qc-grid" style="margin-bottom:20px">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+            <div style="font-size:var(--text-sm);font-weight:var(--weight-bold)">{{ 'Cookie table'|trans }}</div>
+            <a href="{{ path('quince_cmp_cookie_edit', {'idCookie': 0}) }}" class="qc-btn qc-btn-sm qc-btn-outline">
+                {{ icons.icon('plus', 13) }} {{ 'Add cookie'|trans }}
+            </a>
+        </div>
+
+        <div class="qc-grid-head" style="display:grid;grid-template-columns:{{ cols }};gap:8px;font-size:11px;padding:10px 14px">
+            <div>{{ 'Name'|trans }}</div>
+            <div>{{ 'Provider'|trans }}</div>
+            <div>{{ 'Category'|trans }}</div>
+            <div>{{ 'Lifetime'|trans }}</div>
+            <div>{{ 'Source'|trans }}</div>
+            <div>{{ 'Description'|trans }}</div>
+            <div></div>
+        </div>
+
+        {% for cookie in cookies %}
+            <div class="qc-grid-row" style="display:grid;grid-template-columns:{{ cols }};gap:8px;padding:11px 14px">
+                <div class="qc-mono" style="font-size:12px;color:var(--fg-1)">{{ cookie.name }}</div>
+                <div style="font-size:var(--text-xs)">{{ cookie.provider ?: '—' }}</div>
+                <div>
+                    {% if cookie.category %}
+                        <span class="qc-badge qc-badge-accent">{{ categories[cookie.category]|default(cookie.category)|trans }}</span>
+                    {% else %}
+                        <span class="qc-badge qc-badge-warning">{{ 'Unassigned'|trans }}</span>
+                    {% endif %}
+                </div>
+                <div style="font-size:var(--text-xs);color:var(--fg-2)">
+                    {%- if cookie.lifetime_unit == 'session' -%}
+                        {{ 'session'|trans }}
+                    {%- else -%}
+                        {{ cookie.lifetime_value }} {{ cookie.lifetime_unit|trans }}
+                    {%- endif -%}
+                </div>
+                <div><span class="qc-badge">{{ cookie.source }}</span></div>
+                <div style="font-size:var(--text-xs);color:var(--fg-2)">{{ cookie.description ?: '—' }}</div>
+                <div class="qc-hstack" style="gap:8px;flex-wrap:nowrap">
+                    <a href="{{ path('quince_cmp_cookie_edit', {'idCookie': cookie.id_cmp_cookie}) }}"
+                       style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--accent-active)">{{ 'Edit'|trans }}</a>
+                    <button type="submit" form="del-{{ cookie.id_cmp_cookie }}" class="qc-btn qc-btn-text"
+                            style="padding:0;height:auto;color:var(--fg-3)"
+                            title="{{ 'Delete'|trans }}">{{ icons.icon('trash', 13) }}</button>
+                </div>
+            </div>
+            <form id="del-{{ cookie.id_cmp_cookie }}" method="post" hidden
+                  action="{{ path('quince_cmp_cookie_delete', {'idCookie': cookie.id_cmp_cookie}) }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_cookie_delete') }}">
+            </form>
+        {% else %}
+            <div class="qc-empty" style="padding:24px 20px">
+                {{ icons.icon('box', 32, 'qc-empty-icon') }}
+                <div class="qc-empty-text">
+                    {{ 'No cookie described yet. The second layer of the banner has nothing to show until you add one.'|trans }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# --- skaner i notka --- #}
+    <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:16px;align-items:start">
+        <div class="qc-stack">
+
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-hstack" style="justify-content:space-between;margin-bottom:10px">
+                <div style="font-size:var(--text-sm);font-weight:var(--weight-bold)">{{ 'Scanner'|trans }}</div>
+
+                <form method="post" action="{{ path('quince_cmp_scan_start') }}" target="_blank">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_scan_start') }}">
+                    <button type="submit" class="qc-btn qc-btn-sm qc-btn-outline">
+                        {{ icons.icon('refresh', 13) }} {{ 'Run scan'|trans }}
+                    </button>
+                </form>
+            </div>
+
+            <div class="qc-line" style="margin-bottom:12px">
+                {{ scanLast
+                    ? 'Last finding: %when%'|trans({'%when%': scanLast|slice(0, 16)})
+                    : 'Never run.'|trans }}
+            </div>
+
+            <div class="qc-hstack" style="gap:24px;font-size:var(--text-base);font-weight:var(--weight-bold);margin-bottom:14px">
+                <div>{{ findings|length }} {{ 'observed'|trans }}</div>
+                <div>{{ cookies|length }} {{ 'described'|trans }}</div>
+                <div style="color:{{ scanPending ? 'var(--warning)' : 'inherit' }}">{{ scanPending }} {{ 'to review'|trans }}</div>
+            </div>
+
+            {# Skaner melduje, co zastał — nie dopisuje niczego do tabeli sam.
+               Dostawcę i przeznaczenie zna sprzedawca, skaner widzi tylko nazwę. #}
+            {% if findings %}
+                <div class="qc-scanlist">
+                    {% for f in findings %}
+                        <div class="qc-scanrow">
+                            <div>
+                                <span class="qc-mono">{{ f.name }}</span>
+                                {% if f.described %}
+                                    <span class="qc-badge qc-badge-success">{{ 'described'|trans }}</span>
+                                {% endif %}
+                                <div class="qc-sub">
+                                    {{ f.kind }}{% if f.domain %} · {{ f.domain }}{% endif %} · {{ 'seen %count%×'|trans({'%count%': f.seen}) }}
+                                </div>
+                            </div>
+
+                            <div class="qc-hstack" style="gap:10px">
+                                {% if not f.described %}
+                                    <a class="qc-linkbtn" href="{{ path('quince_cmp_cookie_edit', {'idCookie': 0, 'name': f.name}) }}">
+                                        {{ 'Describe'|trans }}
+                                    </a>
+                                {% endif %}
+                                <a class="qc-linkbtn" href="{{ path('quince_cmp_scan_mark', {'idFinding': f.id, 'status': 'ignored'}) }}">
+                                    {{ 'Ignore'|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <form method="post" action="{{ path('quince_cmp_scan_reset') }}" class="qc-hstack" style="justify-content:flex-end;margin-top:10px">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_scan_reset') }}">
+                    <button type="submit" class="qc-linkbtn">{{ 'Clear results'|trans }}</button>
+                </form>
+            {% else %}
+                <div class="qc-empty" style="padding:12px 0">
+                    <div class="qc-empty-text">
+                        {{ 'Nothing observed yet. Start a scan and browse the shop — the checkout and a product page set the most.'|trans }}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="qc-hint">
+                {{ 'While a scan runs, every service is unblocked for that browser only. Nothing is written to the consent log.'|trans }}
+            </div>
+        </div>
+
+        </div>
+
+
+        <div class="qc-grid" style="padding:16px 18px;background:var(--surface-sunken)">
+            <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);margin-bottom:8px">
+                {{ 'Manual entries are never touched by a scan.'|trans }}
+            </div>
+            <div style="font-size:var(--text-xs);color:var(--fg-2)">
+                {{ 'Rows added by hand keep their category and description even after a new scan runs.'|trans }}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block quince_actionbar %}{% endblock %}

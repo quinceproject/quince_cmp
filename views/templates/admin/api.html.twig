@@ -1,0 +1,206 @@
+{# API: jak się podłączyć, czym, i czy ktoś już to zrobił.
+
+   Nie ma tu generatora kluczy. PrestaShop 9 ma OAuth2, ekran klientów API,
+   zakresy uprawnień i odwoływanie dostępu — dorabianie drugiego mechanizmu
+   rozproszyłoby integracje sklepu po kilku miejscach. Ten ekran mówi, co
+   wystawiamy, zakłada klienta z naszymi zakresami i pokazuje, kto go ma. #}
+{% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{% block quince_body %}
+<div class="qc-screen">
+
+    {# --- warunki, bez których nic nie zadziała ------------------------------ #}
+
+    {# Wielosklepowość wyłącza API całkowicie, dopóki nie włączy się flagi.
+       Rdzeń nie mówi o tym ani słowa na swoim ekranie API, a objawia się to
+       kodem 404 na każdym żądaniu — czyli wygląda jak literówka w adresie. #}
+    {% if readiness.multistore and not readiness.flag %}
+        <div class="qc-alert qc-alert-danger">
+            {{ icons.icon('alertCircle', 18, 'qc-alert-icon') }}
+            <div>
+                <b>{{ 'Multistore is on, so the Admin API answers 404 to everything.'|trans }}</b>
+                <div>
+                    {{ 'PrestaShop blocks the whole API while multistore is active, until the admin_api_multistore feature flag is switched on. Advanced parameters → Feature flags. The flag is experimental, which is why we do not switch it on for you.'|trans }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if not readiness.ssl %}
+        <div class="qc-alert qc-alert-danger">
+            {{ icons.icon('alertCircle', 18, 'qc-alert-icon') }}
+            <div>
+                <b>{{ 'This shop has no SSL, so the API cannot answer at all.'|trans }}</b>
+                <div>{{ 'PrestaShop refuses API requests over plain HTTP and there is no way around it outside developer mode. Turn on SSL first.'|trans }}</div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if not readiness.api %}
+        <div class="qc-alert qc-alert-warning">
+            {{ icons.icon('alertCircle', 18, 'qc-alert-icon') }}
+            <div>
+                <b>{{ 'The Admin API is switched off in this shop.'|trans }}</b>
+                <div>
+                    {{ 'It is a shop-wide setting: turning it on serves every module that declares resources, not only this one. Nothing becomes readable without a client and its scopes.'|trans }}
+                </div>
+                <button type="submit" form="api-enable" class="qc-btn qc-btn-sm qc-btn-primary" style="margin-top:8px">
+                    {{ 'Turn the Admin API on'|trans }}
+                </button>
+            </div>
+        </div>
+    {% endif %}
+
+    {# --- sekret pokazany raz ------------------------------------------------ #}
+
+    {% if freshSecret %}
+        <div class="qc-alert qc-alert-success">
+            {{ icons.icon('check', 18, 'qc-alert-icon') }}
+            <div style="width:100%">
+                <b>{{ 'Access created. The secret is shown once.'|trans }}</b>
+                <div>{{ 'It is stored hashed — nobody can read it back, here or anywhere else. If it is lost, generate a new one on the PrestaShop screen.'|trans }}</div>
+
+                <div class="qc-caption" style="margin-top:10px">client_id</div>
+                <div class="qc-mono qc-pre">{{ freshSecret.clientId }}</div>
+
+                <div class="qc-caption" style="margin-top:10px">client_secret</div>
+                <div class="qc-mono qc-pre">{{ freshSecret.secret }}</div>
+
+                <button type="submit" form="api-forget" class="qc-btn qc-btn-sm qc-btn-outline" style="margin-top:10px">
+                    {{ 'I have written it down'|trans }}
+                </button>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="qc-cols" style="margin-top:20px">
+
+    {# --- lewa kolumna: dostęp ---------------------------------------------- #}
+    <div class="qc-settings-list">
+
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-title">{{ 'Give a system access'|trans }}</div>
+            <div class="qc-line">
+                {{ 'Creates an API client in PrestaShop with this module\'s scopes already ticked. It appears on the shop\'s own API clients screen, where you can disable or delete it later.'|trans }}
+            </div>
+
+            <form method="post" action="{{ path('quince_cmp_api_client') }}" style="margin-top:12px">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_api_client') }}">
+                <div class="qc-field">
+                    <label class="qc-label" for="api-name">{{ 'Which system is connecting'|trans }}</label>
+                    <input class="qc-field-base" type="text" id="api-name" name="name" required
+                           placeholder="{{ 'CRM, mailing tool, data warehouse…'|trans }}">
+                </div>
+
+                <label class="qc-toggle" style="margin-top:12px">
+                    <input type="hidden" name="write" value="0">
+                    <input type="checkbox" name="write" value="1">
+                    <span class="qc-toggle-track"></span>
+                    <span class="qc-toggle-text">{{ 'It may also record consents'|trans }}</span>
+                </label>
+
+                <div class="qc-line" style="margin-top:6px">
+                    {{ 'Leave this off for a system that only reads. Reading and writing are separate scopes on purpose.'|trans }}
+                </div>
+
+                <button type="submit" class="qc-btn qc-btn-primary" style="margin-top:12px">
+                    {{ 'Create access'|trans }}
+                </button>
+            </form>
+        </div>
+
+        <div class="qc-grid" style="padding:16px 18px;margin-top:16px">
+            <div class="qc-set-title">{{ 'Who has access to consents'|trans }}</div>
+
+            {% if clients is empty %}
+                <div class="qc-line">{{ 'Nobody yet. No external system can read or write consents in this shop.'|trans }}</div>
+            {% else %}
+                {% for client in clients %}
+                    <div class="qc-band-row">
+                        <div>
+                            <b>{{ client.name }}</b>
+                            {% if not client.enabled %}
+                                <span class="qc-badge qc-badge-warning">{{ 'disabled'|trans }}</span>
+                            {% endif %}
+                            <div class="qc-mono">{{ client.clientId }}</div>
+                        </div>
+                        <span class="qc-badge {{ client.write ? 'qc-badge-accent' : '' }}">
+                            {{ client.write ? 'reads and writes'|trans : 'reads only'|trans }}
+                        </span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    {# --- prawa kolumna: instrukcja ----------------------------------------- #}
+    <div class="qc-settings-list">
+
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-title">{{ 'What this module exposes'|trans }}</div>
+
+            <div class="qc-caption" style="margin-top:10px">{{ 'Base address'|trans }}</div>
+            <div class="qc-mono qc-pre">{{ baseUrl }}</div>
+
+            {% for op in operations %}
+                <div style="margin-top:12px">
+                    <div class="qc-mono"><b>{{ op.method }}</b> {{ op.path }}</div>
+                    <div class="qc-line">{{ op.summary|trans }}</div>
+                    <div class="qc-mono" style="color:var(--fg-3)">{{ op.scope }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="qc-grid" style="padding:16px 18px;margin-top:16px">
+            <div class="qc-set-title">{{ 'Getting a token'|trans }}</div>
+            <div class="qc-line">
+                {{ 'OAuth2 client credentials. The token is short-lived; ask for a new one when it expires rather than storing it.'|trans }}
+            </div>
+
+            <div class="qc-mono qc-pre" style="margin-top:10px">curl -X POST {{ baseUrl }}/access_token \
+  -d grant_type=client_credentials \
+  -d client_id=&lt;client_id&gt; \
+  -d client_secret=&lt;client_secret&gt; \
+  -d scope={{ scopes|join(' ') }}</div>
+
+            <div class="qc-caption" style="margin-top:12px">{{ 'Then, with the token'|trans }}</div>
+            <div class="qc-mono qc-pre">curl {{ baseUrl }}/quince-cmp/consents/anna@example.com \
+  -H "Authorization: Bearer &lt;token&gt;"</div>
+        </div>
+
+        <div class="qc-grid" style="padding:16px 18px;margin-top:16px">
+            <div class="qc-set-title">{{ 'Recording a decision made elsewhere'|trans }}</div>
+            <div class="qc-line">
+                {{ 'The log is append-only. A withdrawal is a new event with granted: false, never a deletion — otherwise the proof would stop being proof.'|trans }}
+            </div>
+
+            <div class="qc-mono qc-pre" style="margin-top:10px">POST {{ baseUrl }}/quince-cmp/consent-events
+
+{
+  "code": "marketing_email",
+  "granted": false,
+  "email": "anna@example.com",
+  "recordedAt": "2026-09-05 11:20:00",
+  "source": "crm",
+  "externalId": "crm-4821"
+}</div>
+
+            <div class="qc-line" style="margin-top:10px">
+                {{ 'A conflict with a newer event recorded in the shop answers 409 and is written down with both sides, so neither is lost.'|trans }}
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+<form id="api-enable" method="post" action="{{ path('quince_cmp_api_enable') }}" hidden>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_api_enable') }}">
+</form>
+<form id="api-forget" method="post" action="{{ path('quince_cmp_api_forget') }}" hidden>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_api_forget') }}">
+</form>
+{% endblock %}

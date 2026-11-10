@@ -1,0 +1,57 @@
+{#
+ # Sekcja ze zgodami Quince na natywnej karcie klienta.
+ #
+ # Wygląd wzorowany na sąsiednich kart tej samej strony (np. Groups) — ten
+ # sam `.card`/`.card-header`/`.table`, żeby nie wyglądało jak doklejony
+ # element obcy. Wyłącznie podgląd: zgodę wyraża klient, admin tu niczego
+ # nie zmienia.
+ #}
+<div class="card quince-cmp-customer-card">
+    <h3 class="card-header">
+        <i class="material-icons">verified_user</i>
+        {{ 'Quince consents'|trans({}, 'Modules.Quincecmp.Admin') }}
+        <span class="badge badge-primary rounded">{{ rows|length }}</span>
+
+        <a href="{{ typesUrl }}" class="tooltip-link float-right"
+           data-toggle="pstooltip" data-placement="top"
+           data-original-title="{{ 'Manage consent types'|trans({}, 'Modules.Quincecmp.Admin') }}">
+            <i class="material-icons">settings</i>
+        </a>
+    </h3>
+    <div class="card-body">
+        {% if rows is not empty %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{ 'Consent'|trans({}, 'Modules.Quincecmp.Admin') }}</th>
+                        <th>{{ 'Kind'|trans({}, 'Modules.Quincecmp.Admin') }}</th>
+                        <th>{{ 'State'|trans({}, 'Modules.Quincecmp.Admin') }}</th>
+                        <th>{{ 'Date'|trans({}, 'Modules.Quincecmp.Admin') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                        <tr>
+                            <td>{{ row.name }}</td>
+                            <td>{{ row.kind|capitalize|trans({}, 'Modules.Quincecmp.Admin') }}</td>
+                            <td>
+                                {% if row.state is null %}
+                                    <span class="text-muted">{{ 'No record'|trans({}, 'Modules.Quincecmp.Admin') }}</span>
+                                {% elseif row.state.granted %}
+                                    <span class="badge badge-success">{{ 'Granted'|trans({}, 'Modules.Quincecmp.Admin') }}</span>
+                                {% else %}
+                                    <span class="badge badge-default">{{ 'Withdrawn'|trans({}, 'Modules.Quincecmp.Admin') }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ row.state is not null ? row.state.date_add|date('Y-m-d H:i') : '—' }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-muted text-center mb-0">
+                {{ 'No consent type is set up in this shop yet.'|trans({}, 'Modules.Quincecmp.Admin') }}
+            </p>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,444 @@
+/* ===================================================================
+   Quince CMP — sklep
+
+   Osobny arkusz od panelu: nie zaciągamy tokenów design systemu na front,
+   bo zderzałyby się ze zmiennymi motywu sklepu. Wartości są tu wpisane
+   wprost, a te, które sprzedawca ustawia, wstrzykiwane są w atrybucie
+   `style` przy renderowaniu.
+   =================================================================== */
+
+/* --- zastępnik zablokowanej treści ---------------------------------
+   Pusta luka w miejscu mapy albo filmu wygląda jak awaria sklepu.
+   Zastępnik mówi, czego brakuje i co zrobić, żeby to zobaczyć.
+   ------------------------------------------------------------------- */
+.qcmp-placeholder {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 180px;
+    padding: 20px 22px;
+    border: 1px dashed #c9c6c0;
+    border-radius: 8px;
+    background: #f7f6f4;
+    color: #1b1d20;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.qcmp-placeholder-title {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.qcmp-placeholder-body {
+    color: #5b5f66;
+    max-width: 60ch;
+}
+
+.qcmp-placeholder-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+/* Cel dotykowy 44 px także tutaj: zgoda na treść jest zgodą jak każda inna
+   i nie może być trudniejsza do trafienia od reszty strony. */
+.qcmp-btn {
+    min-height: 44px;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #c9c6c0;
+    border-radius: 6px;
+    background: #fff;
+    color: #1b1d20;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.qcmp-btn:hover {
+    border-color: #8a8781;
+}
+
+.qcmp-btn:focus-visible {
+    outline: 2px solid #1b1d20;
+    outline-offset: 2px;
+}
+
+.qcmp-btn-primary {
+    border-color: transparent;
+    background: #f49000;
+
+    /* Ciemny napis na bursztynie daje 8,8:1. Biały dałby 2,4:1 — poniżej
+       progu WCAG AA i nieczytelny na jasnym tle. */
+    color: #2b1c00;
+}
+
+.qcmp-btn-primary:hover {
+    background: #e08400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .qcmp-placeholder,
+    .qcmp-btn {
+        transition: none;
+    }
+}
+
+/* ===================================================================
+   BANER I OKNO PREFERENCJI
+
+   Kolory sprzedawcy wchodzą jako zmienne na `.qcmp-root`, reszta jest stała.
+   Wysoka warstwa i własne wartości zamiast dziedziczenia po motywie: baner
+   ma wyglądać tak samo w każdym sklepie, niezależnie od tego, co zrobił autor
+   szablonu z `button` i `div`.
+   =================================================================== */
+
+.qcmp-root {
+    --qcmp-accent: #f49000;
+    --qcmp-on-accent: #2b1c00;
+    --qcmp-surface: #fff;
+    --qcmp-text: #1b1d20;
+
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    pointer-events: none;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--qcmp-text);
+}
+
+.qcmp-root > * {
+    pointer-events: auto;
+}
+
+.qcmp-root:not([data-open]) {
+    position: static;
+}
+
+/* --- warstwa pierwsza --- */
+
+.qcmp-card {
+    position: absolute;
+    background: var(--qcmp-surface);
+    border-radius: 10px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, .22);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.qcmp-root[data-placement="bar"] .qcmp-card {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+}
+
+.qcmp-root[data-placement="modal"] .qcmp-card {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(560px, calc(100vw - 32px));
+}
+
+.qcmp-root[data-placement="corner"] .qcmp-card {
+    left: 16px;
+    bottom: 16px;
+    width: min(400px, calc(100vw - 32px));
+}
+
+.qcmp-title {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.qcmp-body {
+    color: inherit;
+    opacity: .85;
+    max-width: 70ch;
+}
+
+.qcmp-link {
+    color: var(--qcmp-accent);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* Trzy przyciski o jednakowej wadze i wysokości. Odrzucenie słabiej widoczne
+   od zgody to zgoda wymuszona, nie udzielona — i tak czyta to każdy audyt. */
+.qcmp-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.qcmp-actions .qcmp-btn {
+    flex: 1 1 auto;
+    min-width: 140px;
+}
+
+@media (max-width: 640px) {
+    .qcmp-actions {
+        flex-direction: column;
+    }
+}
+
+/* --- okno preferencji --- */
+
+.qcmp-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.qcmp-modal {
+    position: relative;
+    background: var(--qcmp-surface);
+    border-radius: 10px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, .28);
+    width: min(620px, 100%);
+    max-height: min(80vh, 720px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.qcmp-modal-head {
+    padding: 20px 22px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.qcmp-list {
+    overflow-y: auto;
+    border-top: 1px solid rgba(0, 0, 0, .08);
+}
+
+.qcmp-modal-foot {
+    display: flex;
+    gap: 8px;
+    padding: 14px 22px;
+    border-top: 1px solid rgba(0, 0, 0, .08);
+    flex-wrap: wrap;
+}
+
+.qcmp-modal-foot .qcmp-btn {
+    flex: 1 1 auto;
+}
+
+.qcmp-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    min-height: 32px;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: 22px;
+    line-height: 1;
+    color: inherit;
+    opacity: .55;
+    cursor: pointer;
+}
+
+.qcmp-close:hover {
+    opacity: 1;
+}
+
+/* --- kategorie --- */
+
+.qcmp-cat {
+    padding: 14px 22px;
+    border-bottom: 1px solid rgba(0, 0, 0, .06);
+}
+
+.qcmp-cat-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.qcmp-cat-name {
+    font-weight: 700;
+}
+
+.qcmp-cat-toggle {
+    margin-top: 2px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--qcmp-accent);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.qcmp-always {
+    font-size: 12px;
+    font-weight: 700;
+    opacity: .6;
+    white-space: nowrap;
+}
+
+/* --- przełącznik --- */
+
+.qcmp-switch {
+    position: relative;
+    flex: none;
+    width: 44px;
+    height: 26px;
+    cursor: pointer;
+}
+
+.qcmp-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.qcmp-switch-track {
+    position: absolute;
+    inset: 0;
+    border-radius: 99px;
+    background: #c9c6c0;
+    transition: background .15s ease;
+}
+
+.qcmp-switch-track::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    transition: transform .15s ease;
+}
+
+.qcmp-switch input:checked + .qcmp-switch-track {
+    background: var(--qcmp-accent);
+}
+
+.qcmp-switch input:checked + .qcmp-switch-track::after {
+    transform: translateX(18px);
+}
+
+.qcmp-switch input:focus-visible + .qcmp-switch-track {
+    outline: 2px solid var(--qcmp-text);
+    outline-offset: 2px;
+}
+
+/* --- tabela ciasteczek --- */
+
+.qcmp-cookies {
+    display: none;
+    margin-top: 10px;
+    padding-left: 2px;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.qcmp-cookies[data-open="1"] {
+    display: flex;
+}
+
+.qcmp-cookie {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 12px;
+}
+
+.qcmp-cookie-name {
+    font-family: ui-monospace, Consolas, monospace;
+    font-weight: 700;
+}
+
+.qcmp-cookie-meta,
+.qcmp-cookie-desc {
+    opacity: .7;
+}
+
+/* --- pływający przycisk --- */
+
+.qcmp-fab {
+    position: fixed;
+    bottom: var(--qcmp-fab-bottom, 18px);
+    z-index: 2147482000;
+    min-height: 44px;
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 0;
+    border-radius: 99px;
+    background: var(--qcmp-accent, #f49000);
+    color: var(--qcmp-on-accent, #2b1c00);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .2);
+}
+
+.qcmp-fab[data-position="left"] { left: 18px; }
+.qcmp-fab[data-position="right"] { right: 18px; }
+
+/* Za regułą bazową, nie w bloku `@media` wyżej w pliku: przy tej samej
+   szczegółowości wygrywa reguła późniejsza, więc wcześniejsza nadpisana
+   odległość dla telefonu nigdy by nie zadziałała. */
+@media (max-width: 640px) {
+    .qcmp-fab { bottom: var(--qcmp-fab-bottom-m, 18px); }
+}
+
+.qcmp-fab:focus-visible {
+    outline: 2px solid var(--qcmp-text, #1b1d20);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .qcmp-switch-track,
+    .qcmp-switch-track::after {
+        transition: none;
+    }
+}
+
+/* Pasek trybu skanowania.
+
+   Widoczny wyłącznie dla osoby skanującej. Bez niego łatwo zapomnieć, że sklep
+   chodzi w tej przeglądarce z odblokowanymi wszystkimi usługami — i wziąć ten
+   stan za normalny. */
+.qcmp-scanbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 2147483600;
+    padding: 8px 16px;
+    background: #2b1c00;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}

@@ -1,0 +1,133 @@
+services:
+  _defaults:
+    public: true
+
+    # Te trzy linie są obowiązkowe w każdym module Quince.
+    #
+    # PrestaShop wyszukuje kontrolery modułów wyrażeniem regularnym po treści pliku
+    # (`class X extends PrestaShopAdminController`) i dopiero wtedy dokłada im
+    # tagi, dzięki którym Symfony podaje kontrolerowi jego lokalizator usług.
+    # Nasze kontrolery dziedziczą po wspólnej klasie `CmpController`, więc ten
+    # wzorzec do nich nie pasuje — deklarujemy to sami, zamiast liczyć na wykrycie.
+    autoconfigure: true
+    autowire: true
+    tags: ['controller.service_arguments']
+
+  Quince\Cmp\Storage\Schema:
+    class: Quince\Cmp\Storage\Schema
+
+  Quince\Cmp\Storage\ConsentTypes:
+    class: Quince\Cmp\Storage\ConsentTypes
+
+  Quince\Cmp\Storage\ConsentVersions:
+    class: Quince\Cmp\Storage\ConsentVersions
+
+  Quince\Cmp\Storage\ConsentRegister:
+    class: Quince\Cmp\Storage\ConsentRegister
+
+  Quince\Cmp\Storage\Cookies:
+    class: Quince\Cmp\Storage\Cookies
+
+  Quince\Cmp\Storage\Scripts:
+    class: Quince\Cmp\Storage\Scripts
+
+  Quince\Cmp\Report\Deployment:
+    class: Quince\Cmp\Report\Deployment
+
+  Quince\Cmp\Controller\Admin\OverviewController:
+    class: Quince\Cmp\Controller\Admin\OverviewController
+    arguments:
+      - '@Quince\Cmp\Report\Deployment'
+
+  Quince\Cmp\Controller\Admin\ConsentTypesController:
+    class: Quince\Cmp\Controller\Admin\ConsentTypesController
+    arguments:
+      - '@Quince\Cmp\Storage\ConsentTypes'
+      - '@Quince\Cmp\Storage\ConsentVersions'
+
+  Quince\Cmp\Controller\Admin\ConsentLogController:
+    class: Quince\Cmp\Controller\Admin\ConsentLogController
+    arguments:
+      - '@Quince\Cmp\Storage\ConsentRegister'
+
+  Quince\Cmp\Controller\Admin\CookiesController:
+    class: Quince\Cmp\Controller\Admin\CookiesController
+    arguments:
+      - '@Quince\Cmp\Storage\Cookies'
+      - '@Quince\Cmp\Storage\ConsentTypes'
+
+  Quince\Cmp\Controller\Admin\ScriptsController:
+    class: Quince\Cmp\Controller\Admin\ScriptsController
+    arguments:
+      - '@Quince\Cmp\Storage\Scripts'
+      - '@Quince\Cmp\Storage\Cookies'
+
+  Quince\Cmp\Controller\Admin\BannerController:
+    class: Quince\Cmp\Controller\Admin\BannerController
+    arguments:
+      - '@Quince\Cmp\Storage\Cookies'
+
+  Quince\Cmp\Storage\SyncQueue:
+    class: Quince\Cmp\Storage\SyncQueue
+
+  Quince\Cmp\Sync\Transport:
+    class: Quince\Cmp\Sync\Transport
+    arguments:
+      - '@Quince\Cmp\Storage\SyncQueue'
+
+  Quince\Cmp\Controller\Admin\SyncController:
+    class: Quince\Cmp\Controller\Admin\SyncController
+    arguments:
+      - '@Quince\Cmp\Storage\SyncQueue'
+      - '@Quince\Cmp\Sync\Transport'
+      - '@Quince\Cmp\Storage\ConsentTypes'
+
+  Quince\Cmp\Controller\Admin\SettingsController:
+    class: Quince\Cmp\Controller\Admin\SettingsController
+
+  Quince\Cmp\Controller\Admin\SupportController:
+    class: Quince\Cmp\Controller\Admin\SupportController
+
+  # Dostawca stanu dla Admin API PrestaShopa. Zasoby leza w
+  # `src/ApiPlatform/Resources` i rdzen wczytuje je sam, ale dostawce trzeba
+  # zarejestrowac jak kazda inna usluge — API Platform siega po nia po nazwie klasy.
+  Quince\Cmp\ApiPlatform\Provider\ConsentStateProvider:
+    class: Quince\Cmp\ApiPlatform\Provider\ConsentStateProvider
+    arguments:
+      - '@Quince\Cmp\Storage\ConsentRegister'
+    tags: ['api_platform.state_provider']
+
+  Quince\Cmp\ApiPlatform\Provider\ConsentEventProvider:
+    class: Quince\Cmp\ApiPlatform\Provider\ConsentEventProvider
+    arguments:
+      - '@Quince\Cmp\Storage\ConsentRegister'
+      - '@request_stack'
+    tags: ['api_platform.state_provider']
+
+  Quince\Cmp\ApiPlatform\Provider\ConsentTypeProvider:
+    class: Quince\Cmp\ApiPlatform\Provider\ConsentTypeProvider
+    arguments:
+      - '@Quince\Cmp\Storage\ConsentTypes'
+      - '@request_stack'
+    tags: ['api_platform.state_provider']
+
+  Quince\Cmp\ApiPlatform\Provider\ConsentVersionProvider:
+    class: Quince\Cmp\ApiPlatform\Provider\ConsentVersionProvider
+    arguments:
+      - '@Quince\Cmp\Storage\ConsentVersions'
+      - '@Quince\Cmp\Storage\ConsentTypes'
+      - '@request_stack'
+    tags: ['api_platform.state_provider']
+
+  Quince\Cmp\Sync\Inbox:
+    class: Quince\Cmp\Sync\Inbox
+
+  Quince\Cmp\ApiPlatform\Processor\ConsentEventProcessor:
+    class: Quince\Cmp\ApiPlatform\Processor\ConsentEventProcessor
+    arguments:
+      - '@Quince\Cmp\Sync\Inbox'
+      - '@request_stack'
+    tags: ['api_platform.state_processor']
+
+  Quince\Cmp\Controller\Admin\ApiController:
+    class: Quince\Cmp\Controller\Admin\ApiController

@@ -1,0 +1,80 @@
+{# Co moduł robi. Wstawka ekranu wsparcia.
+
+   Dziesięć rzeczy, nie trzy hasła: sprzedawca porównuje to z innymi modułami
+   i musi zobaczyć, czym się różnią, a nie że „obsługuje ciasteczka". #}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{# Wstawka nie dziedziczy domeny po szablonie, ktory ja wlacza — bez tej
+   linii `|trans` szuka w domenie `messages` i oddaje angielski oryginal. #}
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+<div class="qc-grid" style="padding:16px 18px">
+    <div class="qc-set-title" style="margin-bottom:12px">{{ 'What it does'|trans }}</div>
+
+    <div class="qc-featgrid">
+        {% for f in [
+            {
+                'icon': 'checkCircle',
+                'title': 'Proof, not a checkbox',
+                'body': 'Every consent and every refusal goes into a log with a hash of the wording that was on screen at that moment. A checkbox proves a click; this proves what the click meant.'
+            },
+            {
+                'icon': 'shield',
+                'title': 'Blocking is the point',
+                'body': 'Services are held back until the visitor agrees — scripts lose their executable type, embeds lose their address. A banner over scripts that already ran is decoration.'
+            },
+            {
+                'icon': 'settings',
+                'title': 'Consent Mode in full',
+                'body': 'All seven Google signals, defaults per region, wait-for-update, ad redaction and click-id passthrough. Google tags are never blocked: blocking them costs you modelling and gains nobody anything.'
+            },
+            {
+                'icon': 'eye',
+                'title': 'Refusing is as easy as agreeing',
+                'body': 'Three buttons of equal weight and size, 44 px touch targets, keyboard focus kept inside the window, GPC honoured without asking. Consent obtained by making refusal harder is not consent.'
+            },
+            {
+                'icon': 'user',
+                'title': 'A guest is still a person',
+                'body': 'Consent given before signing up is tied to the browser. When that browser later becomes a customer, the two are linked — and the whole history is readable under one address.'
+            },
+            {
+                'icon': 'refresh',
+                'title': 'Asked again when things change',
+                'body': 'A new category, a new cookie provider or a newly published clause makes earlier consent describe less than the visitor now meets. The banner comes back on its own.'
+            },
+            {
+                'icon': 'search',
+                'title': 'What the shop really sets',
+                'body': 'The scanner runs in a browser with everything unblocked and reports the cookies, storage keys and third-party hosts it finds. The server alone sees a fraction of them.'
+            },
+            {
+                'icon': 'link',
+                'title': 'Two-way exchange',
+                'body': 'Signed webhook out and in, with retries and a queue you can inspect. A conflict is settled by event time, and the event that lost is written down with both sides.'
+            },
+            {
+                'icon': 'puzzle',
+                'title': 'Other modules can ask',
+                'body': 'One question in PHP and one in JavaScript. Server-side measurement that never asks is how a shop ends up with every sale attributed to nobody.'
+            },
+            {
+                'icon': 'layout',
+                'title': 'Multistore throughout',
+                'body': 'Every setting belongs to a shop, and exchange settings can be shared across a shop group without a leading shop whose removal would take the rest down.'
+            }
+        ] %}
+            <div class="qc-feat">
+                <span class="qc-feat-icon">{{ icons.icon(f.icon, 16) }}</span>
+                <div>
+                    <div class="qc-feat-title">{{ f.title|trans }}</div>
+                    <div class="qc-line" style="margin:2px 0 0">{{ f.body|trans }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="qc-hint" style="margin-top:14px">
+        {{ 'The module never stores or edits the wording of a clause. It links to a CMS page or a PDF and keeps a hash, so it can tell you when the text changed after consent was collected.'|trans }}
+    </div>
+</div>

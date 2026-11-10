@@ -1,0 +1,254 @@
+{# Ustawienia modułu. Układ wg prototypy/Settings.dc.html #}
+{% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{% block quince_body %}
+{# Jedna kolumna o ograniczonej szerokości: to formularz do czytania z góry na dół,
+   a nie tabela. Rozciągnięty na szeroki monitor rozjeżdża etykietę od kontrolki. #}
+<form method="post" action="{{ path('quince_cmp_settings_save') }}" class="qc-screen qc-settings">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_settings_save') }}">
+
+    <div class="qc-head">
+        <div>
+            <div class="qc-head-title">{{ 'Settings'|trans }}</div>
+            {% if shopScoped %}
+                <div class="qc-head-desc">{{ 'These settings belong to %shop%.'|trans({'%shop%': shopName}) }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="qc-settings-list">
+
+        {# --- retencja dziennika --- #}
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-title">{{ 'Log retention'|trans }}</div>
+
+            <div class="qc-hstack" style="gap:10px;margin:8px 0">
+                <input type="number" name="retention_months" class="qc-field-base qc-focusable" style="width:90px"
+                       min="1" max="240" value="{{ retentionMonths }}">
+                <span class="qc-line" style="margin:0">{{ 'months'|trans }}</span>
+            </div>
+
+            <div class="qc-line" style="margin-bottom:12px">
+                {{ 'Events are never overwritten. Retention only deletes what is older than the limit.'|trans }}
+            </div>
+
+            {# Termin bez egzekucji jest obietnicą, za którą nic nie stoi — stąd
+               licznik i przycisk. Sam przebieg idzie z cronem. #}
+            <div class="qc-hstack" style="justify-content:space-between;gap:16px;padding-top:12px;border-top:1px solid var(--border)">
+                <div class="qc-line" style="margin:0">
+                    {% if retentionPending %}
+                        {{ '%count% events are past the limit and will be removed on the next scheduled run.'|trans({'%count%': retentionPending}) }}
+                    {% else %}
+                        {{ 'Nothing is past the limit right now.'|trans }}
+                    {% endif %}
+                </div>
+
+                {% if retentionPending %}
+                    <button type="submit" form="purge" class="qc-linkbtn">{{ 'Remove them now'|trans }}</button>
+                {% endif %}
+            </div>
+        </div>
+
+        {# --- ważność zgody --- #}
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-title" style="margin-bottom:8px">{{ 'Consent lifetime'|trans }}</div>
+
+            <div class="qc-hstack" style="gap:10px;margin-bottom:14px">
+                <span class="qc-line" style="margin:0">{{ 'Re-ask after'|trans }}</span>
+                <input type="number" name="lifetime_months" class="qc-field-base qc-focusable" style="width:80px"
+                       min="1" max="60" value="{{ lifetimeMonths }}">
+                <span class="qc-line" style="margin:0">{{ 'months'|trans }}</span>
+            </div>
+
+            {# Czas to nie jedyny powód, dla którego zgoda przestaje opisywać stan
+               faktyczny. Drugim jest zmiana tego, na co ktoś się zgadzał. #}
+            <label class="qc-toggle qc-toggle-sm" style="margin-bottom:6px">
+                <input type="checkbox" name="reask_on_change" value="1" {{ reaskOnChange ? 'checked' : '' }}>
+                <span class="qc-toggle-track"></span>
+                <span class="qc-toggle-text" style="font-size:var(--text-xs)">
+                    {{ 'Ask again when the setup changes'|trans }}
+                </span>
+            </label>
+
+            <div class="qc-line" style="margin:0 0 12px">
+                {{ 'A new category, a new cookie provider or a newly published clause makes earlier consent describe less than what the visitor now meets. Descriptions and banner wording do not count — fixing a typo should not re-ask everyone.'|trans }}
+            </div>
+
+            <div class="qc-hstack" style="justify-content:space-between;gap:16px;padding-top:12px;border-top:1px solid var(--border)">
+                <div class="qc-line" style="margin:0">
+                    {{ 'Current setup fingerprint'|trans }}: <span class="qc-mono">{{ revision }}</span>
+                </div>
+
+                <button type="submit" form="reask" class="qc-linkbtn">{{ 'Ask everyone again now'|trans }}</button>
+            </div>
+
+            <div class="qc-hint">
+                {{ 'For changes the fingerprint cannot see — a new purpose inside an existing category, or a sub-processor that sets no cookie. The log is left untouched.'|trans }}
+            </div>
+        </div>
+
+        {# --- odwiedzający bez adresu --- #}
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-title" style="margin-bottom:8px">{{ 'Anonymous visitors'|trans }}</div>
+
+            <div class="qc-hstack" style="gap:10px;margin-bottom:8px">
+                <span class="qc-line" style="margin:0">{{ 'Keep their consent for'|trans }}</span>
+                <input type="number" name="anon_months" class="qc-field-base qc-focusable" style="width:80px"
+                       min="1" max="60" value="{{ anonMonths }}">
+                <span class="qc-line" style="margin:0">{{ 'months'|trans }}</span>
+            </div>
+
+            <div class="qc-line" style="margin:0">
+                {{ 'How long consent is kept for a visitor who never provided an email. Their record is tied to the browser, so it is worthless once that browser is gone.'|trans }}
+            </div>
+        </div>
+
+        {# --- strona polityki --- #}
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-title" style="margin-bottom:8px">{{ 'Privacy policy page'|trans }}</div>
+
+            <select name="policy_cms" class="qc-field-base qc-select qc-focusable">
+                <option value="0">{{ '— none —'|trans }}</option>
+                {% for page in cmsPages %}
+                    <option value="{{ page.id }}" {{ policyCms == page.id ? 'selected' : '' }}>
+                        {{ page.name }} ({{ 'CMS page #%id%'|trans({'%id%': page.id}) }})
+                    </option>
+                {% endfor %}
+            </select>
+
+            <div class="qc-line" style="margin-top:8px">
+                {{ 'Linked from the banner and from the consent screens. The module links to the page, it never stores its text.'|trans }}
+            </div>
+        </div>
+
+        {# --- GPC --- #}
+        <div class="qc-grid qc-set-row" style="padding:16px 18px">
+            <div>
+                <div class="qc-set-title">{{ 'Respect GPC'|trans }}</div>
+                <div class="qc-line" style="margin:4px 0 0;max-width:480px">
+                    {{ 'The Global Privacy Control signal is honoured without asking — the banner does not show.'|trans }}
+                </div>
+            </div>
+
+            <label class="qc-toggle">
+                <input type="checkbox" name="respect_gpc" value="1" {{ respectGpc ? 'checked' : '' }}>
+                <span class="qc-toggle-track"></span>
+            </label>
+        </div>
+
+        {# --- główny wyłącznik blokowania --- #}
+        <div class="qc-grid qc-set-row" style="padding:16px 18px">
+            <div>
+                <div class="qc-set-title">{{ 'Script blocking'|trans }}</div>
+                <div class="qc-line" style="margin:4px 0 0;max-width:480px">
+                    {{ 'Off stops the module from holding anything back — every service listed in Scripts & blocking runs right away, and the banner only asks, it enforces nothing.'|trans }}
+                </div>
+            </div>
+
+            <label class="qc-toggle">
+                <input type="checkbox" name="blocking_on" value="1" {{ blockingOn ? 'checked' : '' }}>
+                <span class="qc-toggle-track"></span>
+            </label>
+        </div>
+
+        {# --- zachowanie przed zgodą --- #}
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-title" style="margin-bottom:10px">{{ 'Behaviour before consent'|trans }}</div>
+
+            <div class="qc-optrow" style="padding-top:0">
+                <label class="qc-opt">
+                    <input type="radio" name="before_consent" value="all_but_necessary" class="qc-radio"
+                           {{ beforeConsent == 'all_but_necessary' ? 'checked' : '' }}>
+                    {{ 'Block everything except necessary'|trans }}
+                </label>
+
+                <label class="qc-opt">
+                    <input type="radio" name="before_consent" value="marketing_only" class="qc-radio"
+                           {{ beforeConsent == 'marketing_only' ? 'checked' : '' }}>
+                    {{ 'Block marketing only'|trans }}
+                </label>
+            </div>
+
+            <div class="qc-line" style="margin-top:10px">
+                {{ 'The second option lets analytics run before the visitor answers. Legal in some countries, not in others — check before you pick it.'|trans }}
+            </div>
+        </div>
+
+        {# --- tryb testowy --- #}
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-row" style="margin-bottom:10px">
+                <div>
+                    <div class="qc-set-title">{{ 'Test mode'|trans }}</div>
+                    <div class="qc-line" style="margin:4px 0 0">{{ 'While on, only the IP addresses below see the banner.'|trans }}</div>
+                </div>
+
+                <label class="qc-toggle">
+                    <input type="checkbox" name="test_mode" value="1" {{ testMode ? 'checked' : '' }}>
+                    <span class="qc-toggle-track"></span>
+                </label>
+            </div>
+
+            <input type="text" name="test_ips" class="qc-field-base qc-field-sm qc-focusable qc-mono"
+                   value="{{ testIps|join(', ') }}" placeholder="89.64.12.4, 46.28.9.201">
+
+            {% if myIp %}
+                <div class="qc-line" style="margin-top:6px">
+                    {{ 'You are connecting from'|trans }} <span class="qc-mono">{{ myIp }}</span>.
+                    {% if myIp not in testIps %}
+                        <strong>{{ 'It is not on the list — switching test mode on now would hide the banner from you as well.'|trans }}</strong>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# --- integracja z silnikiem --- #}
+        <div class="qc-grid" style="padding:16px 18px">
+            <div class="qc-set-title" style="margin-bottom:8px">{{ 'Engine integration'|trans }}</div>
+
+            <div class="qc-hstack" style="gap:8px">
+                <span class="qc-dot {{ engineDetected ? 'is-on' : '' }}"></span>
+                <span style="font-size:var(--text-sm);font-weight:var(--weight-semibold)">
+                    {{ engineDetected
+                        ? 'Connected — the module uses quince_engine colours and navigation'|trans
+                        : 'Standalone — quince_engine not installed'|trans }}
+                </span>
+            </div>
+
+            <div class="qc-line" style="margin-top:8px">
+                {{ 'Nothing to set here. The module works either way; with the engine present it borrows its palette instead of shipping a second one.'|trans }}
+            </div>
+        </div>
+
+        {# --- kolizja z psgdpr --- #}
+        {% if psgdpr.active %}
+            <div class="qc-conflict">
+                <div class="qc-conflict-head">
+                    {{ 'psgdpr %version% is active and adds its own consent checkbox to the same forms.'|trans({'%version%': psgdpr.version}) }}
+                </div>
+                <div class="qc-line" style="margin:0">
+                    {{ 'The customer sees the same question twice, and only one of the two answers lands in this log. Decide which module owns the consent fields before you go live.'|trans }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="qc-actions">
+        <button type="submit" class="qc-btn qc-btn-primary">
+            {{ icons.icon('check', 14) }} {{ 'Save'|trans }}
+        </button>
+    </div>
+</form>
+{# Poza formularzem ustawień: unieważnienie ma być osobnym żądaniem, a nie
+   skutkiem ubocznym zapisania czegokolwiek innego na tym ekranie. #}
+<form id="reask" method="post" action="{{ path('quince_cmp_settings_reask') }}" hidden>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_settings_reask') }}">
+</form>
+<form id="purge" method="post" action="{{ path('quince_cmp_settings_purge') }}" hidden>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_settings_purge') }}">
+</form>
+{% endblock %}
+
+{% block quince_actionbar %}{% endblock %}

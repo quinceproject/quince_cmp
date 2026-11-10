@@ -1,0 +1,2792 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="ModulesQuincecmpAdmin" source-language="en-US" target-language="en-US" datatype="plaintext">
+    <body>
+      <trans-unit id="37f3a3246bbb2b82dd40fcb862c4892f">
+        <source>%accepted% accepted this run · %rejected% rejected</source>
+        <target>%accepted% accepted this run · %rejected% rejected</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6eaa0435a93eb36e8176750bfcd0b531">
+        <source>%code% on %shop% was edited after version %version% was published — %count% consents reference text that no longer matches.</source>
+        <target>%code% on %shop% was edited after version %version% was published — %count% consents reference text that no longer matches.</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="6335ff41fec395b22c92d735887b0190">
+        <source>%count% consents on %shop% were recorded with no published wording. They prove a click, not what was agreed to.</source>
+        <target>%count% consents on %shop% were recorded with no published wording. They prove a click, not what was agreed to.</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="6b36921793e1a1422d7c8191bcd12aa2">
+        <source>%count% consents were recorded before sending was switched on. They have never been sent.</source>
+        <target>%count% consents were recorded before sending was switched on. They have never been sent.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c459f36dccfabc96e4bff198b4183a75">
+        <source>%count% days</source>
+        <target>%count% days</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a50516a7b078bb838ac1b9e8d94284c3">
+        <source>%count% events</source>
+        <target>%count% events</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5d79bf0e5a9480f0ac2eae1bd3473ed8">
+        <source>%count% events are past the limit and will be removed on the next scheduled run.</source>
+        <target>%count% events are past the limit and will be removed on the next scheduled run.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0ef6d609ecce37336e0f4826f76c9d6f">
+        <source>%count% events queued for another attempt.</source>
+        <target>%count% events queued for another attempt.</target>
+        <note>src/Controller/Admin/SyncController.php</note>
+      </trans-unit>
+      <trans-unit id="11c92650a990efd40d379c31b4223b1f">
+        <source>%count% gave up after %max% attempts.</source>
+        <target>%count% gave up after %max% attempts.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b40053beedc91e0cad4d000a38cd6fb5">
+        <source>%count% ms</source>
+        <target>%count% ms</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e8f3d905daa6af916a239c5a5fd33e16">
+        <source>%count% past events queued. They go out with the next run.</source>
+        <target>%count% past events queued. They go out with the next run.</target>
+        <note>src/Controller/Admin/SyncController.php</note>
+      </trans-unit>
+      <trans-unit id="ebcc2dc76f7f07c1fc6bbf9e3fc72cce">
+        <source>%count% services on %shop% have no category. Nothing will ever release them.</source>
+        <target>%count% services on %shop% have no category. Nothing will ever release them.</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="e590fa08fb1d2136682d833e74ae96e6">
+        <source>%covered% of %all% signals</source>
+        <target>%covered% of %all% signals</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="95265e4ae52c7eff1c7769465486ee8d">
+        <source>%events% events and %links% browser links removed.</source>
+        <target>%events% events and %links% browser links removed.</target>
+        <note>src/Controller/Admin/SettingsController.php</note>
+      </trans-unit>
+      <trans-unit id="73ede6562ffd5c3dedf7af9951dbebad">
+        <source>%shop% asks for consent but blocks nothing. Every script runs before the visitor answers, so the banner is decoration.</source>
+        <target>%shop% asks for consent but blocks nothing. Every script runs before the visitor answers, so the banner is decoration.</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="f277277c58058cbf7310ced70ca93c17">
+        <source>%shop% holds %count% services back but never asks. Nobody can release them.</source>
+        <target>%shop% holds %count% services back but never asks. Nobody can release them.</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="d45445daf9f9ac39b747e3129f12d281">
+        <source>%t% consent types · %c% cookies · %s% services</source>
+        <target>%t% consent types · %c% cookies · %s% services</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="aa90918af1c7303064950afa99f25eae">
+        <source>%v% stays in the table as proof for the %count% consents already collected under it.</source>
+        <target>%v% stays in the table as proof for the %count% consents already collected under it.</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="eb6183d5477d00b309eceae15dab3d13">
+        <source>%version% · %date%</source>
+        <target>%version% · %date%</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="4d692a301711289ec5ebf67f7061c533">
+        <source>(%shop%)</source>
+        <target>(%shop%)</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e2dcfe8db07ddd38405834676216d1f6">
+        <source>A conflict with a newer event recorded in the shop answers 409 and is written down with both sides, so neither is lost.</source>
+        <target>A conflict with a newer event recorded in the shop answers 409 and is written down with both sides, so neither is lost.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6ca82b1485260393cf3a0269dfbb7f61">
+        <source>A document consent needs a document — link a CMS page or attach a PDF.</source>
+        <target>A document consent needs a document — link a CMS page or attach a PDF.</target>
+        <note>src/Controller/Admin/ConsentTypesController.php</note>
+      </trans-unit>
+      <trans-unit id="816f08fe994cc592511c62725ce0dd81">
+        <source>A guest is still a person</source>
+        <target>A guest is still a person</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1dc061148fdf3ba228aafd8a7faec746">
+        <source>A new category, a new cookie provider or a newly published clause makes earlier consent describe less than the visitor now meets. The banner comes back on its own.</source>
+        <target>A new category, a new cookie provider or a newly published clause makes earlier consent describe less than the visitor now meets. The banner comes back on its own.</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ad2df5904a1c3f2b6b61087058ded3f9">
+        <source>A new category, a new cookie provider or a newly published clause makes earlier consent describe less than what the visitor now meets. Descriptions and banner wording do not count — fixing a typo should not re-ask everyone.</source>
+        <target>A new category, a new cookie provider or a newly published clause makes earlier consent describe less than what the visitor now meets. Descriptions and banner wording do not count — fixing a typo should not re-ask everyone.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a056270e9e19d5dfa29db1b609da7ba7">
+        <source>A published version cannot be edited — editing would invalidate the proof for %count% collected consents. Publish a new version instead.</source>
+        <target>A published version cannot be edited — editing would invalidate the proof for %count% collected consents. Publish a new version instead.</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="aaa3312840ed05a858ea9b11f196215c">
+        <source>A request whose timestamp is more than %count% seconds off is rejected.</source>
+        <target>A request whose timestamp is more than %count% seconds off is rejected.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d26283ba76daa7094ed064635ce5bd52">
+        <source>A trailing asterisk matches a family of cookies, e.g. _ga_*.</source>
+        <target>A trailing asterisk matches a family of cookies, e.g. _ga_*.</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="db974238714ca8de634a7ce1d083a14f">
+        <source>API</source>
+        <target>API</target>
+        <note>src/Controller/Admin\ApiController.php</note>
+      </trans-unit>
+      <trans-unit id="c900e1bd8e22771d610bd2a5861b544f">
+        <source>Accent</source>
+        <target>Accent</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3d0238bf1643e39636b1f5040af3bf6f">
+        <source>Accept all</source>
+        <target>Accept all</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="382ab522931673c11e398ead1b7b1678">
+        <source>Accepted</source>
+        <target>Accepted</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6c4756023ced9acf793776666ebb3a32">
+        <source>Access created. The secret is shown once.</source>
+        <target>Access created. The secret is shown once.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="4d3d769b812b6faa6b76e1a8abaece2d">
+        <source>Active</source>
+        <target>Active</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ac8d1c1c4475fc7b0aeff5534a52e41d">
+        <source>Add cookie</source>
+        <target>Add cookie</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b21b3d1d8927b772005eb6d231890aae">
+        <source>Add service</source>
+        <target>Add service</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="8e55a7f15e4e62253b26618cf3505734">
+        <source>All seven Google signals, defaults per region, wait-for-update, ad redaction and click-id passthrough. Google tags are never blocked: blocking them costs you modelling and gains nobody anything.</source>
+        <target>All seven Google signals, defaults per region, wait-for-update, ad redaction and click-id passthrough. Google tags are never blocked: blocking them costs you modelling and gains nobody anything.</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="804ccd6219996d12eda865d1c0707423">
+        <source>All shops</source>
+        <target>All shops</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="98868f0529c55b21fa0f881232c71efb">
+        <source>All three buttons share one visual weight. Rejecting must be as easy as accepting.</source>
+        <target>All three buttons share one visual weight. Rejecting must be as easy as accepting.</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3eaf693e7a171a76e0586951efc5d0e8">
+        <source>Allow button</source>
+        <target>Allow button</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="de31291360fc7b4f832afcc772a889bd">
+        <source>Always active</source>
+        <target>Always active</target>
+        <note>views/templates/admin/_banner_preview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="37557dbc3755543f4b95697b603d7373">
+        <source>Anonymous visitors</source>
+        <target>Anonymous visitors</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3751695c17afed4055a7a5ad5d46f6f5">
+        <source>Answer</source>
+        <target>Answer</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e435f0f45e25693555e31fc6436b1fa2">
+        <source>Answer 2xx to confirm. Anything else puts the event back in the queue.</source>
+        <target>Answer 2xx to confirm. Anything else puts the event back in the queue.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d96e9c5b66270557797cd9a81ae10309">
+        <source>Answered</source>
+        <target>Answered</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="740b46dc0def5c4ced13d09aeb86cf30">
+        <source>Answered version %had%, the shop now publishes %now%.</source>
+        <target>Answered version %had%, the shop now publishes %now%.</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1b310298be227737bd870516e89cf0e5">
+        <source>Ask again when the setup changes</source>
+        <target>Ask again when the setup changes</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b6a4404f075be34b37b2b39ec0ef3059">
+        <source>Ask everyone again now</source>
+        <target>Ask everyone again now</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d7ee017aa7733e3424ae552187635a7a">
+        <source>Asked again when things change</source>
+        <target>Asked again when things change</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="39c65a1138c8eab45f06ab7d58a1c6af">
+        <source>Attach the document as PDF</source>
+        <target>Attach the document as PDF</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7ba3b8236d48d4f4c5ec03c3fe6b75a9">
+        <source>Attempts</source>
+        <target>Attempts</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6ff29916f99fff9d2494d28e721ae77e">
+        <source>Banner</source>
+        <target>Banner</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="ec2a3e7c2d0a016591322e1d9edd804d">
+        <source>Banner &amp; preferences</source>
+        <target>Banner &amp; preferences</target>
+        <note>src/Controller/Admin\BannerController.php</note>
+      </trans-unit>
+      <trans-unit id="25d42702d37ddec0da14fc5314a43906">
+        <source>Banner saved.</source>
+        <target>Banner saved.</target>
+        <note>src/Controller/Admin/BannerController.php</note>
+      </trans-unit>
+      <trans-unit id="754fc2e011a8be098c5ba3ef4a74ec18">
+        <source>Base address</source>
+        <target>Base address</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3e61afd38fcb5eca62efcfe46fc6a3c9">
+        <source>Based on</source>
+        <target>Based on</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="226304a96501080df5e80af22cfa28d5">
+        <source>Before consent</source>
+        <target>Before consent</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="399baca6ceee9a7ef34121d12621256f">
+        <source>Behaviour before consent</source>
+        <target>Behaviour before consent</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="888e9dfe00a2769fa6206bfd51ea2fbb">
+        <source>Block everything except necessary</source>
+        <target>Block everything except necessary</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="506ff3125881db7a1c8c850c32eb156b">
+        <source>Block marketing only</source>
+        <target>Block marketing only</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="38b259b24fecbe9c67c44fa3babb3cd1">
+        <source>Blocked-content placeholder</source>
+        <target>Blocked-content placeholder</target>
+        <note>src/Controller/Admin\ScriptsController.php</note>
+      </trans-unit>
+      <trans-unit id="4ac65856d06ff999292c91ee901ec395">
+        <source>Blocking is the point</source>
+        <target>Blocking is the point</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1c7a6d122a11294f4f6293716a9c00d3">
+        <source>Blocking is the point of this module. The banner is decoration on top of it.</source>
+        <target>Blocking is the point of this module. The banner is decoration on top of it.</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="8d20f95737113de85c1f9d7627a093e9">
+        <source>Blocking technique</source>
+        <target>Blocking technique</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ac101b32dda4448cf13a93fe283dddd8">
+        <source>Body</source>
+        <target>Body</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7b8396aaed32deb4ae51447871ce9fc0">
+        <source>Browser key</source>
+        <target>Browser key</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5b3ec15499a125805b5bbf8e4afcec8c">
+        <source>Buttons</source>
+        <target>Buttons</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3b9a5dd86a2f58036bfa40a8411be81d">
+        <source>CMS page #%id%</source>
+        <target>CMS page #%id%</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1a0670f73eb752306a15950ab04746a3">
+        <source>CRM, mailing tool, data warehouse…</source>
+        <target>CRM, mailing tool, data warehouse…</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ea4788705e6873b424c65e91c2846b19">
+        <source>Cancel</source>
+        <target>Cancel</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d3024b8dda08005c2397023088956391">
+        <source>Carry the click id in the URL instead of a cookie</source>
+        <target>Carry the click id in the URL instead of a cookie</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c495794a85b6f80cb5a258964740eb8c">
+        <source>Categories and their cookie tables come from Consent types and Cookies — they are not repeated here.</source>
+        <target>Categories and their cookie tables come from Consent types and Cookies — they are not repeated here.</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3adbdb3ac060038aa0e6e6c138ef9873">
+        <source>Category</source>
+        <target>Category</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="74ee0c2a419522308a97374e558d2ff5">
+        <source>Category "%category%" on %shop% lists no cookies. The preference window shows an empty entry.</source>
+        <target>Category "%category%" on %shop% lists no cookies. The preference window shows an empty entry.</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="2c872e677f8b5831f20a66c65e7f8966">
+        <source>Check now</source>
+        <target>Check now</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5d4680115b13e6560117a347d80e48bb">
+        <source>Check the file</source>
+        <target>Check the file</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="198dfa42ee4fc418b46451502fde0c42">
+        <source>Checked %when%.</source>
+        <target>Checked %when%.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="92fbf0e5d97b8afd7e73126b52bdc4bb">
+        <source>Choose a file</source>
+        <target>Choose a file</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="dc30bc0c7914db5918da4263fce93ad2">
+        <source>Clear</source>
+        <target>Clear</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="02e5250b79545e4fc4d4346b1925acad">
+        <source>Clear results</source>
+        <target>Clear results</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ca0dbad92a874b2f69b549293387925e">
+        <source>Code</source>
+        <target>Code</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7ddd16cf2cb811945d12b36698a5e191">
+        <source>Codes to send</source>
+        <target>Codes to send</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="81e91be8db96be69e372f0c715ec7444">
+        <source>Collected</source>
+        <target>Collected</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="99ec453f77ecacc5a55cad484fb073a9">
+        <source>Collected (30d)</source>
+        <target>Collected (30d)</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7add294b8e0689fd134eba50e5f2c95f">
+        <source>Colours</source>
+        <target>Colours</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="27d04e6c948e5f6fe9f5a38ff4a742d7">
+        <source>Configuration replaced. The consent log and published clause versions were left untouched.</source>
+        <target>Configuration replaced. The consent log and published clause versions were left untouched.</target>
+        <note>src/Controller/Admin/SupportController.php</note>
+      </trans-unit>
+      <trans-unit id="e6f1140f08ce96a2c4c27a85635d90ef">
+        <source>Connected — the module uses quince_engine colours and navigation</source>
+        <target>Connected — the module uses quince_engine colours and navigation</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1bbdf136f897ea2075a786bd05152095">
+        <source>Consent</source>
+        <target>Consent</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="63e5887fea2c0f9595819ca254a37751">
+        <source>Consent Mode</source>
+        <target>Consent Mode</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="489e6830ca2947b845e17ac362842d9d">
+        <source>Consent Mode in full</source>
+        <target>Consent Mode in full</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ab4d85c42f87ae57ae5bdb49caa757b5">
+        <source>Consent Mode is incomplete — Google treats such a setup as no consent signal at all.</source>
+        <target>Consent Mode is incomplete — Google treats such a setup as no consent signal at all.</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="af2c8572325aee38d688b5a5679bb691">
+        <source>Consent Mode mapping</source>
+        <target>Consent Mode mapping</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="706d4f3c821ad480a48ba39b2ede6593">
+        <source>Consent Mode on %shop% covers %covered% of %all% signals. Google treats a missing signal as no consent at all.</source>
+        <target>Consent Mode on %shop% covers %covered% of %all% signals. Google treats a missing signal as no consent at all.</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="b4c6e2e47742bdee4044e6b7e4308aea">
+        <source>Consent Mode saved.</source>
+        <target>Consent Mode saved.</target>
+        <note>src/Controller/Admin/ScriptsController.php</note>
+      </trans-unit>
+      <trans-unit id="9b2213959190ec586456d84ab92004f0">
+        <source>Consent given before signing up is tied to the browser. When that browser later becomes a customer, the two are linked — and the whole history is readable under one address.</source>
+        <target>Consent given before signing up is tied to the browser. When that browser later becomes a customer, the two are linked — and the whole history is readable under one address.</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ca858a42da7ad648ff4f8ef91e2e033f">
+        <source>Consent lifetime</source>
+        <target>Consent lifetime</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b84c10d43f1c6458ff437caa2a519a62">
+        <source>Consent log</source>
+        <target>Consent log</target>
+        <note>src/Controller/Admin\ConsentLogController.php</note>
+      </trans-unit>
+      <trans-unit id="550b93bd46f56d763f4c8d97c6ef80ff">
+        <source>Consent profile</source>
+        <target>Consent profile</target>
+        <note>src/Controller/Admin\ConsentLogController.php</note>
+      </trans-unit>
+      <trans-unit id="ec1d929811798e3a3ea82f2323d2b2d9">
+        <source>Consent record</source>
+        <target>Consent record</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ec446093764a84f4c15722aae68de9d0">
+        <source>Consent settings</source>
+        <target>Consent settings</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="cdd2dc5dd0c613e9f464a39003b24d9c">
+        <source>Consent type</source>
+        <target>Consent type</target>
+        <note>src/Controller/Admin\ConsentTypesController.php</note>
+      </trans-unit>
+      <trans-unit id="074bf9bf371a7db66e16f92478cd9488">
+        <source>Consent type saved.</source>
+        <target>Consent type saved.</target>
+        <note>src/Controller/Admin/ConsentTypesController.php</note>
+      </trans-unit>
+      <trans-unit id="323ccb5dff4ab704189ed7301e2cd2d6">
+        <source>Consent type switched off. Records already collected stay in the log.</source>
+        <target>Consent type switched off. Records already collected stay in the log.</target>
+        <note>src/Controller/Admin/ConsentTypesController.php</note>
+      </trans-unit>
+      <trans-unit id="a6c99d0a3641c6798511afa39875f9cc">
+        <source>Consent type switched on.</source>
+        <target>Consent type switched on.</target>
+        <note>src/Controller/Admin/ConsentTypesController.php</note>
+      </trans-unit>
+      <trans-unit id="693e563fd8f29d0603ba126024e03153">
+        <source>Consent types</source>
+        <target>Consent types</target>
+        <note>src/Controller/Admin\ConsentTypesController.php</note>
+      </trans-unit>
+      <trans-unit id="0a5dc2c41a87d84a9cdac8154ed1e2ec">
+        <source>Consents &amp; cookies</source>
+        <target>Consents &amp; cookies</target>
+        <note>quince_cmp.php</note>
+      </trans-unit>
+      <trans-unit id="706f10887bbeb729378c706eee126fa7">
+        <source>Cookie</source>
+        <target>Cookie</target>
+        <note>src/Controller/Admin\CookiesController.php</note>
+      </trans-unit>
+      <trans-unit id="5e449167062490c12f9a9340c8f01e5f">
+        <source>Cookie removed from the table. The cookie itself is set by the service — this list only describes it.</source>
+        <target>Cookie removed from the table. The cookie itself is set by the service — this list only describes it.</target>
+        <note>src/Controller/Admin/CookiesController.php</note>
+      </trans-unit>
+      <trans-unit id="9e2a8160d7009be1acd83c2922bd0fa7">
+        <source>Cookie saved.</source>
+        <target>Cookie saved.</target>
+        <note>src/Controller/Admin/CookiesController.php</note>
+      </trans-unit>
+      <trans-unit id="42c2926cb44f89fbfc9ed8e3f11afe3c">
+        <source>Cookie scan in progress — all services are temporarily unblocked for this browser.</source>
+        <target>Cookie scan in progress — all services are temporarily unblocked for this browser.</target>
+        <note>quince_cmp.php</note>
+      </trans-unit>
+      <trans-unit id="b0837124b35c041c5cf129b361f07ee6">
+        <source>Cookie table</source>
+        <target>Cookie table</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="597b56e53847cd6a4712ac183f61fa68">
+        <source>Cookies</source>
+        <target>Cookies</target>
+        <note>src/Controller/Admin\CookiesController.php</note>
+      </trans-unit>
+      <trans-unit id="ff75988be6efbf3447e508575f69b574">
+        <source>Copy as proof</source>
+        <target>Copy as proof</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b897ae469258f4c0b04f3f5614283ca0">
+        <source>Could not publish the version.</source>
+        <target>Could not publish the version.</target>
+        <note>src/Controller/Admin/ConsentTypesController.php</note>
+      </trans-unit>
+      <trans-unit id="8bdb9ca4c621dfa0c66f8e7daeb8a248">
+        <source>Could not save the consent type.</source>
+        <target>Could not save the consent type.</target>
+        <note>src/Controller/Admin/ConsentTypesController.php</note>
+      </trans-unit>
+      <trans-unit id="4cf2a9b0b915377013e681de74126f51">
+        <source>Could not save — a cookie with this name already exists in this shop.</source>
+        <target>Could not save — a cookie with this name already exists in this shop.</target>
+        <note>src/Controller/Admin/CookiesController.php</note>
+      </trans-unit>
+      <trans-unit id="790d59ef178acbc75d233bf4211763c6">
+        <source>Countries</source>
+        <target>Countries</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a973966df680cf7835459715ec6c4591">
+        <source>Create access</source>
+        <target>Create access</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ee6f55115dad913fd4e1c6201cbc5a1c">
+        <source>Created from the Quince CMP screen.</source>
+        <target>Created from the Quince CMP screen.</target>
+        <note>src/Controller/Admin/ApiController.php</note>
+      </trans-unit>
+      <trans-unit id="d36b05be3a388a19c2e649bd9fe052db">
+        <source>Creates an API client in PrestaShop with this module's scopes already ticked. It appears on the shop's own API clients screen, where you can disable or delete it later.</source>
+        <target>Creates an API client in PrestaShop with this module's scopes already ticked. It appears on the shop's own API clients screen, where you can disable or delete it later.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="cec102b319bec17572bbec5e9d5f3072">
+        <source>Current setup fingerprint</source>
+        <target>Current setup fingerprint</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="48358648336d501e2336d5360a559533">
+        <source>Current state</source>
+        <target>Current state</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="011fedf4050817b8826f95a53d9555b2">
+        <source>Current version</source>
+        <target>Current version</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="90589c47f06eb971d548591f23c285af">
+        <source>Custom</source>
+        <target>Custom</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="febf02f8d04600bbcf811ca0c6a9cb21">
+        <source>Custom icon accepted.</source>
+        <target>Custom icon accepted.</target>
+        <note>src/Controller/Admin/BannerController.php</note>
+      </trans-unit>
+      <trans-unit id="05068a48786b69c8f4e629676adaf9d8">
+        <source>Customer preview</source>
+        <target>Customer preview</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="44749712dbec183e983dcd78a7736c41">
+        <source>Date</source>
+        <target>Date</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="59ac489f89e22c62b991e1b1a5cd5dc8">
+        <source>Decisions — last 30 days</source>
+        <target>Decisions — last 30 days</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1de2a5e2e7a8ea99b376354b7aa7da80">
+        <source>Default before consent</source>
+        <target>Default before consent</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f2a6c498fb90ee345d997f888fce3b18">
+        <source>Delete</source>
+        <target>Delete</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="43c9713b7b3a508b0f5ec0ece8f48b88">
+        <source>Deny everywhere until the visitor agrees</source>
+        <target>Deny everywhere until the visitor agrees</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="401d503de057834e8ef2e95efbba3b24">
+        <source>Deny only in the countries listed, allow elsewhere</source>
+        <target>Deny only in the countries listed, allow elsewhere</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b0cdba7de70502989995d056d7398ba5">
+        <source>Deployment status</source>
+        <target>Deployment status</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ab1ce95efc7d86cf3146275f8100e276">
+        <source>Describe</source>
+        <target>Describe</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b5a7adde1af5c87d7fd797b6245c2a39">
+        <source>Description</source>
+        <target>Description</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5b26364f32efb08e35925686a880cb8d">
+        <source>Desktop (px)</source>
+        <target>Desktop (px)</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="36b64aad8a26246fe3ad4116a2b6f289">
+        <source>Diagnostics</source>
+        <target>Diagnostics</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="560f23c77d499c21038c0b4487f03cb2">
+        <source>Discussions</source>
+        <target>Discussions</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="508186a0dded4c4c4cf876b17963d30a">
+        <source>Distance from the bottom edge</source>
+        <target>Distance from the bottom edge</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2364f7067b8c405a944c44988369382b">
+        <source>Document page</source>
+        <target>Document page</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5b6cf869265c13af8566f192b4ab3d2a">
+        <source>Documentation</source>
+        <target>Documentation</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="48e3d5f66961b621c78f709afcd7d437">
+        <source>Download the file</source>
+        <target>Download the file</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="acf64c3df676c100141ea05f1133f758">
+        <source>Download the release and install it through the module manager.</source>
+        <target>Download the release and install it through the module manager.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6ec2bf19f83bc17c439e7b5c6e64b965">
+        <source>Draft — never published</source>
+        <target>Draft — never published</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="839cb550a5edfd2799776707d658b376">
+        <source>Each shop is set up on its own. A row that is not green is a shop that is not covered.</source>
+        <target>Each shop is set up on its own. A row that is not green is a shop that is not covered.</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7dce122004969d56ae2e0245cb754d35">
+        <source>Edit</source>
+        <target>Edit</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2f136bb5309f8e1fdd7ab679beaa6e07">
+        <source>Edit copy</source>
+        <target>Edit copy</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2349527875aae3786da09cce6f083afc">
+        <source>Edit the wording in Design → Pages. This module links to it, it does not store it.</source>
+        <target>Edit the wording in Design → Pages. This module links to it, it does not store it.</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ce8ae9da5b7cd6c3df2929543a9af92d">
+        <source>Email</source>
+        <target>Email</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="52418f8e130617a2927e357f840ff94a">
+        <source>Email me</source>
+        <target>Email me</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="01fda430325ffc51be15ed85cfd214e8">
+        <source>Email…</source>
+        <target>Email…</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="9eda48a461ef93b34731b28fdd82a890">
+        <source>Embedding</source>
+        <target>Embedding</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2a6ba72e93aa7fa676d07973ed2716bb">
+        <source>Endpoint</source>
+        <target>Endpoint</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="59165a2afa520ab5cff3c9fc2619c4fc">
+        <source>Engine integration</source>
+        <target>Engine integration</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a4ecfc70574394990cf17bd83df499f7">
+        <source>Event</source>
+        <target>Event</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a05af86100156b59f820533380f84ee8">
+        <source>Events are never overwritten. Retention only deletes what is older than the limit.</source>
+        <target>Events are never overwritten. Retention only deletes what is older than the limit.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="71a3f194fafccffd6dcb0c1c7bde5155">
+        <source>Every answer this person gave, newest first. Nothing here is ever overwritten.</source>
+        <target>Every answer this person gave, newest first. Nothing here is ever overwritten.</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5b3c65e2d5a7463456204c993fdfefb9">
+        <source>Every consent and every refusal goes into a log with a hash of the wording that was on screen at that moment. A checkbox proves a click; this proves what the click meant.</source>
+        <target>Every consent and every refusal goes into a log with a hash of the wording that was on screen at that moment. A checkbox proves a click; this proves what the click meant.</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ff21f70a78151d455f58439875e31622">
+        <source>Every distinct thing this shop can ask consent for.</source>
+        <target>Every distinct thing this shop can ask consent for.</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3a9d659937cd80b0cc8d09bc2b9e91e6">
+        <source>Every setting belongs to a shop, and exchange settings can be shared across a shop group without a leading shop whose removal would take the rest down.</source>
+        <target>Every setting belongs to a shop, and exchange settings can be shared across a shop group without a leading shop whose removal would take the rest down.</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="663e1f9f943a5f0b3a210c1100d92fea">
+        <source>Everyone will be asked again on their next visit. Records already collected stay in the log.</source>
+        <target>Everyone will be asked again on their next visit. Records already collected stay in the log.</target>
+        <note>src/Controller/Admin/SettingsController.php</note>
+      </trans-unit>
+      <trans-unit id="a4e3dfbad463ed83bfa1052c15794e85">
+        <source>Everything you set up in this shop, as one file: consent types, the cookie table, services, Consent Mode mapping, banner wording and settings.</source>
+        <target>Everything you set up in this shop, as one file: consent types, the cookie table, services, Consent Mode mapping, banner wording and settings.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b72ac10807b29c77f5b7e4b80ea40414">
+        <source>Explanation</source>
+        <target>Explanation</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c04f1e4841a6af78088d6ccf6f3a8a76">
+        <source>Export CSV</source>
+        <target>Export CSV</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="caa60e44ffab8b4bd17d22201af671f0">
+        <source>Export the configuration</source>
+        <target>Export the configuration</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b206a1b4ea1097761f78e8876f6da779">
+        <source>External</source>
+        <target>External</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="32db8e5d8a9229868dac1cf9d9abde19">
+        <source>External id</source>
+        <target>External id</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="890a33ff237d32635f2747c4c2f682d4">
+        <source>Failed events are never deleted.</source>
+        <target>Failed events are never deleted.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0d12df3a14be7acd413a3524524b27e4">
+        <source>Finish the update</source>
+        <target>Finish the update</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5f24b167bc357ded7370f602be122b4f">
+        <source>First layer</source>
+        <target>First layer</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2de1239f236684c5bee75bd524a38a51">
+        <source>Fix</source>
+        <target>Fix</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="3e0200b6b9ca78b8a7c09f92c0436e10">
+        <source>Floating button</source>
+        <target>Floating button</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="671fc9f2c7abebbd1a61d0a618c21c6a">
+        <source>For changes the fingerprint cannot see — a new purpose inside an existing category, or a sub-processor that sets no cookie. The log is left untouched.</source>
+        <target>For changes the fingerprint cannot see — a new purpose inside an existing category, or a sub-processor that sets no cookie. The log is left untouched.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d359c6df99b25183d81f7d728b71de0e">
+        <source>Form</source>
+        <target>Form</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="19f02ca742be3ec5ec84ecf0b77bb33d">
+        <source>Fragment of the script address or of its inline content by which the module recognises it on the page.</source>
+        <target>Fragment of the script address or of its inline content by which the module recognises it on the page.</target>
+        <note>views/templates/admin/script_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="325819433b49680b2fc04ee8636fcaf2">
+        <source>Fresh installation — empty register</source>
+        <target>Fresh installation — empty register</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="8913cec485406315a2f34d9440875315">
+        <source>From its own settings</source>
+        <target>From its own settings</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a5f462474f35d6df7216107bea8c2fac">
+        <source>From the shared Quince palette</source>
+        <target>From the shared Quince palette</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b2c6a554429da06f7a65b267ad7c69a9">
+        <source>Full clause</source>
+        <target>Full clause</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="32b919d18cfaca89383f6000dcc9c031">
+        <source>Generate</source>
+        <target>Generate</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="cb398ddb0236a31c3904a58d51d464dd">
+        <source>Getting a token</source>
+        <target>Getting a token</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="20c404f3ca0633629eee9b1b4ccd6737">
+        <source>Getting help</source>
+        <target>Getting help</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="71f9d891ae197cba623f46ccdb3a0612">
+        <source>Give a system access</source>
+        <target>Give a system access</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c322f9346b70efdd31968628d5ee68db">
+        <source>Granted</source>
+        <target>Granted</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0101316665d4f82adaa26d86fbbb2d6e">
+        <source>Heading</source>
+        <target>Heading</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="62a5e490880a92eef74f167d9dc6dca0">
+        <source>Hide</source>
+        <target>Hide</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="28f22981c25718566ce141e4861481fc">
+        <source>Hide the proof block</source>
+        <target>Hide the proof block</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="16d2b386b2034b9488996466aaae0b57">
+        <source>History</source>
+        <target>History</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e94f421ca1ea74a25c1b1a99d7fc0f62">
+        <source>How it is held back until consent is given.</source>
+        <target>How it is held back until consent is given.</target>
+        <note>views/templates/admin/script_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d7e7f5389d41617e5136da2979aa9bee">
+        <source>How long consent is kept for a visitor who never provided an email. Their record is tied to the browser, so it is worthless once that browser is gone.</source>
+        <target>How long consent is kept for a visitor who never provided an email. Their record is tied to the browser, so it is worthless once that browser is gone.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1418edd39421060ec975da83baa3e08f">
+        <source>How the service gets onto the page.</source>
+        <target>How the service gets onto the page.</target>
+        <note>views/templates/admin/script_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b3a8af60d46adb2c2e4c7a5ec268d92e">
+        <source>How this service is embedded, which consent it waits for and how it is held back.</source>
+        <target>How this service is embedded, which consent it waits for and how it is held back.</target>
+        <note>views/templates/admin/script_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ac4b73efd2b3c7f068ccd44d3b137f4e">
+        <source>I have written it down</source>
+        <target>I have written it down</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a12a3079e14ced46e69ba52b8a90b21a">
+        <source>IP</source>
+        <target>IP</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="817434295a673aed431435658b65d9a7">
+        <source>Icon</source>
+        <target>Icon</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="331ffa73e7a283e20e109185f0a2e648">
+        <source>Icon and label</source>
+        <target>Icon and label</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="cb392954a8f33882ee296832ba6dc55e">
+        <source>Icon only</source>
+        <target>Icon only</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0815570abfb4a4ed61e4d5422a911b8a">
+        <source>If sending stops working</source>
+        <target>If sending stops working</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="fd038fc7f319e48f3115d92bf5bdbef9">
+        <source>Ignore</source>
+        <target>Ignore</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c16d3cd1c12090be0354160f77ebb5e3">
+        <source>Import a configuration</source>
+        <target>Import a configuration</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ee058fb1c696504525e8977a95ba0d06">
+        <source>In force</source>
+        <target>In force</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3566d67435c7fb8b173ce917b6a9af2d">
+        <source>In force from</source>
+        <target>In force from</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="9e176b50a3a1f8c28d41b0a0014b6b25">
+        <source>In force since</source>
+        <target>In force since</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b823a976d0f14e7bbc37a9dd7c2b232c">
+        <source>In the file</source>
+        <target>In the file</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3cab03c00dbd11bc3569afa0748013f0">
+        <source>Inactive</source>
+        <target>Inactive</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="589ab34e870b80c8c7d035805452df19">
+        <source>Incoming</source>
+        <target>Incoming</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f50ad08cd2b512994cf374907c2cd6b6">
+        <source>Install version %v%</source>
+        <target>Install version %v%</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1cad35d4b3b9f624f82dbf237daaf188">
+        <source>Intro</source>
+        <target>Intro</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6abec59d63753ca9bf774ebd3c488614">
+        <source>Is it working, and am I clean.</source>
+        <target>Is it working, and am I clean.</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3a9f705529ad68ef50b6b1473ed77ea1">
+        <source>It comes from %provider% and needs your consent for %category% cookies.</source>
+        <target>It comes from %provider% and needs your consent for %category% cookies.</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="387f4d7429a5b2dabaf245d1fbcd2eeb">
+        <source>It is a shop-wide setting: turning it on serves every module that declares resources, not only this one. Nothing becomes readable without a client and its scopes.</source>
+        <target>It is a shop-wide setting: turning it on serves every module that declares resources, not only this one. Nothing becomes readable without a client and its scopes.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="fc194170f8215f7c1c1cec68eec26257">
+        <source>It is not on the list — switching test mode on now would hide the banner from you as well.</source>
+        <target>It is not on the list — switching test mode on now would hide the banner from you as well.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="16dbb9173cb305d8adc780d0cdeaec73">
+        <source>It is stored hashed — nobody can read it back, here or anywhere else. If it is lost, generate a new one on the PrestaShop screen.</source>
+        <target>It is stored hashed — nobody can read it back, here or anywhere else. If it is lost, generate a new one on the PrestaShop screen.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="cec8ab14d7f609248ccea0947c06a179">
+        <source>It may also record consents</source>
+        <target>It may also record consents</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e94f9ed9f874bf3638b7698898c30368">
+        <source>Keep sent events</source>
+        <target>Keep sent events</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2264c29f33d9806dda19f3142c01de0e">
+        <source>Keep their consent for</source>
+        <target>Keep their consent for</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d626102cfc2416a570fc0dc582a9b771">
+        <source>Kind</source>
+        <target>Kind</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b021df6aac4654c454f46c77646e745f">
+        <source>Label</source>
+        <target>Label</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="21ab62ecbe2532e2648c41daf341931b">
+        <source>Last finding: %when%</source>
+        <target>Last finding: %when%</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d3f1ed6424dc6c87a182801a8a8e3556">
+        <source>Last response</source>
+        <target>Last response</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b6113bd359f5ca6a539969d13dd77e97">
+        <source>Last sync</source>
+        <target>Last sync</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c4f77cc024d028aaf684cbf666342cc8">
+        <source>Leave this off for a system that only reads. Reading and writing are separate scopes on purpose.</source>
+        <target>Leave this off for a system that only reads. Reading and writing are separate scopes on purpose.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="4b742001b77aecb6ddc7eed5acd342d2">
+        <source>Leave this off unless the receiving system really sits behind the same firewall as the shop.</source>
+        <target>Leave this off unless the receiving system really sits behind the same firewall as the shop.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f00d562c9a385614a259496c1b62cc48">
+        <source>Leave this unticked to only see what the file contains — nothing will change.</source>
+        <target>Leave this unticked to only see what the file contains — nothing will change.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1a10be3692cec335c74387f33221a6fa">
+        <source>Lifetime</source>
+        <target>Lifetime</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="635886d3ad8f15fca6b971ddbba5b6c6">
+        <source>Link a document with [text](cms:3).</source>
+        <target>Link a document with [text](cms:3).</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6af3bd05b2c7f12b9a61e13e71deba47">
+        <source>Linked from the banner and from the consent screens. The module links to the page, it never stores its text.</source>
+        <target>Linked from the banner and from the consent screens. The module links to the page, it never stores its text.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="492b13b6c5e8d27119559d7b49edfa59">
+        <source>Loads this one frame without changing the visitor’s settings.</source>
+        <target>Loads this one frame without changing the visitor’s settings.</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="77b13add991aeb44c7f69c96ba36c3cd">
+        <source>Log retention</source>
+        <target>Log retention</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c07804402ad15ec51e3e2a4bee0bcac1">
+        <source>Manual entries are never touched by a scan.</source>
+        <target>Manual entries are never touched by a scan.</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c0e075d233093607f3991bb91e7add89">
+        <source>Match pattern</source>
+        <target>Match pattern</target>
+        <note>views/templates/admin/script_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c70f0c429e5ab5a325b01ad2d4a10587">
+        <source>Measured contrast</source>
+        <target>Measured contrast</target>
+        <note>views/templates/admin/_banner_preview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="83cc7d012d4485cc50b5f3ba2ce39f6d">
+        <source>Mobile (px)</source>
+        <target>Mobile (px)</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ea45b1a914558e3ace536f9f48f79b20">
+        <source>Multistore is on, so the Admin API answers 404 to everything.</source>
+        <target>Multistore is on, so the Admin API answers 404 to everything.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="254d1c62d37c3e4fdb8ff80e1b974716">
+        <source>Multistore throughout</source>
+        <target>Multistore throughout</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="49ee3087348e8d44e1feda1917443987">
+        <source>Name</source>
+        <target>Name</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="664d6755e31eea6469c7935d8e3be78d">
+        <source>Name the system that will connect.</source>
+        <target>Name the system that will connect.</target>
+        <note>src/Controller/Admin/ApiController.php</note>
+      </trans-unit>
+      <trans-unit id="2464608a06021fdfda6ab7fc4682fb8b">
+        <source>Never recorded in this shop</source>
+        <target>Never recorded in this shop</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="63d9076f7f7d32dced2e4856c6440067">
+        <source>Never run.</source>
+        <target>Never run.</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="78f289534ea3b6a197b3be2a39226fd1">
+        <source>Never — no external system configured.</source>
+        <target>Never — no external system configured.</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="99265e81500b449f29bbc4fff7efa20c">
+        <source>New consent type</source>
+        <target>New consent type</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1cd370c4321ff8e2dbb24935a9a79259">
+        <source>New cookie</source>
+        <target>New cookie</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="50778f977d5b1cbe2372d3ed1034c2c1">
+        <source>New key generated. Update it in the external system.</source>
+        <target>New key generated. Update it in the external system.</target>
+        <note>src/Controller/Admin/SyncController.php</note>
+      </trans-unit>
+      <trans-unit id="57f8c40eae98e678eab6608e237f5fd4">
+        <source>New service</source>
+        <target>New service</target>
+        <note>views/templates/admin/script_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="4ad930b554df9cc0f5b53bf658fb89ef">
+        <source>Next number automatically</source>
+        <target>Next number automatically</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ffd5a45fa60e672750b8c5198e326eae">
+        <source>No consent type defined yet.</source>
+        <target>No consent type defined yet.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f8639e0516e34732064c9a40fba937d5">
+        <source>No consent type yet. Nothing is being recorded in this shop until you add one.</source>
+        <target>No consent type yet. Nothing is being recorded in this shop until you add one.</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="788f6c60bb05647b2de64916c0c003d1">
+        <source>No cookie category defined yet.</source>
+        <target>No cookie category defined yet.</target>
+        <note>views/templates/admin/_banner_preview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="aaa2c3aaf102273e8f5a52301b23d940">
+        <source>No cookie category to map. Add one under Consent types first.</source>
+        <target>No cookie category to map. Add one under Consent types first.</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="903059d7b2821ce063b22122c806ae2d">
+        <source>No cookie described yet. The second layer of the banner has nothing to show until you add one.</source>
+        <target>No cookie described yet. The second layer of the banner has nothing to show until you add one.</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2a2d2c75ec43014500ef2d5f400cf7d1">
+        <source>No events yet</source>
+        <target>No events yet</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5daa601cc3ca99e59297606135e6e462">
+        <source>No events.</source>
+        <target>No events.</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b774ab91407ecd3220008c57234a2aa7">
+        <source>No file arrived.</source>
+        <target>No file arrived.</target>
+        <note>src/Controller/Admin/SupportController.php</note>
+      </trans-unit>
+      <trans-unit id="6ba82e34feda3ea09c515cef17a3155c">
+        <source>No key yet.</source>
+        <target>No key yet.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5c39b05c4dbd0569fbb6b3ada06cbc72">
+        <source>No service listed. Nothing is being held back before consent — every script on the storefront fires immediately.</source>
+        <target>No service listed. Nothing is being held back before consent — every script on the storefront fires immediately.</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c36ccacbb93df2090a1555cb909529b3">
+        <source>No services yet</source>
+        <target>No services yet</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="7268d0fadeebbef49a04b0631d489d5e">
+        <source>No version published yet.</source>
+        <target>No version published yet.</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="71482d2b2afab43943d0d0fb0d339a53">
+        <source>No wording was published for this consent, so none was shown.</source>
+        <target>No wording was published for this consent, so none was shown.</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="68da5970922a551902ce17815732cf87">
+        <source>Nobody yet. No external system can read or write consents in this shop.</source>
+        <target>Nobody yet. No external system can read or write consents in this shop.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c8036cdbdcda4a5addabc1854e2a0faf">
+        <source>Not in force yet</source>
+        <target>Not in force yet</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ab38ab90b1c1e1722f23f213e10d3e76">
+        <source>Not included: the consent log and published clause versions — they say something about the past of this shop — and the signing keys, which are secrets. Each shop gets its own.</source>
+        <target>Not included: the consent log and published clause versions — they say something about the past of this shop — and the signing keys, which are secrets. Each shop gets its own.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d470b5cb00092952c8de5c17e7531b8c">
+        <source>Not published</source>
+        <target>Not published</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="340a566c908df2cc754f0cdd1328f434">
+        <source>Not set up yet</source>
+        <target>Not set up yet</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="3262874b93fce3188975570fa1e53dbb">
+        <source>Nothing is past the limit right now.</source>
+        <target>Nothing is past the limit right now.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c40b8451621a425e38ec7f9f79c2109f">
+        <source>Nothing matches.</source>
+        <target>Nothing matches.</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c47b17a78b209b2b94b2360de6a12f13">
+        <source>Nothing observed yet. Start a scan and browse the shop — the checkout and a product page set the most.</source>
+        <target>Nothing observed yet. Start a scan and browse the shop — the checkout and a product page set the most.</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a06b6f3ff3c491242cd51baa6a4d0688">
+        <source>Nothing published yet.</source>
+        <target>Nothing published yet.</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="114f7ee4b1fd9c5a1aa29e25df1519d5">
+        <source>Nothing recorded for this address.</source>
+        <target>Nothing recorded for this address.</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="975639c1cb4eb60ab30ebf24f4db4386">
+        <source>Nothing to fix right now.</source>
+        <target>Nothing to fix right now.</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5b580e05c6a1781ef8448c897f973cb2">
+        <source>Nothing to set here. The module works either way; with the engine present it borrows its palette instead of shipping a second one.</source>
+        <target>Nothing to set here. The module works either way; with the engine present it borrows its palette instead of shipping a second one.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f2b6247e28cb7a75dea7533064807a85">
+        <source>Nothing waiting to be sent.</source>
+        <target>Nothing waiting to be sent.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="29632aa8adb995395fc58377b51e552e">
+        <source>Nothing was recorded.</source>
+        <target>Nothing was recorded.</target>
+        <note>src/Controller/Admin/ConsentLogController.php</note>
+      </trans-unit>
+      <trans-unit id="70bae94343fb81c3800cfaa5477865cf">
+        <source>Number from the external register</source>
+        <target>Number from the external register</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="784aae0c22a44305744790295d9618a2">
+        <source>OAuth2 client credentials. The token is short-lived; ask for a new one when it expires rather than storing it.</source>
+        <target>OAuth2 client credentials. The token is short-lived; ask for a new one when it expires rather than storing it.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d15305d7a4e34e02489c74a5ef542f36">
+        <source>Off</source>
+        <target>Off</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="bd51e51f4c2309e1e8fa095d48f4035e">
+        <source>Off — %count% waiting</source>
+        <target>Off — %count% waiting</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="521c36a31c2762741cf0f8890cbe05e3">
+        <source>On</source>
+        <target>On</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="9762354d584a7961b2c514721d38828c">
+        <source>On — %count% services</source>
+        <target>On — %count% services</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="e84df20031811e9278edc4ab7fa3a827">
+        <source>One line above the explanation.</source>
+        <target>One line above the explanation.</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="cb9bc25eff46b5badc74b7aec593c62e">
+        <source>One message a day at most, to %email%.</source>
+        <target>One message a day at most, to %email%.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="66c87f88b15c4b755587a3fd715165ad">
+        <source>One person across the whole shop group. A consent given to one shop is not a consent given to another.</source>
+        <target>One person across the whole shop group. A consent given to one shop is not a consent given to another.</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2a506bd059fa9fcbc6bb2a380714f3d1">
+        <source>One person, one history.</source>
+        <target>One person, one history.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d83588c88c6b71859f24925fa8313c32">
+        <source>One place for every consent in the shop: cookies, marketing, terms and form consents, with proof of what was shown and when.</source>
+        <target>One place for every consent in the shop: cookies, marketing, terms and form consents, with proof of what was shown and when.</target>
+        <note>quince_cmp.php</note>
+      </trans-unit>
+      <trans-unit id="83e53c0537a190e531c5a30658fdbe71">
+        <source>One place for every consent in the shop — cookies, marketing, terms and form consents, with proof of what was shown and when.</source>
+        <target>One place for every consent in the shop — cookies, marketing, terms and form consents, with proof of what was shown and when.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="cfeaf274ec9aff7ba16b9c34f8ed5474">
+        <source>One question in PHP and one in JavaScript. Server-side measurement that never asks is how a shop ends up with every sale attributed to nobody.</source>
+        <target>One question in PHP and one in JavaScript. Server-side measurement that never asks is how a shop ends up with every sale attributed to nobody.</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="00df394e4d3282566c9ce2598c5d7867">
+        <source>Open PDF</source>
+        <target>Open PDF</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2fcdb5b88473ac905da15badbb3ee602">
+        <source>Open sync</source>
+        <target>Open sync</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="791f339f47502c2d2dc4e252ce49b5a2">
+        <source>Opens the second layer of the banner.</source>
+        <target>Opens the second layer of the banner.</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ef2d1c4117984e05735fd5868172db22">
+        <source>Optional when a CMS page is linked, required when it is not. Up to 10 MB.</source>
+        <target>Optional when a CMS page is linked, required when it is not. Up to 10 MB.</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5b5f4478c2de115ad98774d0155638b7">
+        <source>Optional. Shown when the customer expands the label.</source>
+        <target>Optional. Shown when the customer expands the label.</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e1661d7935c6621ecdec04533a1ca1cc">
+        <source>Optional. Use it when the wording lives outside the shop. Up to 10 MB.</source>
+        <target>Optional. Use it when the wording lives outside the shop. Up to 10 MB.</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6621a26302eb4d01b6af5ff1aa959a62">
+        <source>Or upload your own SVG</source>
+        <target>Or upload your own SVG</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3edf8ca26a1ec14dd6e91dd277ae1de6">
+        <source>Origin</source>
+        <target>Origin</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="bb769a9877e26f5a434b5d278197c9e8">
+        <source>Other modules can ask</source>
+        <target>Other modules can ask</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7554b67fb6cb01f58c8c2bee866cceb1">
+        <source>Outbox</source>
+        <target>Outbox</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e60340c5328bd1bdc50cd8f3efd83c88">
+        <source>Outgoing</source>
+        <target>Outgoing</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3b878279a04dc47d60932cb294d96259">
+        <source>Overview</source>
+        <target>Overview</target>
+        <note>src/Controller/Admin\OverviewController.php</note>
+      </trans-unit>
+      <trans-unit id="564c43945caad7ed16c214c446610618">
+        <source>Own colours</source>
+        <target>Own colours</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="bcd1b68617759b1dfcff0403a6b5a8d1">
+        <source>PDF</source>
+        <target>PDF</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ba3e743fb706e3e7e814d5b61cb1114f">
+        <source>Paste this into a bug report.</source>
+        <target>Paste this into a bug report.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="40bed7cf9b3d4bb3a3d7a7e3eb18c5eb">
+        <source>Person</source>
+        <target>Person</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="dd4b5ea53728ed2f9329927b32dd5092">
+        <source>Placeholder wording saved.</source>
+        <target>Placeholder wording saved.</target>
+        <note>src/Controller/Admin/ScriptsController.php</note>
+      </trans-unit>
+      <trans-unit id="ae13e51f99f3be623a6d44d7439d9bb5">
+        <source>Placement</source>
+        <target>Placement</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="52f5e0bc3859bc5f5e25130b6c7e8881">
+        <source>Position</source>
+        <target>Position</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d0834fcec6337785ee749c8f5464f6f6">
+        <source>Preferences</source>
+        <target>Preferences</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d216cb45264f533aabaad0f60f05a355">
+        <source>PrestaShop blocks the whole API while multistore is active, until the admin_api_multistore feature flag is switched on. Advanced parameters → Feature flags. The flag is experimental, which is why we do not switch it on for you.</source>
+        <target>PrestaShop blocks the whole API while multistore is active, until the admin_api_multistore feature flag is switched on. Advanced parameters → Feature flags. The flag is experimental, which is why we do not switch it on for you.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1cc703f9ad29a162f945c75750246ab5">
+        <source>PrestaShop has no clock of its own — call this address from the server cron:</source>
+        <target>PrestaShop has no clock of its own — call this address from the server cron:</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2405eb6d5f4f1d1294ae616d3d1d48c3">
+        <source>PrestaShop refuses API requests over plain HTTP and there is no way around it outside developer mode. Turn on SSL first.</source>
+        <target>PrestaShop refuses API requests over plain HTTP and there is no way around it outside developer mode. Turn on SSL first.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="31fde7b05ac8952dacf4af8a704074ec">
+        <source>Preview</source>
+        <target>Preview</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="56c34c6410dd45c5cec44149ad0ce037">
+        <source>Privacy policy</source>
+        <target>Privacy policy</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="3b75aac75dc5f26614dab746da7b081d">
+        <source>Privacy policy page</source>
+        <target>Privacy policy page</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3275eb82c2204c22dc32ed414c42b6b5">
+        <source>Proof, not a checkbox</source>
+        <target>Proof, not a checkbox</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="27703c8f150ac4bb0a3a83a7857353af">
+        <source>Provider</source>
+        <target>Provider</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="87169cb356d8b6f51a5926d55044fcb8">
+        <source>Publish a new version</source>
+        <target>Publish a new version</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="f8d9d840e62d4fbf8ef4eac03473c026">
+        <source>Publish new version</source>
+        <target>Publish new version</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="15f336355244f19ee3eb61d6bdfde8aa">
+        <source>Queue them</source>
+        <target>Queue them</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="727c0205a4eb89358dc888fef89e3887">
+        <source>Queued for another attempt.</source>
+        <target>Queued for another attempt.</target>
+        <note>src/Controller/Admin/SyncController.php</note>
+      </trans-unit>
+      <trans-unit id="f6cd838b0d9e152089b5906cc32c3864">
+        <source>Quince CMP</source>
+        <target>Quince CMP</target>
+        <note>quince_cmp.php</note>
+      </trans-unit>
+      <trans-unit id="64b508835fe3dcc1b65223518a0b9e7b">
+        <source>Quince Engine is installed, so the banner can follow the palette used by the rest of the shop. You can still pick your own colours on the Banner screen.</source>
+        <target>Quince Engine is installed, so the banner can follow the palette used by the rest of the shop. You can still pick your own colours on the Banner screen.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2dc8c89a4ce58820d89719046407c0af">
+        <source>Quince Engine is not installed. The banner uses the colours you set on the Banner screen, and nothing else is needed.</source>
+        <target>Quince Engine is not installed. The banner uses the colours you set on the Banner screen, and nothing else is needed.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="171a41c6fa4b15e3b526c90d61805f43">
+        <source>Raise it when a chat window, a back-to-top button or a sticky cart bar sits in the same corner. Phones get their own value because sticky bars are far more common there.</source>
+        <target>Raise it when a chat window, a back-to-top button or a sticky cart bar sits in the same corner. Phones get their own value because sticky bars are far more common there.</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="64fd808d93f906698fa0bb72689907ed">
+        <source>Re-ask after</source>
+        <target>Re-ask after</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5134eed9195113698894c2119222ab06">
+        <source>Read the full clause</source>
+        <target>Read the full clause</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0c390945972861055f1728ba8bd0411f">
+        <source>Record a decision made outside the shop. A withdrawal is granted: false.</source>
+        <target>Record a decision made outside the shop. A withdrawal is granted: false.</target>
+        <note>src/Api/ApiSurface.php</note>
+      </trans-unit>
+      <trans-unit id="4997627ef302c7299af1be59611fceae">
+        <source>Record a withdrawal of %code% for %email%?</source>
+        <target>Record a withdrawal of %code% for %email%?</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1a13a903a7c2c4a0e23092475cda1a6b">
+        <source>Record a withdrawal the person asked for</source>
+        <target>Record a withdrawal the person asked for</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5b2b4caaee8973a36b86aab7c368a1d4">
+        <source>Record withdrawal</source>
+        <target>Record withdrawal</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5b6352d4af330defb41d0bba3929b885">
+        <source>Recorded</source>
+        <target>Recorded</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b052970bc9975056bddab01d7475f34e">
+        <source>Recorded as</source>
+        <target>Recorded as</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2f8c27c2097c99667170d4cd77c7ed30">
+        <source>Recorded by</source>
+        <target>Recorded by</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b751096533bd0cbba3179e0c7760bc2d">
+        <source>Recording a decision made elsewhere</source>
+        <target>Recording a decision made elsewhere</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b4063d8bd59793b6de4f3582b7b32381">
+        <source>Refusing is as easy as agreeing</source>
+        <target>Refusing is as easy as agreeing</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a50239593db1c9df6d42238d7c9cc1b1">
+        <source>Reject all</source>
+        <target>Reject all</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7d0ee6fed10d3d4e5c9ee496729ab519">
+        <source>Release notes</source>
+        <target>Release notes</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="91ff40a966daa2e252f41ce9f22aa8e2">
+        <source>Releases are not published yet, so there is nothing to check against. This module updates the usual way, through the module manager.</source>
+        <target>Releases are not published yet, so there is nothing to check against. This module updates the usual way, through the module manager.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e48379e61ed50885705480f961c54e9b">
+        <source>Remove the uploaded icon</source>
+        <target>Remove the uploaded icon</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="be2192a710f0185ca9a27200c9fa1913">
+        <source>Remove them now</source>
+        <target>Remove them now</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1129e83ae2bbdab9f300f91b16fcfa72">
+        <source>Replace the configuration</source>
+        <target>Replace the configuration</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="867272f2df24471ee39c42a536bd3d2e">
+        <source>Replace the module files with version %v%? The shop keeps running, but the panel will be a moment slower right after.</source>
+        <target>Replace the module files with version %v%? The shop keeps running, but the panel will be a moment slower right after.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0f6331fd0d61bf77f611f6f116b984c1">
+        <source>Report a problem</source>
+        <target>Report a problem</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="15c2d85f1fae22a3c3a0594510a1f611">
+        <source>Request</source>
+        <target>Request</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b651efdb98a5d6bd2b3935d0c3f4a5e2">
+        <source>Required</source>
+        <target>Required</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c9c3b82b005f6558a00ec0188d23bbb1">
+        <source>Required — cannot be disabled</source>
+        <target>Required — cannot be disabled</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="27f5eeaac986c9184121f089b773592f">
+        <source>Respect GPC</source>
+        <target>Respect GPC</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6327b4e59f58137083214a1fec358855">
+        <source>Retry</source>
+        <target>Retry</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ad2b4b9a951fd6c5ec198279ba927d61">
+        <source>Retry all failed</source>
+        <target>Retry all failed</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="393c3f5ea8ad35c02691d507bdbb31b0">
+        <source>Reveal</source>
+        <target>Reveal</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="8d2de5368588552fbae54044ac5c7b3d">
+        <source>Rotate</source>
+        <target>Rotate</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="14d12a5b683ec84eba78a9a794651a29">
+        <source>Rows added by hand keep their category and description even after a new scan runs.</source>
+        <target>Rows added by hand keep their category and description even after a new scan runs.</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3bcb91686034d4cddd37451f80996e3c">
+        <source>Run scan</source>
+        <target>Run scan</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c9cc8cce247e49bae79f15173ce97354">
+        <source>Save</source>
+        <target>Save</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7653d8f71fa248430cbdf411c42bbc4d">
+        <source>Save Consent Mode</source>
+        <target>Save Consent Mode</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="74e0afe3f9d8c99fff51df2b372b70a8">
+        <source>Save button</source>
+        <target>Save button</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a5719fd9c0a11b4e7fa000fd6dbe850a">
+        <source>Saved as an event signed with your name. It goes out to connected systems on the next sync run.</source>
+        <target>Saved as an event signed with your name. It goes out to connected systems on the next sync run.</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="daed218f0807e1b28d893128d54bc716">
+        <source>Say what this is based on — a ticket number or the date of the message. The entry is not saved without it.</source>
+        <target>Say what this is based on — a ticket number or the date of the message. The entry is not saved without it.</target>
+        <note>src/Controller/Admin/ConsentLogController.php</note>
+      </trans-unit>
+      <trans-unit id="8004fe1451e44d9046fc95ce98a48866">
+        <source>Scan results cleared.</source>
+        <target>Scan results cleared.</target>
+        <note>src/Controller/Admin/CookiesController.php</note>
+      </trans-unit>
+      <trans-unit id="c8c7bbef5dd46f75e0bef7960d61f434">
+        <source>Scan started. Browse the shop in the tab that just opened — every page you visit is checked.</source>
+        <target>Scan started. Browse the shop in the tab that just opened — every page you visit is checked.</target>
+        <note>src/Controller/Admin/CookiesController.php</note>
+      </trans-unit>
+      <trans-unit id="948505fb20417757f22a4d1143346dd8">
+        <source>Scanner</source>
+        <target>Scanner</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="25f7347236b51a5eae4ba01a7862cb55">
+        <source>Schedule</source>
+        <target>Schedule</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c8fe44369f2d1c9cd14b5fde1a4622ca">
+        <source>Script blocking</source>
+        <target>Script blocking</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="dcdc7233d0ec9b74b1e3e74efb477044">
+        <source>Scripts &amp; blocking</source>
+        <target>Scripts &amp; blocking</target>
+        <note>src/Controller/Admin\ScriptsController.php</note>
+      </trans-unit>
+      <trans-unit id="b56b815f63e14ff37bd78bdf8790b5df">
+        <source>Search consent types…</source>
+        <target>Search consent types…</target>
+        <note>views/templates/admin/consent_types.html.twig</note>
+      </trans-unit>
+      <trans-unit id="4a73541f0fc834b07ff6bc98abc84284">
+        <source>Second layer</source>
+        <target>Second layer</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1a46f0d2222f71c1423d4fc4c5c4a2f2">
+        <source>Send events</source>
+        <target>Send events</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="dd4b20d296da8f5337098a70cc8fe34f">
+        <source>Send events to</source>
+        <target>Send events to</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7791ecfb29821e57ac07f00761f6fa10">
+        <source>Send the same shape back to our address to record a change made outside the shop. State is derived from the newest event, so a withdrawal is the same call with granted: false.</source>
+        <target>Send the same shape back to our address to record a change made outside the shop. State is derived from the newest event, so a withdrawal is the same call with granted: false.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c54c2ccebb2b263cce522d438955c32c">
+        <source>Sender key</source>
+        <target>Sender key</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7f8c0283f16925caed8e632086b81b9c">
+        <source>Sent</source>
+        <target>Sent</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f7809f39380b96c9bf155f427a8f0285">
+        <source>Sent %sent%, failed %failed%.</source>
+        <target>Sent %sent%, failed %failed%.</target>
+        <note>src/Controller/Admin/SyncController.php</note>
+      </trans-unit>
+      <trans-unit id="c2ba7e785c49050f48da9aacc45c2b85">
+        <source>Service</source>
+        <target>Service</target>
+        <note>src/Controller/Admin\ScriptsController.php</note>
+      </trans-unit>
+      <trans-unit id="702c50bd80e92e157cb4a89a21716346">
+        <source>Service removed from the list. Nothing holds it back now — check that it is gone from the theme as well.</source>
+        <target>Service removed from the list. Nothing holds it back now — check that it is gone from the theme as well.</target>
+        <note>src/Controller/Admin/ScriptsController.php</note>
+      </trans-unit>
+      <trans-unit id="584333fa23d27b843da8b5c268f78bc4">
+        <source>Service saved.</source>
+        <target>Service saved.</target>
+        <note>src/Controller/Admin/ScriptsController.php</note>
+      </trans-unit>
+      <trans-unit id="ec423e37cbdb5bbd1f1d66e110477109">
+        <source>Service switched off. Nothing holds it back — check that it is gone from the theme.</source>
+        <target>Service switched off. Nothing holds it back — check that it is gone from the theme.</target>
+        <note>src/Controller/Admin/ScriptsController.php</note>
+      </trans-unit>
+      <trans-unit id="e8578134e20862b2fc4c151c556b18c6">
+        <source>Service switched on. It is held back until the visitor agrees.</source>
+        <target>Service switched on. It is held back until the visitor agrees.</target>
+        <note>src/Controller/Admin/ScriptsController.php</note>
+      </trans-unit>
+      <trans-unit id="aac3f547195791056212885cee618508">
+        <source>Service to be added: %name% — %where%</source>
+        <target>Service to be added: %name% — %where%</target>
+        <note>src/Controller/Admin/SupportController.php</note>
+      </trans-unit>
+      <trans-unit id="92f3c991e707c62f0d672519b7216402">
+        <source>Services are held back until the visitor agrees — scripts lose their executable type, embeds lose their address. A banner over scripts that already ran is decoration.</source>
+        <target>Services are held back until the visitor agrees — scripts lose their executable type, embeds lose their address. A banner over scripts that already ran is decoration.</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="17021e4b6c47ad8933a789b374e3ee40">
+        <source>Set the repository above and the links to documentation, issues and discussions appear here.</source>
+        <target>Set the repository above and the links to documentation, issues and discussions appear here.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f4f70727dc34561dfde1a3c529b6205c">
+        <source>Settings</source>
+        <target>Settings</target>
+        <note>src/Controller/Admin\SettingsController.php</note>
+      </trans-unit>
+      <trans-unit id="0f19c2b23a35ea2594e4b28ec0087a3b">
+        <source>Settings apply to</source>
+        <target>Settings apply to</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="421cd3b4ce13e841cad60985338e6d71">
+        <source>Settings button</source>
+        <target>Settings button</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="9a7e58ee13cb727cb7c4acc68f4cafe5">
+        <source>Settings saved.</source>
+        <target>Settings saved.</target>
+        <note>src/Controller/Admin/SettingsController.php</note>
+      </trans-unit>
+      <trans-unit id="9f82518d468b9fee614fcc92f76bb163">
+        <source>Shop</source>
+        <target>Shop</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6d92d655ad8f5d44e780ce94faed3292">
+        <source>Short label</source>
+        <target>Short label</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="498f79c4c5bbde77f1bceb6c86fd0f6d">
+        <source>Show</source>
+        <target>Show</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="9db85da25e451b696735a78715b6733f">
+        <source>Show a way back to the settings</source>
+        <target>Show a way back to the settings</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b7e4f8367113908deebda2053b40c299">
+        <source>Show the banner</source>
+        <target>Show the banner</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3e9e0db8d3da627a3355c38fe2fe105e">
+        <source>Show this content</source>
+        <target>Show this content</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="bd3cb7a1bc98b1905dd1f01f534be4ff">
+        <source>Shown in place of maps, videos and chat until the visitor allows the category.</source>
+        <target>Shown in place of maps, videos and chat until the visitor allows the category.</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="48e225d9ee0ebd1bc345c2d81f725927">
+        <source>Shown to the customer in the second layer of the banner.</source>
+        <target>Shown to the customer in the second layer of the banner.</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6201ef1b62afc8279dbe20aaf6dcf3be">
+        <source>Shows</source>
+        <target>Shows</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="8c09001c99ecb6fdd8d6023fcf039054">
+        <source>Signature</source>
+        <target>Signature</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d12b39c5e9add5e3e37ef693848f35a9">
+        <source>Signed over the raw body, byte for byte — do not re-encode the JSON before checking.</source>
+        <target>Signed over the raw body, byte for byte — do not re-encode the JSON before checking.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d0618ac349453cd2b2df8018cab6cf36">
+        <source>Signed webhook out and in, with retries and a queue you can inspect. A conflict is settled by event time, and the event that lost is written down with both sides.</source>
+        <target>Signed webhook out and in, with retries and a queue you can inspect. A conflict is settled by event time, and the event that lost is written down with both sides.</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0a69902efd03fb4c040bacdf76a54bdf">
+        <source>Signing key</source>
+        <target>Signing key</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f31bbdd1b3e85bccd652680e16935819">
+        <source>Source</source>
+        <target>Source</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7ee64ca5e670bb59a84f64db53925829">
+        <source>Standalone — quince_engine not installed</source>
+        <target>Standalone — quince_engine not installed</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="46a2a41cc6e552044816a2d04634545d">
+        <source>State</source>
+        <target>State</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ec53a8c4f07baed5d8825072c89799be">
+        <source>Status</source>
+        <target>Status</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b6519acd6e726737cf2beee4b18a14fd">
+        <source>Strip ad identifiers from requests</source>
+        <target>Strip ad identifiers from requests</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="db5eb84117d06047c97c9a0191b5fffe">
+        <source>Support</source>
+        <target>Support</target>
+        <note>src/Controller/Admin\SupportController.php</note>
+      </trans-unit>
+      <trans-unit id="aa0d528ba11ea1485d466dfe1ea40819">
+        <source>Surface</source>
+        <target>Surface</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d8e87c0927539672f54462c837be0b7f">
+        <source>Sync</source>
+        <target>Sync</target>
+        <note>src/Controller/Admin\SyncController.php</note>
+      </trans-unit>
+      <trans-unit id="65a2d3ce22dd49ceefd411da5260490d">
+        <source>Sync is off, or the endpoint and signing key are not set.</source>
+        <target>Sync is off, or the endpoint and signing key are not set.</target>
+        <note>src/Controller/Admin/SyncController.php</note>
+      </trans-unit>
+      <trans-unit id="c03fafa3a653240e6104348e1293bb88">
+        <source>Sync now</source>
+        <target>Sync now</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3933a4ae3eaba537d0d0154cb0a838d6">
+        <source>Sync settings saved.</source>
+        <target>Sync settings saved.</target>
+        <note>src/Controller/Admin/SyncController.php</note>
+      </trans-unit>
+      <trans-unit id="956d4d3bb3fde86f6c2f08cfdc313bdb">
+        <source>System information</source>
+        <target>System information</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1aaf9a7e66c58b943a3263410f5cf34e">
+        <source>Takes a file exported from another shop and puts that setup here — replacing what is configured now. The consent log and published clause versions are left untouched.</source>
+        <target>Takes a file exported from another shop and puts that setup here — replacing what is configured now. The consent log and published clause versions are left untouched.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="4245499695408b974322be6f01b0d17a">
+        <source>Test mode</source>
+        <target>Test mode</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5b7cd22ca53fbb005d4bbf4f7d8c9fca">
+        <source>Test mode is on for %shop% — the banner is shown only to the listed IP addresses. Everyone else sees nothing.</source>
+        <target>Test mode is on for %shop% — the banner is shown only to the listed IP addresses. Everyone else sees nothing.</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="9dffbf69ffba8bc38bc4e01abf4b1675">
+        <source>Text</source>
+        <target>Text</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2184f0cb22c17374d0370aa4dff70ebb">
+        <source>Text hash</source>
+        <target>Text hash</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="69c3a902e952d91fc476ac218a831c23">
+        <source>Text hash of new content</source>
+        <target>Text hash of new content</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="687f506bbac02f25cd9e06d3aab72267">
+        <source>The Admin API is on. It serves every module that declares resources, not only this one.</source>
+        <target>The Admin API is on. It serves every module that declares resources, not only this one.</target>
+        <note>src/Controller/Admin/ApiController.php</note>
+      </trans-unit>
+      <trans-unit id="db83629a2b7b71df2a18a2f8dbdcfe2f">
+        <source>The Admin API is switched off in this shop.</source>
+        <target>The Admin API is switched off in this shop.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="377a6edc260122ee3ce7424c70b5bd56">
+        <source>The Global Privacy Control signal is honoured without asking — the banner does not show.</source>
+        <target>The Global Privacy Control signal is honoured without asking — the banner does not show.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0d166aed77aa520b01542df37e96b7db">
+        <source>The banner on %shop% has no privacy policy page set. The visitor cannot read what they are agreeing to.</source>
+        <target>The banner on %shop% has no privacy policy page set. The visitor cannot read what they are agreeing to.</target>
+        <note>src/Report/Deployment.php</note>
+      </trans-unit>
+      <trans-unit id="77eca5ff4620775c68ffcf1415aee3f7">
+        <source>The category decides which consent switches this cookie on.</source>
+        <target>The category decides which consent switches this cookie on.</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="bc69457c53f66aec96106d13df6e25c0">
+        <source>The client could not be created: %reason%</source>
+        <target>The client could not be created: %reason%</target>
+        <note>src/Controller/Admin/ApiController.php</note>
+      </trans-unit>
+      <trans-unit id="d3586e96d34157bde595fa5b0e4c4796">
+        <source>The consent log, newest first. Filters: code, email, from, to, page.</source>
+        <target>The consent log, newest first. Filters: code, email, from, to, page.</target>
+        <note>src/Api/ApiSurface.php</note>
+      </trans-unit>
+      <trans-unit id="91de5903f90d24104e415da53fa572b5">
+        <source>The consent that releases this service.</source>
+        <target>The consent that releases this service.</target>
+        <note>views/templates/admin/script_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d88c5813e79e6f1db56b5546d95645dd">
+        <source>The cookie name cannot be empty.</source>
+        <target>The cookie name cannot be empty.</target>
+        <note>src/Controller/Admin/CookiesController.php</note>
+      </trans-unit>
+      <trans-unit id="d324a161bd9db8ed02418367c66042b7">
+        <source>The current consent state of one person, per shop.</source>
+        <target>The current consent state of one person, per shop.</target>
+        <note>src/Api/ApiSurface.php</note>
+      </trans-unit>
+      <trans-unit id="1baa8cc7be3f220a1b112ba900a63cd5">
+        <source>The current setup of this shop will be overwritten.</source>
+        <target>The current setup of this shop will be overwritten.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f68694a2dbd1d79dd0ed0da0e793b300">
+        <source>The customer reads this in their own language — the module builds the wording from the number and the unit.</source>
+        <target>The customer reads this in their own language — the module builds the wording from the number and the unit.</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e2b9ec76ead2b88da6c7509ee2317705">
+        <source>The customer sees the same question twice, and only one of the two answers lands in this log. Decide which module owns the consent fields before you go live.</source>
+        <target>The customer sees the same question twice, and only one of the two answers lands in this log. Decide which module owns the consent fields before you go live.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="02bdfa59e4ed56a168ccc343971e278e">
+        <source>The document is a CMS page of this shop.</source>
+        <target>The document is a CMS page of this shop.</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="581b7285499eb05a6c353567dffc63c5">
+        <source>The file holds %t% consent types, %c% cookies and %s% services. Tick the confirmation to replace what is here now.</source>
+        <target>The file holds %t% consent types, %c% cookies and %s% services. Tick the confirmation to replace what is here now.</target>
+        <note>src/Controller/Admin/SupportController.php</note>
+      </trans-unit>
+      <trans-unit id="0c46cf96f77a5d1c753cf6dc7022d3fe">
+        <source>The file is not valid JSON.</source>
+        <target>The file is not valid JSON.</target>
+        <note>src/Controller/Admin/SupportController.php</note>
+      </trans-unit>
+      <trans-unit id="f537f817c62ba92c62a0568c46a270de">
+        <source>The files are on version %to%, the database still on %from%.</source>
+        <target>The files are on version %to%, the database still on %from%.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="30c4198e8bac26b62c592669953397f7">
+        <source>The floating button is off — a visitor who rejected has no way back to the settings.</source>
+        <target>The floating button is off — a visitor who rejected has no way back to the settings.</target>
+        <note>views/templates/admin/_banner_preview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="951e7de16300a70b5eba095587a8b379">
+        <source>The last recorded answer for each consent.</source>
+        <target>The last recorded answer for each consent.</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="488c2bcce55a8d0dadcc5c940325d36c">
+        <source>The law asks for consent where it applies. Denying worldwide costs you data you were allowed to collect.</source>
+        <target>The law asks for consent where it applies. Denying worldwide costs you data you were allowed to collect.</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3f94baf46d2388cacd99d47a5a3e416e">
+        <source>The log is append-only. A withdrawal is a new event with granted: false, never a deletion — otherwise the proof would stop being proof.</source>
+        <target>The log is append-only. A withdrawal is a new event with granted: false, never a deletion — otherwise the proof would stop being proof.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f8fc25aa3c6f4b43a379795ea6ac04b5">
+        <source>The module never stores or edits the wording of a clause. It links to a CMS page or a PDF and keeps a hash, so it can tell you when the text changed after consent was collected.</source>
+        <target>The module never stores or edits the wording of a clause. It links to a CMS page or a PDF and keeps a hash, so it can tell you when the text changed after consent was collected.</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0625e6f46d42fbbd76411059911fa08c">
+        <source>The module never updates on its own — it only tells you a newer version exists.</source>
+        <target>The module never updates on its own — it only tells you a newer version exists.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="fa1f5f7351cdd9971c9d4e2ef9adf315">
+        <source>The module was updated from version %from% to %to%.</source>
+        <target>The module was updated from version %from% to %to%.</target>
+        <note>src/Controller/Admin/SupportController.php</note>
+      </trans-unit>
+      <trans-unit id="7c0ee997542a8197fde60859470db00e">
+        <source>The receiver is on our own network</source>
+        <target>The receiver is on our own network</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c21e00d974014356c50ae364e29f351c">
+        <source>The scanner runs in a browser with everything unblocked and reports the cookies, storage keys and third-party hosts it finds. The server alone sees a fraction of them.</source>
+        <target>The scanner runs in a browser with everything unblocked and reports the cookies, storage keys and third-party hosts it finds. The server alone sees a fraction of them.</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5d2f0019a321ad81770bc36b5d7ec4d4">
+        <source>The second option lets analytics run before the visitor answers. Legal in some countries, not in others — check before you pick it.</source>
+        <target>The second option lets analytics run before the visitor answers. Legal in some countries, not in others — check before you pick it.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c60b323246560fa643325e4bd4a816d1">
+        <source>The service name cannot be empty.</source>
+        <target>The service name cannot be empty.</target>
+        <note>src/Controller/Admin/ScriptsController.php</note>
+      </trans-unit>
+      <trans-unit id="06dab6c7c9bbf13042754fda74cf5a70">
+        <source>The whole group %group% (%count% shops)</source>
+        <target>The whole group %group% (%count% shops)</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0a1f187e9645c9fae6e8e2c56073786b">
+        <source>The wording is stored now; the storefront starts rendering it together with the banner.</source>
+        <target>The wording is stored now; the storefront starts rendering it together with the banner.</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="53fd9ec093a9e0eed820e7a79fcc365c">
+        <source>Then, with the token</source>
+        <target>Then, with the token</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3ed26888b4d368c0bb6a3eab00676b24">
+        <source>There is nothing newer to install.</source>
+        <target>There is nothing newer to install.</target>
+        <note>src/Controller/Admin/SupportController.php</note>
+      </trans-unit>
+      <trans-unit id="1061ae9da2cf983b2feaebbbe7ba193f">
+        <source>These settings belong to %shop%.</source>
+        <target>These settings belong to %shop%.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b68068c8d47314148a5558c25e3a277b">
+        <source>This address has no customer account in the shop.</source>
+        <target>This address has no customer account in the shop.</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="05ee0df4bab58abb6ac3e7b829003cd3">
+        <source>This consent is not wired to any place in the shop yet.</source>
+        <target>This consent is not wired to any place in the shop yet.</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="195ed21d43f76dfff4b8598f79015acc">
+        <source>This consent type does not exist in this shop.</source>
+        <target>This consent type does not exist in this shop.</target>
+        <note>src/Controller/Admin/ConsentTypesController.php</note>
+      </trans-unit>
+      <trans-unit id="5b00c3db09cb1f98accb4418658488d2">
+        <source>This content is blocked</source>
+        <target>This content is blocked</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a763826514aceee67ec132b0911da4a3">
+        <source>This server cannot replace the files:</source>
+        <target>This server cannot replace the files:</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="003d2e4d18980e3062b4b42815aba960">
+        <source>This shop has no SSL, so the API cannot answer at all.</source>
+        <target>This shop has no SSL, so the API cannot answer at all.</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="fa3f68c67542fd0d2649d52d159c8a6c">
+        <source>This shop only</source>
+        <target>This shop only</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="9732282f222febad36f3f028bf5596ea">
+        <source>Three buttons of equal weight and size, 44 px touch targets, keyboard focus kept inside the window, GPC honoured without asking. Consent obtained by making refusal harder is not consent.</source>
+        <target>Three buttons of equal weight and size, 44 px touch targets, keyboard focus kept inside the window, GPC honoured without asking. Consent obtained by making refusal harder is not consent.</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="c139f225949fcc2d54b206cc98508c9a">
+        <source>Ticket 4821, e-mail of 2026-08-28</source>
+        <target>Ticket 4821, e-mail of 2026-08-28</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b78a3223503896721cca1303f776159b">
+        <source>Title</source>
+        <target>Title</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5ac5da76620384c0485895306132d201">
+        <source>Turn the Admin API on</source>
+        <target>Turn the Admin API on</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="64c1d149e5f550ec37fdd2ec8c2b2abd">
+        <source>Two-letter codes, comma separated. Default is the EEA plus the UK and Switzerland.</source>
+        <target>Two-letter codes, comma separated. Default is the EEA plus the UK and Switzerland.</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="4132fdd2ef6537d837277493c37753ed">
+        <source>Two-way exchange</source>
+        <target>Two-way exchange</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5c1ba677a435c52d4eb10aeb3f40ac8a">
+        <source>Two-way exchange of consent events with an external system.</source>
+        <target>Two-way exchange of consent events with an external system.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3476bf9c3af766198bfbd4f065a51e69">
+        <source>Unassigned</source>
+        <target>Unassigned</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6c9ba792a5b50387b1b56f5ab8a67e42">
+        <source>Uninstall the module? The consent log goes with it, including the proof of what each customer accepted. Export it first if you may need it.</source>
+        <target>Uninstall the module? The consent log goes with it, including the proof of what each customer accepted. Export it first if you may need it.</target>
+        <note>quince_cmp.php</note>
+      </trans-unit>
+      <trans-unit id="91b014a9c4e72ea6581695a2446c7118">
+        <source>Up to 32 kB, with a viewBox. Scripts, links and external references are stripped — an SVG is a document, not a picture.</source>
+        <target>Up to 32 kB, with a viewBox. Scripts, links and external references are stripped — an SVG is a document, not a picture.</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="9ac41b6a577daadd588f0fcde0071e8b">
+        <source>Updates</source>
+        <target>Updates</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="74107383982436eac382208dcc6357fd">
+        <source>Use %category% for the name of the consent that releases the content, and %provider% for the service.</source>
+        <target>Use %category% for the name of the consent that releases the content, and %provider% for the service.</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f441c87405fc01737a6c2a1860a895d6">
+        <source>Use quince_engine tokens</source>
+        <target>Use quince_engine tokens</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="881e9a305ce80960413ab7f227ef879e">
+        <source>User agent</source>
+        <target>User agent</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2a8f4d033f38af120efc779fc32dfae7">
+        <source>V.</source>
+        <target>V.</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="34b6cd75171affba6957e308dcbd92be">
+        <source>Version</source>
+        <target>Version</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="cd2dcffd0214cb7d2c1483e2cf654751">
+        <source>Version "%v%" already exists for this consent type.</source>
+        <target>Version "%v%" already exists for this consent type.</target>
+        <note>src/Controller/Admin/ConsentTypesController.php</note>
+      </trans-unit>
+      <trans-unit id="441c7bc6ea11cb518db0d5ec85fb501f">
+        <source>Version %v% is available.</source>
+        <target>Version %v% is available.</target>
+        <note>src/Controller/Admin/SupportController.php</note>
+      </trans-unit>
+      <trans-unit id="b1919bdccafe9b89457742a838aab82f">
+        <source>Version %v% is available. You are running %c%.</source>
+        <target>Version %v% is available. You are running %c%.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d391216dc7310d83f7f6d1814c6d8ab5">
+        <source>Version %v% is in place.</source>
+        <target>Version %v% is in place.</target>
+        <note>src/Controller/Admin/SupportController.php</note>
+      </trans-unit>
+      <trans-unit id="770fb8ce3aa44150a6272649a5901ab5">
+        <source>Version %v% published.</source>
+        <target>Version %v% published.</target>
+        <note>src/Controller/Admin/ConsentTypesController.php</note>
+      </trans-unit>
+      <trans-unit id="786d6e59f6d7d793bee82573a1082dc2">
+        <source>Version number</source>
+        <target>Version number</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ba8f832b6d0a53da2d8240e1e358ede2">
+        <source>View in shop customers →</source>
+        <target>View in shop customers →</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="bf14bb19a119cf6fb544765d99b25e4e">
+        <source>View text</source>
+        <target>View text</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="10d7ab6dcce73d7d4292f25053d479be">
+        <source>Visitor key</source>
+        <target>Visitor key</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="978719f8034eca6a682ab52790eff451">
+        <source>Visitor key…</source>
+        <target>Visitor key…</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="405c4f6a55cf4e8d0d1f8b04c8db5897">
+        <source>WCAG 2.1 AA asks for 4.5:1 on button labels. A label below that is hard to read for part of your customers.</source>
+        <target>WCAG 2.1 AA asks for 4.5:1 on button labels. A label below that is hard to read for part of your customers.</target>
+        <note>views/templates/admin/_banner_preview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1e89457e37d7e3c5731448c4b719fd80">
+        <source>Wait for the visitor to decide</source>
+        <target>Wait for the visitor to decide</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d39f366c4e5bb4229595ca8aa584cd48">
+        <source>What is this based on</source>
+        <target>What is this based on</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b12c51b935d86f01d092fb23a1fa4f9f">
+        <source>What it does</source>
+        <target>What it does</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="569f6e98c51afc6e56b20d1c8d30fd4e">
+        <source>What the customer reads about this cookie in the second layer of the banner.</source>
+        <target>What the customer reads about this cookie in the second layer of the banner.</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="450fc00079da51353b1ea83713afb95c">
+        <source>What the second layer of the banner shows the customer.</source>
+        <target>What the second layer of the banner shows the customer.</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d8c6e7ff780b8fa43649f1f2b4e10518">
+        <source>What the shop really sets</source>
+        <target>What the shop really sets</target>
+        <note>views/templates/admin/_support_about.html.twig</note>
+      </trans-unit>
+      <trans-unit id="15bb0acc36d7a3fbc40ba90beab8cfc2">
+        <source>What the visitor reads in place of a map, a video or a chat window that is held back until consent.</source>
+        <target>What the visitor reads in place of a map, a video or a chat window that is held back until consent.</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7dc0e0987741bb5fa3066fb97287e464">
+        <source>What this module exposes</source>
+        <target>What this module exposes</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a2b0060e0749fd6c8f7df8858b80be65">
+        <source>What we send, and what we accept back. Hand this to whoever builds the other side.</source>
+        <target>What we send, and what we accept back. Hand this to whoever builds the other side.</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5d3f66ed8fc7f662eae0f6dbf63d1ad1">
+        <source>Where the banner takes its colours</source>
+        <target>Where the banner takes its colours</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3d2c01ae3e3ba9dffc504d2826049362">
+        <source>Where the default applies</source>
+        <target>Where the default applies</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="568c3f3328871806dbcdc819c17b1d38">
+        <source>Where this consent is asked</source>
+        <target>Where this consent is asked</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="43e70d4ca8b36858f3fc249d083c6051">
+        <source>Which system is connecting</source>
+        <target>Which system is connecting</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1b65eef66dea6629cd8ef6f77e50d7ed">
+        <source>While a scan runs, every service is unblocked for that browser only. Nothing is written to the consent log.</source>
+        <target>While a scan runs, every service is unblocked for that browser only. Nothing is written to the consent log.</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="351d153e97654a7ffba9dcfa6e0f597c">
+        <source>While on, only the IP addresses below see the banner.</source>
+        <target>While on, only the IP addresses below see the banner.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="276ba819e11c988b8fb8f149ed56db53">
+        <source>Who has access to consents</source>
+        <target>Who has access to consents</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="26b021b85b3d84aeb875b06e41198cc6">
+        <source>Whole group</source>
+        <target>Whole group</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="873f9f1148451d8b1630f9c87c48189d">
+        <source>Wire format</source>
+        <target>Wire format</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="6b8de3fe156c98e94aedeab4e8911711">
+        <source>Withdrawal recorded in %count% shop(s). It goes out to connected systems on the next sync run.</source>
+        <target>Withdrawal recorded in %count% shop(s). It goes out to connected systems on the next sync run.</target>
+        <note>src/Controller/Admin/ConsentLogController.php</note>
+      </trans-unit>
+      <trans-unit id="f62dedad685b570f499b61e94084dab2">
+        <source>Withdrawn</source>
+        <target>Withdrawn</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="de96fcf971a19cc863cd764a7b33e5dc">
+        <source>Without a pause the tag fires on the default state before the banner is even up, and consent given a second later does not recover that page view.</source>
+        <target>Without a pause the tag fires on the default state before the banner is even up, and consent given a second later does not recover that page view.</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="cdf33c1aa51235ce1dd1865bdce688ad">
+        <source>Wording shown</source>
+        <target>Wording shown</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3ab50ab00316449d1b46bc425e9d341d">
+        <source>Write the wording before publishing — an empty version proves nothing.</source>
+        <target>Write the wording before publishing — an empty version proves nothing.</target>
+        <note>src/Controller/Admin/ConsentTypesController.php</note>
+      </trans-unit>
+      <trans-unit id="27b409a87b9c166e6a398fc0a960af18">
+        <source>Yes, replace what is configured here now</source>
+        <target>Yes, replace what is configured here now</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e47da927ea44b41806928061f704a1d3">
+        <source>You are connecting from</source>
+        <target>You are connecting from</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ed7aa6728243ad3316be2397e9362214">
+        <source>You are on the latest version.</source>
+        <target>You are on the latest version.</target>
+        <note>src/Controller/Admin/SupportController.php</note>
+      </trans-unit>
+      <trans-unit id="20e11bbb956f6f00742626a5cd1916be">
+        <source>Your own icon</source>
+        <target>Your own icon</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7e711e6eb1d2f5287634edbf96049c93">
+        <source>anonymous at the time</source>
+        <target>anonymous at the time</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2c78e49a433c6fc999d74d132b137219">
+        <source>anonymous visitor</source>
+        <target>anonymous visitor</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="31b3702ac8e580a426f7cd7c591136fc">
+        <source>are not driven by any category.</source>
+        <target>are not driven by any category.</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a4dcb91ae48d8171985b511b4d6edcc5">
+        <source>code running in the page itself</source>
+        <target>code running in the page itself</target>
+        <note>src/Controller/Admin/SupportController.php</note>
+      </trans-unit>
+      <trans-unit id="f73b1a64e84f2654c931385c39aa9cbf">
+        <source>computed on save</source>
+        <target>computed on save</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ef22c14dcebaf7e2d91bb723fdf5bbc9">
+        <source>decisions</source>
+        <target>decisions</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="865726b2885feef8e8b25b56a2d7c8f8">
+        <source>denied</source>
+        <target>denied</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e764d1a0bbe357da8b48d3bc08c68415">
+        <source>described</source>
+        <target>described</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="075ae3d2fc31640504f814f60e5ef713">
+        <source>disabled</source>
+        <target>disabled</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ef4ded711cf2ff1c9afc77a6e10b5891">
+        <source>do not wait</source>
+        <target>do not wait</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="09bd20fd417aed5ca8d3b30a4119dbab">
+        <source>e.g. %v%</source>
+        <target>e.g. %v%</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="0b6b3b24ca32a407c9e0e319715e3d03">
+        <source>entered by staff</source>
+        <target>entered by staff</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5183fb4f64fa7968d9da4a9dcb2c76fb">
+        <source>every %count% hours</source>
+        <target>every %count% hours</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="8e8239a19e745ba8a92f90cdbd23ccfc">
+        <source>every %count% minutes</source>
+        <target>every %count% minutes</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="26934eb377001f66e37289a5c93fe284">
+        <source>failed</source>
+        <target>failed</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="8e3018fba26489a0584997d9078fb7d2">
+        <source>first seen</source>
+        <target>first seen</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="fc00fa278c75792efc28397308b9ad6e">
+        <source>granted</source>
+        <target>granted</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="61b0ae1689265ac3e1dab576b754f1df">
+        <source>is not driven by any category.</source>
+        <target>is not driven by any category.</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="7dfd027d8e6c9e28752989151b3e37cb">
+        <source>last activity</source>
+        <target>last activity</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="da36cfaf48b9e19896e23e1207040d1e">
+        <source>months</source>
+        <target>months</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="42ef861613d6ac39874165e11980cea7">
+        <source>no customer account</source>
+        <target>no customer account</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a0a8c5d30775a85c9dc3564992c8b7ef">
+        <source>no file chosen</source>
+        <target>no file chosen</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5cb906be7eb0a72cb9193f0fd91f508c">
+        <source>none yet — incoming events are rejected</source>
+        <target>none yet — incoming events are rejected</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f7fe34ff82e4ec30579f129ef0ccd8bf">
+        <source>not built yet</source>
+        <target>not built yet</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="dbcd2d5846cf02bbf418515e172bd5c7">
+        <source>not generated yet</source>
+        <target>not generated yet</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d3d80a2a5002c4975e048a9801d55d2f">
+        <source>observed</source>
+        <target>observed</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="cb774583c97488e8b0f083c5086852d4">
+        <source>older wording</source>
+        <target>older wording</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="377ae60a5dcbce524642a80baef3f746">
+        <source>one year</source>
+        <target>one year</target>
+        <note>views/templates/admin/sync.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d57c24f3fe52d16e7169b912dd647f0d">
+        <source>optional</source>
+        <target>optional</target>
+        <note>views/templates/admin/scripts.html.twig</note>
+      </trans-unit>
+      <trans-unit id="47ed49958e2500d72e305f85ed316c91">
+        <source>present</source>
+        <target>present</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="dd9550492a2c70aeb5acb7a50c29f4a5">
+        <source>psgdpr %version% is active and adds its own consent checkbox to the same forms.</source>
+        <target>psgdpr %version% is active and adds its own consent checkbox to the same forms.</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="d09aed0b9e17229ef9f1d1b9c5d59ccd">
+        <source>quince_engine is not installed in this shop.</source>
+        <target>quince_engine is not installed in this shop.</target>
+        <note>views/templates/admin/banner.html.twig</note>
+      </trans-unit>
+      <trans-unit id="05b12b7620190947eeec09e8faa1564f">
+        <source>reads and writes</source>
+        <target>reads and writes</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="df30ab0a013347e185fa7628db01ec6a">
+        <source>reads only</source>
+        <target>reads only</target>
+        <note>views/templates/admin/api.html.twig</note>
+      </trans-unit>
+      <trans-unit id="ac67ede5a84eb5a1add7ff4440e9a485">
+        <source>required</source>
+        <target>required</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2e6fcd616cee13119f961acd5869c029">
+        <source>seen %count%×</source>
+        <target>seen %count%×</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="21d6f40cfb511982e4424e0e250a9557">
+        <source>session</source>
+        <target>session</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="cd9bd96e12a2897f2f1e8a3e79a8956e">
+        <source>soon</source>
+        <target>soon</target>
+        <note>views/templates/admin/layout.html.twig</note>
+      </trans-unit>
+      <trans-unit id="72f6a516659f3bc68c8ec0db907aaf58">
+        <source>stitched %date%</source>
+        <target>stitched %date%</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="89b8ed0a687324e40b310b46190448a4">
+        <source>to review</source>
+        <target>to review</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a3c6178ae2f154bda51e6c188ef36c59">
+        <source>visitor keys</source>
+        <target>visitor keys</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="f30772f94e9fd030758951bc5abca2b3">
+        <source>visitor only</source>
+        <target>visitor only</target>
+        <note>views/templates/admin/consent_log.html.twig</note>
+      </trans-unit>
+      <trans-unit id="e8b79ee63bd5060c582d7b93a43ec3dd">
+        <source>withdrawals</source>
+        <target>withdrawals</target>
+        <note>views/templates/admin/overview.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5938237efdaab5129af5ec434914cc8a">
+        <source>withdrawn</source>
+        <target>withdrawn</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+      <trans-unit id="29fb57e50899ca970fcb63d1d1732d04">
+        <source>— none —</source>
+        <target>— none —</target>
+        <note>views/templates/admin/settings.html.twig</note>
+      </trans-unit>
+      <trans-unit id="a25dd160431d50a0348add9a65497fd8">
+        <source>— not linked —</source>
+        <target>— not linked —</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b4c94ec7d0702fb929decfab8126bb79">
+        <source>— open decision, SPEC §10.5</source>
+        <target>— open decision, SPEC §10.5</target>
+        <note>views/templates/admin/consent_type.html.twig</note>
+      </trans-unit>
+      <trans-unit id="79c8a5944e9903b225f3cbfb78f308a1">
+        <source>— unassigned —</source>
+        <target>— unassigned —</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="17db29721c7aa3096cc77f1a5a9c6036">
+        <source>← Back to cookies</source>
+        <target>← Back to cookies</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2b80396bfb6be05d606374f42707555d">
+        <source>← Back to scripts</source>
+        <target>← Back to scripts</target>
+        <note>views/templates/admin/placeholder_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3c3d0348c711f7a0ea8f0b3fd45bdce2">
+        <source>← Back to the log</source>
+        <target>← Back to the log</target>
+        <note>views/templates/admin/consent_profile.html.twig</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

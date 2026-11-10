@@ -1,0 +1,165 @@
+{# Rejestr — strumień zdarzeń. Układ wg prototypy/LogStream.dc.html #}
+{% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{% set cols = '1.1fr 0.9fr 1.4fr 0.9fr 1fr 46px 0.9fr 0.7fr 0.6fr 0.8fr' %}
+
+{% block quince_body %}
+<div class="qc-screen qc-screen--wide">
+
+    <div class="qc-head">
+        <div>
+            <div class="qc-head-title">{{ 'Consent log'|trans }}</div>
+            <div class="qc-head-desc">{{ '%count% events'|trans({'%count%': total|number_format(0, ',', ' ')}) }}</div>
+        </div>
+        <a class="qc-btn qc-btn-outline" href="{{ path('quince_cmp_log_export', filters) }}">{{ 'Export CSV'|trans }}</a>
+    </div>
+
+    {# Formularz GET: przeglądarka przy wysłaniu odrzuca zapytanie z `action`
+       i buduje nowe wyłącznie z pól formularza — token z adresu `path()` ginie,
+       więc musi wejść jako pole, inaczej trafiamy na „Invalid token". #}
+    <form method="get" action="{{ path('quince_cmp_log') }}" class="qc-filters">
+        <input type="hidden" name="_token" value="{{ path('quince_cmp_log')|split('?_token=')[1] }}">
+        <input class="qc-field-base qc-focusable {{ filters.email ? 'is-set' : '' }}" type="text" name="email"
+               value="{{ filters.email }}" placeholder="{{ 'Email…'|trans }}" style="width:180px">
+
+        <input class="qc-field-base qc-focusable {{ filters.visitor_key ? 'is-set' : '' }}" type="text" name="visitor_key"
+               value="{{ filters.visitor_key }}" placeholder="{{ 'Visitor key…'|trans }}" style="width:150px">
+
+        <div class="qc-select-wrap">
+            <select class="qc-field-base qc-select qc-focusable {{ filters.code ? 'is-set' : '' }}" name="code">
+                <option value="">{{ 'Consent'|trans }}</option>
+                {% for code in codes %}
+                    <option value="{{ code }}" {{ filters.code == code ? 'selected' : '' }}>{{ code }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="qc-select-wrap">
+            <select class="qc-field-base qc-select qc-focusable {{ filters.source ? 'is-set' : '' }}" name="source">
+                <option value="">{{ 'Source'|trans }}</option>
+                {% for source in sources %}
+                    <option value="{{ source }}" {{ filters.source == source ? 'selected' : '' }}>{{ source }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <input class="qc-field-base qc-focusable {{ filters.from ? 'is-set' : '' }}" type="date" name="from" value="{{ filters.from }}">
+        <input class="qc-field-base qc-focusable {{ filters.to ? 'is-set' : '' }}" type="date" name="to" value="{{ filters.to }}">
+
+        <div class="qc-segbar">
+            {% for value, label in {'': 'All', 'granted': 'Granted', 'withdrawn': 'Withdrawn'} %}
+                <a class="{{ filters.granted == value ? 'is-active' : '' }}"
+                   href="{{ path('quince_cmp_log', filters|merge({'granted': value, 'page': 1})) }}">{{ label|trans }}</a>
+            {% endfor %}
+        </div>
+
+        {% if shops|length > 1 %}
+            <div class="qc-select-wrap">
+                <select class="qc-field-base qc-select qc-focusable {{ filters.shop ? 'is-set' : '' }}" name="shop">
+                    <option value="">{{ 'All shops'|trans }}</option>
+                    {% for shop in shops %}
+                        <option value="{{ shop.id_shop }}" {{ filters.shop == shop.id_shop ? 'selected' : '' }}>{{ shop.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
+
+        <div class="qc-select-wrap">
+            <select class="qc-field-base qc-select qc-focusable {{ filters.origin ? 'is-set' : '' }}" name="origin">
+                <option value="">{{ 'Origin'|trans }}</option>
+                <option value="shop" {{ filters.origin == 'shop' ? 'selected' : '' }}>{{ 'Shop'|trans }}</option>
+                <option value="external" {{ filters.origin == 'external' ? 'selected' : '' }}>{{ 'External'|trans }}</option>
+            </select>
+        </div>
+
+        <button type="submit" class="qc-btn qc-btn-sm qc-btn-outline">{{ icons.icon('search', 13) }}</button>
+        <a href="{{ path('quince_cmp_log') }}" class="qc-btn qc-btn-sm qc-btn-text">{{ 'Clear'|trans }}</a>
+    </form>
+
+    <div class="qc-grid">
+        <div class="qc-grid-head" style="display:grid;grid-template-columns:{{ cols }};gap:6px">
+            <div>{{ 'Date'|trans }}</div>
+            <div>{{ 'Shop'|trans }}</div>
+            <div>{{ 'Email'|trans }}</div>
+            <div>{{ 'Visitor key'|trans }}</div>
+            <div>{{ 'Code'|trans }}</div>
+            <div>{{ 'V.'|trans }}</div>
+            <div>{{ 'State'|trans }}</div>
+            <div>{{ 'Source'|trans }}</div>
+            <div>{{ 'Origin'|trans }}</div>
+            <div>{{ 'IP'|trans }}</div>
+        </div>
+
+        {% for event in events %}
+            {# Cały wiersz prowadzi do profilu z wybranym zdarzeniem; wiersz bez adresu
+               do rejestru zawężonego po kluczu przeglądarki. #}
+            {% set osoba = event.email ?: event.stitched_email %}
+            {% set rowLink = osoba
+                ? path('quince_cmp_log_profile', {'email': osoba, 'event': event.id_cmp_log, 'shop': event.id_shop})
+                : path('quince_cmp_log', {'visitor_key': event.visitor_key}) %}
+            <a class="qc-grid-row" href="{{ rowLink }}"
+               style="display:grid;grid-template-columns:{{ cols }};gap:6px;color:inherit">
+                <div style="font-size:var(--text-xs);color:var(--fg-2)">{{ event.date_add|slice(0, 16) }}</div>
+
+                <div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                    {{ event.shop_name }}
+                </div>
+
+                <div>
+                    <div style="font-size:var(--text-xs);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+                                {{ event.email ? 'color:var(--accent-active);font-weight:var(--weight-semibold)' : '' }}">
+                        {{ event.email ?: '—' }}
+                    </div>
+                    {% if event.stitched %}
+                        <div class="qc-sub">{{ event.stitched_email ?: 'stitched %date%'|trans({'%date%': event.stitched|slice(0, 10)}) }}</div>
+                    {% elseif not event.email %}
+                        <div class="qc-sub">{{ 'visitor only'|trans }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="qc-mono" style="color:var(--fg-2)">{{ event.visitor_key }}</div>
+                <div class="qc-mono" style="color:var(--fg-1)">{{ event.code }}</div>
+                <div style="font-size:11px;color:var(--fg-2)">{{ event.version ?: '—' }}</div>
+
+                <div>
+                    {% if event.granted %}
+                        <span class="qc-badge qc-badge-success">{{ icons.icon('check', 11) }} {{ 'Granted'|trans }}</span>
+                    {% else %}
+                        <span class="qc-badge qc-badge-danger">{{ icons.icon('x', 11) }} {{ 'Withdrawn'|trans }}</span>
+                    {% endif %}
+                </div>
+
+                <div style="font-size:11px;color:var(--fg-2)">{{ event.source }}</div>
+                <div><span class="qc-badge">{{ event.origin|capitalize }}</span></div>
+                <div class="qc-mono" style="color:var(--fg-3)">{{ event.ip }}</div>
+            </a>
+        {% else %}
+            <div class="qc-empty">
+                {{ icons.icon('search', 36, 'qc-empty-icon') }}
+                <div class="qc-empty-text">
+                    <strong>{{ 'No events yet'|trans }}</strong><br>
+                    {{ 'Fresh installation — empty register'|trans }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if pages > 1 %}
+        <div class="qc-listfoot">
+            <div class="qc-pagination">
+                {% for p in 1..pages %}
+                    <a class="qc-page-btn {{ p == page ? 'qc-active' : '' }}"
+                       href="{{ path('quince_cmp_log', filters|merge({'page': p})) }}"
+                       style="display:flex;align-items:center;justify-content:center">{{ p }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block quince_actionbar %}{% endblock %}

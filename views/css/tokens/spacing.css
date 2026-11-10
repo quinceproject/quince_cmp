@@ -1,0 +1,10 @@
+:root{
+--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-7:32px;--space-8:40px;--space-9:48px;
+--radius-sm:4px;--radius-md:6px;--radius-lg:8px;--radius-pill:999px;
+--shadow-sm:0 1px 2px oklch(20% 0 0 / 0.06);
+--shadow-md:0 4px 16px oklch(20% 0 0 / 0.1);
+--ease:cubic-bezier(.2,.7,.3,1); /* @kind other */
+--dur:150ms; /* @kind other */
+--sidebar-w:232px;
+--sidebar-w-collapsed:64px;
+}

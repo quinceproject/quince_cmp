@@ -1,0 +1,378 @@
+{# Wymiana z systemem zewnętrznym. Układ wg prototypy/Sync.dc.html #}
+{% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{% set cols = '1.2fr 1.6fr .7fr 1.4fr 1fr' %}
+
+{% block quince_body %}
+<div class="qc-screen">
+
+    <div class="qc-head">
+        <div>
+            <div class="qc-head-title">{{ 'Sync'|trans }}</div>
+            <div class="qc-head-desc">
+                {{ 'Two-way exchange of consent events with an external system.'|trans }}
+                {% if shopScoped %}<strong>{{ '(%shop%)'|trans({'%shop%': shopName}) }}</strong>{% endif %}
+            </div>
+        </div>
+
+        <form method="post" action="{{ path('quince_cmp_sync_run') }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_sync_run') }}">
+            <button type="submit" class="qc-btn qc-btn-primary">
+                {{ icons.icon('refresh', 14) }} {{ 'Sync now'|trans }}
+            </button>
+        </form>
+    </div>
+
+    {# ---------- wychodzące ----------
+       Jedna siatka pól, dwie kolumny. Każde ustawienie to podpis nad kontrolką
+       tej samej wysokości — wcześniej harmonogram, retencja i powiadomienie
+       stały w osobnych wierszach o różnej budowie i karta się rozjeżdżała. #}
+    <form method="post" action="{{ path('quince_cmp_sync_save') }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_sync_save') }}">
+        <div class="qc-grid" style="padding:16px 18px;margin-bottom:16px">
+
+            <div class="qc-hstack" style="justify-content:space-between;margin-bottom:14px">
+                <div style="font-size:var(--text-sm);font-weight:var(--weight-bold)">{{ 'Outgoing'|trans }}</div>
+
+                <label class="qc-toggle qc-toggle-sm">
+                    <input type="checkbox" name="sync_on" value="1" {{ syncOn ? 'checked' : '' }}>
+                    <span class="qc-toggle-track"></span>
+                    <span class="qc-toggle-text" style="font-size:var(--text-xs)">{{ 'Send events'|trans }}</span>
+                </label>
+            </div>
+
+            <div class="qc-fieldgrid">
+
+                <div>
+                    <div class="qc-caption">{{ 'Endpoint'|trans }}</div>
+                    <input type="url" name="endpoint" class="qc-field-base qc-field-sm qc-focusable qc-mono"
+                           value="{{ endpoint }}" placeholder="https://example.com/v1/consents">
+
+                    {# Adres w sieci lokalnej serwera przechodzi tylko po świadomym
+                       kliknięciu. Bez tego pole jest drogą do odpytywania cudzej
+                       infrastruktury, bo odpowiedź wraca tutaj. #}
+                    <label class="qc-toggle qc-toggle-sm" style="height:28px;margin-top:6px">
+                        <input type="checkbox" name="allow_local" value="1" {{ allowLocal ? 'checked' : '' }}>
+                        <span class="qc-toggle-track"></span>
+                        <span class="qc-toggle-text" style="font-size:11px">{{ 'The receiver is on our own network'|trans }}</span>
+                    </label>
+
+                    <div class="qc-hint">
+                        {{ 'Leave this off unless the receiving system really sits behind the same firewall as the shop.'|trans }}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="qc-caption">{{ 'Signing key'|trans }}</div>
+
+                    <div class="qc-hstack" style="gap:10px;height:30px">
+                        {% if keyOut %}
+                            <span x-data="{ shown: false }" class="qc-hstack" style="gap:10px;min-width:0">
+                                <span class="qc-mono" x-show="!shown">••••••••••••••••</span>
+                                <span class="qc-mono" x-show="shown" x-cloak style="word-break:break-all">{{ keyOut }}</span>
+                                <a href="#" class="qc-linkbtn" @click.prevent="shown = !shown"
+                                   x-text="shown ? '{{ 'Hide'|trans }}' : '{{ 'Reveal'|trans }}'"></a>
+                            </span>
+                        {% else %}
+                            <span class="qc-sub">{{ 'No key yet.'|trans }}</span>
+                        {% endif %}
+
+                        {# Osobne żądanie, żeby zapis adresu nie unieważniał przy okazji
+                           klucza, którym druga strona właśnie się posługuje. #}
+                        <button type="submit" form="rotate-out" class="qc-linkbtn">
+                            {{ keyOut ? 'Rotate'|trans : 'Generate'|trans }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="qc-span">
+                    <div class="qc-caption">{{ 'Codes to send'|trans }}</div>
+
+                    <div style="display:flex;flex-wrap:wrap;gap:8px">
+                        {% for item in codes %}
+                            <label class="qc-code-pill" title="{{ item.name }}">
+                                <input type="checkbox" name="codes[]" value="{{ item.code }}" {{ item.on ? 'checked' : '' }}>
+                                <span class="qc-code-pill-box"></span>
+                                <span class="qc-mono">{{ item.code }}</span>
+                            </label>
+                        {% else %}
+                            <div class="qc-sub">{{ 'No consent type defined yet.'|trans }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="qc-caption">{{ 'Schedule'|trans }}</div>
+                    <select name="every" class="qc-field-base qc-field-sm qc-select qc-focusable">
+                        {% for minutes in intervals %}
+                            <option value="{{ minutes }}" {{ every == minutes ? 'selected' : '' }}>
+                                {{ minutes < 60
+                                    ? 'every %count% minutes'|trans({'%count%': minutes})
+                                    : 'every %count% hours'|trans({'%count%': (minutes / 60)|round}) }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <div class="qc-caption">{{ 'Keep sent events'|trans }}</div>
+                    <select name="keep_days" class="qc-field-base qc-field-sm qc-select qc-focusable">
+                        {% for days in keepChoices %}
+                            <option value="{{ days }}" {{ keepDays == days ? 'selected' : '' }}>
+                                {{ days < 365 ? '%count% days'|trans({'%count%': days}) : 'one year'|trans }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <div class="qc-hint">{{ 'Failed events are never deleted.'|trans }}</div>
+                </div>
+
+                {# Zasięg wybiera się przy witrynie: pytanie „czy ta wysyła osobno"
+                   musi mieć odpowiedź tam, gdzie się je zadaje. #}
+                <div>
+                    <div class="qc-caption">{{ 'Settings apply to'|trans }}</div>
+
+                    <div class="qc-optrow">
+                        <label class="qc-opt">
+                            <input type="radio" name="scope" value="shop" class="qc-radio" {{ scope == 'shop' ? 'checked' : '' }}>
+                            {{ 'This shop only'|trans }}
+                        </label>
+
+                        <label class="qc-opt">
+                            <input type="radio" name="scope" value="group" class="qc-radio" {{ scope == 'group' ? 'checked' : '' }}>
+                            {{ 'The whole group %group% (%count% shops)'|trans({'%group%': groupName, '%count%': groupShops}) }}
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="qc-caption">{{ 'If sending stops working'|trans }}</div>
+
+                    <label class="qc-toggle qc-toggle-sm" style="height:30px">
+                        <input type="checkbox" name="alert_on" value="1" {{ alertOn ? 'checked' : '' }}>
+                        <span class="qc-toggle-track"></span>
+                        <span class="qc-toggle-text" style="font-size:var(--text-xs)">{{ 'Email me'|trans }}</span>
+                    </label>
+
+                    <div class="qc-hint">{{ 'One message a day at most, to %email%.'|trans({'%email%': alertTo}) }}</div>
+                </div>
+
+                <div class="qc-span">
+                    <div class="qc-hint" style="margin:0">
+                        {{ 'PrestaShop has no clock of its own — call this address from the server cron:'|trans }}
+                        <span class="qc-mono" style="word-break:break-all">{{ cronUrl }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="qc-actions">
+                <button type="submit" class="qc-btn qc-btn-primary">
+                    {{ icons.icon('check', 14) }} {{ 'Save'|trans }}
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <form id="rotate-out" method="post" action="{{ path('quince_cmp_sync_rotate') }}" hidden>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_sync_rotate') }}">
+        <input type="hidden" name="which" value="out">
+    </form>
+
+    {# ---------- skrzynka nadawcza ---------- #}
+    <div class="qc-grid" style="margin-bottom:16px">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:var(--text-sm);font-weight:var(--weight-bold)">
+            {{ 'Outbox'|trans }}
+        </div>
+
+        {# Kolejka napełnia się od chwili włączenia wysyłki. Bez tego zgody zebrane
+           wcześniej zostają w dzienniku i nigdy nie dojadą. #}
+        {% if backlog %}
+            <form method="post" action="{{ path('quince_cmp_sync_backlog') }}" class="qc-listbar">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_sync_backlog') }}">
+                <div style="font-size:var(--text-xs);font-weight:var(--weight-semibold)">
+                    {{ '%count% consents were recorded before sending was switched on. They have never been sent.'|trans({'%count%': backlog}) }}
+                </div>
+                <button type="submit" class="qc-linkbtn" style="font-weight:var(--weight-bold)">
+                    {{ 'Queue them'|trans }}
+                </button>
+            </form>
+        {% endif %}
+
+        <div class="qc-grid-head" style="grid-template-columns:{{ cols }}">
+            <div>{{ 'Date'|trans }}</div>
+            <div>{{ 'Event'|trans }}</div>
+            <div>{{ 'Attempts'|trans }}</div>
+            <div>{{ 'Last response'|trans }}</div>
+            <div>{{ 'Status'|trans }}</div>
+        </div>
+
+        {% for row in outbox %}
+            <div class="qc-grid-row" style="grid-template-columns:{{ cols }}">
+                <div style="font-size:var(--text-xs);color:var(--fg-2)">{{ row.date|slice(0, 16) }}</div>
+
+                <div style="font-size:var(--text-xs)">
+                    {{ row.granted ? 'granted'|trans : 'withdrawn'|trans }} <span class="qc-mono">{{ row.code }}</span>
+                    {% if row.email %}<div class="qc-sub">{{ row.email }}</div>{% endif %}
+                </div>
+
+                <div class="qc-mono">{{ row.attempts }}/{{ row.maxAttempts }}</div>
+
+                <div class="qc-mono" style="color:{{ row.status == 'failed' ? 'var(--danger)' : 'var(--fg-2)' }}">
+                    {{ row.response }}
+                </div>
+
+                <div class="qc-hstack" style="justify-content:space-between;gap:8px">
+                    {% set tone = {'pending': 'warning', 'sent': 'success', 'failed': 'danger'} %}
+                    <span class="qc-badge qc-badge-{{ tone[row.status]|default('accent') }}">{{ row.status|trans }}</span>
+
+                    {% if row.status != 'sent' %}
+                        <a href="{{ path('quince_cmp_sync_retry', {'idSync': row.id}) }}" class="qc-linkbtn">{{ 'Retry'|trans }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <div class="qc-empty" style="padding:28px 20px">
+                {{ icons.icon('checkCircle', 26, 'qc-empty-icon') }}
+                <div class="qc-empty-text">{{ 'Nothing waiting to be sent.'|trans }}</div>
+            </div>
+        {% endfor %}
+
+        {% if counts.failed %}
+            <form method="post" action="{{ path('quince_cmp_sync_retry_all') }}" class="qc-listbar">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_sync_retry_all') }}">
+                <div style="font-size:var(--text-xs);font-weight:var(--weight-semibold)">
+                    {{ '%count% gave up after %max% attempts.'|trans({'%count%': counts.failed, '%max%': 5}) }}
+                </div>
+                <button type="submit" class="qc-linkbtn" style="font-weight:var(--weight-bold)">
+                    {{ 'Retry all failed'|trans }}
+                </button>
+            </form>
+        {% endif %}
+    </div>
+
+    {# ---------- kontrakt ----------
+       Bez opisu formatu druga strona nie ma jak tego zaimplementować, a sekcja
+       przychodząca stoi pusta nie dlatego, że nikt nie chce wysyłać, tylko
+       dlatego, że nikt nie wie jak. Przykład liczony jest z tej samej metody,
+       którą moduł buduje ładunek — nie da się rozjechać z rzeczywistością. #}
+    <div class="qc-grid" style="padding:16px 18px;margin-bottom:16px" x-data="{ open: false }">
+        <div class="qc-hstack" style="justify-content:space-between">
+            <div>
+                <div style="font-size:var(--text-sm);font-weight:var(--weight-bold)">{{ 'Wire format'|trans }}</div>
+                <div class="qc-sub" style="margin-top:2px">
+                    {{ 'What we send, and what we accept back. Hand this to whoever builds the other side.'|trans }}
+                </div>
+            </div>
+
+            <button type="button" class="qc-btn qc-btn-outline" @click="open = !open">
+                {{ icons.icon('chevronDown', 13) }}
+                <span x-text="open ? '{{ 'Hide'|trans }}' : '{{ 'Show'|trans }}'"></span>
+            </button>
+        </div>
+
+        <div x-show="open" x-cloak style="margin-top:14px">
+            {# Adres i klucz stoja przy opisie formatu, bo administrator drugiej
+               strony potrzebuje wszystkich trzech naraz. Karta „Incoming" jest
+               odczytem stanu, nie miejscem konfiguracji. #}
+            <div class="qc-caption">{{ 'Send events to'|trans }}</div>
+            <div class="qc-mono qc-pre">{{ inboxUrl }}</div>
+
+            <div class="qc-hstack" style="gap:10px;margin-top:14px">
+                <div class="qc-caption" style="margin:0">{{ 'Sender key'|trans }}</div>
+                <button type="submit" form="rotate-in" class="qc-linkbtn">
+                    {{ keyIn ? 'Rotate'|trans : 'Generate'|trans }}
+                </button>
+            </div>
+            <div class="qc-mono qc-pre" style="margin-top:5px">{{ keyIn ?: 'not generated yet'|trans }}</div>
+
+            <div class="qc-caption" style="margin-top:14px">{{ 'Request'|trans }}</div>
+            <div class="qc-mono qc-pre">POST &lt;endpoint&gt;
+Content-Type: application/json
+{{ contract.timestampHeader }}: 1774604407
+{{ contract.signatureHeader }}: 6f2b…</div>
+
+            <div class="qc-caption" style="margin-top:14px">{{ 'Body'|trans }}</div>
+            <div class="qc-mono qc-pre">{{ contract.payload }}</div>
+
+            <div class="qc-caption" style="margin-top:14px">{{ 'Signature'|trans }}</div>
+            <div class="qc-mono qc-pre">hmac_sha256(timestamp + "." + raw_body, shared_key)</div>
+
+            <ul class="qc-alert-list" style="margin-top:10px;font-size:var(--text-xs);color:var(--fg-2)">
+                <li>{{ 'Signed over the raw body, byte for byte — do not re-encode the JSON before checking.'|trans }}</li>
+                <li>{{ 'A request whose timestamp is more than %count% seconds off is rejected.'|trans({'%count%': contract.tolerance}) }}</li>
+                <li>{{ 'Answer 2xx to confirm. Anything else puts the event back in the queue.'|trans }}</li>
+                <li>{{ 'Send the same shape back to our address to record a change made outside the shop. State is derived from the newest event, so a withdrawal is the same call with granted: false.'|trans }}</li>
+            </ul>
+        </div>
+    </div>
+
+    {# ---------- przychodzące ---------- #}
+    <div class="qc-grid" style="padding:16px 18px">
+        <div style="font-size:var(--text-sm);font-weight:var(--weight-bold);margin-bottom:10px">{{ 'Incoming'|trans }}</div>
+
+        <div class="qc-line" style="margin-bottom:12px">
+            {{ 'Sender key'|trans }}:
+            {% if keyIn %}
+                <span x-data="{ shown: false }" class="qc-hstack" style="gap:10px;display:inline-flex">
+                    <span class="qc-mono" x-show="!shown">{{ keyIn|slice(0, 11) }}…</span>
+                    <span class="qc-mono" x-show="shown" x-cloak style="word-break:break-all">{{ keyIn }}</span>
+                    <a href="#" class="qc-linkbtn" @click.prevent="shown = !shown"
+                       x-text="shown ? '{{ 'Hide'|trans }}' : '{{ 'Reveal'|trans }}'"></a>
+                </span>
+            {% else %}
+                {{ 'none yet — incoming events are rejected'|trans }}
+            {% endif %}
+        </div>
+
+        {# Prototyp trzyma tu wlasny blok, nie pasek `.qc-alert`: nagłowek jest ciemny
+           i bez ikony, a lewa krawedz nie ma paska ostrzegawczego. To nie jest
+           ostrzezenie do naprawienia — to zapis rozstrzygniecia. #}
+        {% for conflict in incoming.conflicts %}
+            <div class="qc-conflict">
+                <div class="qc-conflict-head">{{ conflict.reason }}</div>
+
+                {# Bez odnośnika wiersz mówi, że był spór, ale nie mówi o kim —
+                   a to jest pierwsza rzecz, której szuka obsługa. #}
+                {% if conflict.email %}
+                    <div class="qc-line" style="margin-bottom:8px">
+                        <a href="{{ path('quince_cmp_log_profile', {'email': conflict.email}) }}" class="qc-linkbtn">
+                            {{ conflict.email }}
+                        </a>
+                        {% if conflict.code %}· <span class="qc-mono">{{ conflict.code }}</span>{% endif %}
+                    </div>
+                {% endif %}
+
+                {% if conflict.external and conflict.shop %}
+                    <div class="qc-conflict-pair">
+                        {% for side, event in {'External': conflict.external, 'Shop': conflict.shop} %}
+                            <div class="qc-conflict-card">
+                                {{ side|trans }} · {{ event.at|slice(0, 16) }} ·
+                                <span style="font-weight:var(--weight-bold);color:{{ event.granted ? 'var(--success)' : 'var(--danger)' }}">
+                                    {{ event.granted ? 'granted'|trans : 'withdrawn'|trans }}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div class="qc-line" style="margin:0">
+            {{ '%accepted% accepted this run · %rejected% rejected'|trans({
+                '%accepted%': incoming.accepted,
+                '%rejected%': incoming.rejected
+            }) }}
+        </div>
+    </div>
+
+    <form id="rotate-in" method="post" action="{{ path('quince_cmp_sync_rotate') }}" hidden>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_sync_rotate') }}">
+        <input type="hidden" name="which" value="in">
+    </form>
+
+</div>
+{% endblock %}
+
+{% block quince_actionbar %}{% endblock %}

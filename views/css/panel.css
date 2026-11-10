@@ -1,0 +1,1623 @@
+/* ===================================================================
+   Quince CMP — szkielet panelu
+
+   Powłoka panelu: układ nawigacji i treści, pasek akcji, neutralizacja stylów
+   back-office PrestaShopa i zachowanie na wąskim ekranie.
+
+   Plik jest **własną kopią** powłoki z `quince_engine`, nie odnośnikiem do niej.
+   Moduł ma działać w sklepie, w którym silnika nie ma — a zaciąganie arkusza
+   z cudzego katalogu zamieniłoby „integruje się, jeśli zastanie" w twardą
+   zależność, tyle że ukrytą w CSS zamiast w `dependencies`.
+
+   Cena tej decyzji: przy obu modułach zainstalowanych przeglądarka pobiera dwa
+   arkusze o tej samej treści. To kilka kilobajtów i zero skutków wizualnych,
+   bo reguły są identyczne — tańsze niż moduł, który psuje się po wyłączeniu
+   silnika.
+
+   Nic tu nie powiela reguł z `views/css/tokens/` — komponenty pochodzą stamtąd.
+   =================================================================== */
+
+/* Wysokość przyklejonego nagłówka PrestaShopa. Wartość startowa — `panel.js`
+   mierzy ją po załadowaniu i nadpisuje na <html>, bo zmienia się z długością
+   tytułu strony.
+
+   Definicja musi stać na `:root`, nie na `.qc-root`: korzystają z niej także
+   toasty, renderowane w <body> poza naszym drzewem. */
+:root {
+    --qc-top-offset: 85px;
+    --qc-bottom-offset: 14px;
+
+    /* Tusz znaczników rysowanych na akcencie. Akcent panelu jest jasnym
+       bursztynem — biały ptaszek daje na nim 2,4:1 i przy grubości 2 px
+       po prostu znika. Ciemny daje 8,8:1 i jest widoczny w obu motywach. */
+    --qc-ink-on-accent: oklch(20% 0.03 70);
+}
+
+.qc-root {
+
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    color: var(--fg-1);
+    background: var(--bg);
+    margin: -16px;                          /* zjada wewnętrzny odstęp kontenera PS */
+    min-height: calc(100vh - var(--qc-top-offset));
+}
+
+.qc-root *,
+.qc-root *::before,
+.qc-root *::after {
+    box-sizing: border-box;
+}
+
+/* Bez tego przyklejony sidebar nie działa.
+   PrestaShop nadaje `.content-div { overflow: hidden }`, a `position: sticky` przestaje
+   działać, gdy KTÓRYKOLWIEK przodek ma overflow inny niż visible — element zachowuje się
+   wtedy jak zwykły blok i przewija się razem ze stroną, mimo poprawnych reguł.
+
+   Zawężone przez :has() do stron Quince, żeby nie zmieniać zachowania reszty panelu.
+   Przeglądarki bez :has() po prostu dostaną nieprzyklejoną nawigację. */
+.content-div:has(.qc-root),
+#content:has(.qc-root) {
+    overflow: visible;
+}
+
+/* --- neutralizacja back-office ---
+   PrestaShop podkreśla odnośniki i narzuca im własny kolor, a robi to selektorami
+   o wyższej specyficzności niż `.qc-root a` (m.in. `#content a`). Stąd !important —
+   to jedyne miejsce w projekcie, gdzie jest uzasadniony: przegrywamy z cudzym
+   arkuszem, na który nie mamy wpływu. */
+.qc-root a,
+.qc-root a:hover,
+.qc-root a:focus,
+.qc-root a:active,
+.qc-root a:visited {
+    text-decoration: none !important;
+    color: inherit;
+    box-shadow: none;
+}
+
+/* Kolor stanu aktywnego musi przebić `color: inherit` powyżej */
+.qc-root a.qc-nav-item.qc-active {
+    color: var(--accent-active);
+}
+
+/* Odnośnik stojący w zdaniu — w pasku informacyjnym albo w podpowiedzi. Bez tego
+   dziedziczy kolor tekstu i nic nie mówi, że da się w niego kliknąć. */
+.qc-root .qc-alert a,
+.qc-root .qc-hint a,
+.qc-root .qc-empty-text a {
+    color: var(--accent-active);
+    font-weight: var(--weight-medium);
+}
+
+.qc-root .qc-alert a:hover,
+.qc-root .qc-hint a:hover,
+.qc-root .qc-empty-text a:hover {
+    color: var(--accent);
+}
+
+/* Motyw back-office dokłada `margin-bottom: .5rem` każdemu <label>. Nasze
+   kontrolki zbudowane z <label> — segmenty, pigułki, opcje, przełączniki —
+   dostawały przez to niesymetryczny odstęp pod spodem, wewnątrz własnej ramki. */
+.qc-root .qc-seg-btn,
+.qc-root .qc-code-pill,
+.qc-root .qc-opt,
+.qc-root .qc-iconpick-item,
+.qc-root .qc-toggle {
+    margin: 0;
+}
+
+/* PS ustawia globalnie font-family dla pól — przywracamy dziedziczenie */
+.qc-root input,
+.qc-root select,
+.qc-root textarea,
+.qc-root button {
+    font-family: inherit;
+}
+
+/* --- powłoka: nawigacja + treść --- */
+
+.qc-shell {
+    display: flex;
+    align-items: flex-start;
+    min-height: calc(100vh - var(--qc-top-offset));
+
+    /* Linia oddzielająca nawigację od treści. Rysowana na kontenerze, bo sam sidebar
+       jest przyklejony i jego krawędź nie sięgnęłaby dołu strony. */
+    background:
+        linear-gradient(var(--border), var(--border)) no-repeat
+        var(--sidebar-w) 0 / 1px 100%;
+}
+
+@media (max-width: 1180px) {
+    .qc-shell {
+        background-position: var(--sidebar-w-collapsed) 0;
+    }
+}
+
+.qc-shell > .qc-sidenav {
+    background: var(--surface);
+
+    /* Przyklejona pod paskiem PrestaShopa.
+       align-self: flex-start jest tu konieczne: w kontenerze flex z align-items: stretch
+       element rozciąga się na całą wysokość i sticky nie ma się o co zaczepić — wygląda
+       wtedy tak, jakby przewijał się razem ze stroną. */
+    position: sticky;
+    top: var(--qc-top-offset);
+    align-self: flex-start;
+
+    /* Własne przewijanie: docelowo pozycji będzie kilkanaście i przy niższym oknie
+       nie zmieszczą się wszystkie. Odejmujemy offset u góry i prześwit u dołu,
+       żeby ostatnia pozycja nie kleiła się do krawędzi ekranu. */
+    max-height: calc(100vh - var(--qc-top-offset) - 16px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+}
+
+.qc-content {
+    flex: 1;
+    min-width: 0;                           /* bez tego szerokie tabele rozpychają układ */
+    padding: 28px 36px 64px;
+}
+
+/* Treść wypełnia dostępną szerokość. Zwinięcie paska PrestaShopa poszerza
+   obszar roboczy i sztywny limit zostawiałby go pusty. Czytelność wierszy
+   pilnują limity nałożone na kolumny formularzy, nie na cały ekran. */
+.qc-content > * {
+    max-width: 100%;
+}
+
+/* Zapas na dole, żeby ostatnia karta nie chowała się pod przyklejonym paskiem */
+.qc-content {
+    padding-bottom: calc(var(--qc-bottom-offset) + 84px);
+}
+
+/* --- elementy spoza paczki --- */
+
+/* Znacznik przy pozycjach jeszcze niezbudowanych — czytelny sygnał, że to
+   zaplanowane miejsce, a nie zepsuty odnośnik. */
+.qc-nav-soon {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: var(--weight-semibold);
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+}
+
+.qc-nav-item.qc-disabled {
+    opacity: .45;
+    pointer-events: none;
+}
+
+/* --- rozróżnienie pasków informacyjnego i ostrzegawczego ---
+   Paczka daje obu zbliżone tła: akcent panelu jest pomarańczowy, ostrzeżenie
+   bursztynowe. Postawione jeden pod drugim czytają się jak dwa razy to samo,
+   a różnią się rangą — jeden opisuje stronę, drugi zgłasza problem do naprawy.
+
+   Informacja schodzi na powierzchnię neutralną, ostrzeżenie zatrzymuje barwę
+   i dostaje pasek przy krawędzi. Kolor nie jest wtedy jedynym nośnikiem różnicy. */
+.qc-root .qc-alert-info {
+    background: var(--surface-sunken);
+    border-color: var(--border);
+    color: var(--fg-1);
+}
+
+.qc-root .qc-alert-info .qc-alert-icon {
+    color: var(--accent);
+}
+
+.qc-root .qc-alert-warning {
+    border-inline-start: 3px solid var(--warning);
+}
+
+.qc-root .qc-alert-warning .qc-alert-icon {
+    color: var(--warning);
+}
+
+.qc-root .qc-alert-danger {
+    border-inline-start: 3px solid var(--danger);
+}
+
+.qc-root .qc-alert-danger .qc-alert-icon {
+    color: var(--danger);
+}
+
+/* Lista uwag wewnątrz paska komunikatu. Każda w osobnym wierszu, bez wcięcia —
+   panel kasuje znaczniki punktów, więc samo wcięcie wygląda jak przypadkowy odstęp. */
+.qc-alert-list {
+    margin: 6px 0 0;
+    padding-inline-start: 0;
+    list-style: none;
+}
+
+.qc-alert-list li + li {
+    margin-block-start: 4px;
+}
+
+/* Pasek informacyjny nad treścią korzysta z komponentu .qc-alert z paczki —
+   dokładamy tylko odstęp, bo w prototypie alerty stały wewnątrz kart. */
+.qc-content > .qc-alert {
+    margin-bottom: 18px;
+}
+
+/* --- pasek akcji ---
+   Sticky wewnątrz treści, nie fixed: dzięki temu klawiatura ekranowa na telefonie
+   przesuwa go naturalnie, zamiast zostawiać zawieszony nad nią lub pod nią. */
+.qc-actionbar {
+    position: sticky;
+    /* Odstęp od dołu musi przeskoczyć pasek debugowania PrestaShopa (~40 px w trybie
+       deweloperskim). Na produkcji paska nie ma, więc jedna zmienna zamiast dwóch
+       zestawów reguł — do skorygowania w jednym miejscu. */
+    bottom: calc(var(--qc-bottom-offset) + env(safe-area-inset-bottom, 0px));
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+
+    /* Ta sama szerokość co karty — pasek jest częścią formularza, nie belką
+       rozpiętą przez cały ekran. */
+    max-width: 1100px;
+    margin: 24px 0 0;
+    padding: 11px 16px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    /* Cień ze wszystkich stron, mocniejszy u góry: pasek przykrywa treść właśnie
+       górną krawędzią, więc to ona musi czytelnie odcinać się od kart pod spodem. */
+    box-shadow:
+        0 -6px 18px -8px rgba(0, 0, 0, .22),
+        0 6px 18px -8px rgba(0, 0, 0, .14),
+        0 0 22px -10px rgba(0, 0, 0, .18);
+}
+
+.qc-actionbar-info {
+    margin-right: auto;
+    font-size: var(--text-sm);
+    color: var(--fg-2);
+}
+
+.qc-stack > * + * {
+    margin-top: 20px;
+}
+
+/* Rozszerzenie siatki paczki (ma 2 i 3 kolumny). Cztery kolory komunikatów
+   układają się naturalnie w jeden rząd — w trzech kolumnach czwarty spada
+   sam pod spód i wygląda jak pomyłka. */
+.qc-form-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1280px) {
+    .qc-form-grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* PrestaShop dokłada własny pasek zakładek na stronach trzeciego poziomu menu.
+   Nawigację po panelu prowadzi sidebar — drugi zestaw zakładek nad nim tylko
+   powiela te same pozycje. Arkusz wchodzi wyłącznie na stronach Quince,
+   więc reszta back-office zostaje nietknięta. */
+#head_tabs {
+    display: none;
+}
+
+/* Alpine ukrywa elementy z x-show dopiero po inicjalizacji — bez tego zwinięta
+   karta mignęłaby rozwinięta przy każdym wejściu na stronę. */
+[x-cloak] {
+    display: none !important;
+}
+
+/* Wyłączona sekcja. Treść zostaje na ekranie, żeby dało się ją przejrzeć, ale
+   przygasa i przestaje reagować — widać, że te ustawienia dziś nic nie robią.
+   Pola nie dostają atrybutu `disabled`, bo przeglądarka nie wysyła wyłączonych
+   pól i zapisanie formularza wyczyściłoby wszystko, co sprzedawca tu wpisał. */
+.qc-disabled-area {
+    transition: opacity var(--dur) var(--ease);
+}
+
+.qc-disabled-area.is-off {
+    opacity: .45;
+    pointer-events: none;
+}
+
+/* --- telefon ---
+   Nagłówek zwija się do jednej linii: tytuł plus akcja. Opis znika, bo przy
+   przyklejonym pasku zabierałby na stałe jedną trzecią ekranu, a jest tekstem
+   wprowadzającym — czyta się go raz, nie przy każdym przewinięciu. */
+@media (max-width: 767px) {
+    .qc-page-desc {
+        display: none;
+    }
+    .qc-page-head {
+        align-items: center;
+        gap: 12px;
+        padding-bottom: 12px;
+        margin-bottom: 16px;
+    }
+    .qc-actionbar {
+        padding: 10px 12px;
+    }
+    .qc-actionbar .qc-btn {
+        flex: 1;
+        justify-content: center;
+    }
+    .qc-page-title {
+        font-size: var(--text-lg);
+        line-height: 1.25;
+    }
+    .qc-content {
+        padding: 20px 20px 48px;
+    }
+    /* Podgląd i tak jest orientacyjny — na wąskim ekranie ważniejsze,
+       żeby elementy się nie zlewały niż żeby stały w jednym rzędzie. */
+    .qc-preview {
+        gap: 12px;
+    }
+    .qc-contrast {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* --- wąski ekran ---
+   Odpowiednik klasy .qc-collapsed z paczki, wyzwalany szerokością zamiast
+   kliknięciem: PrestaShop zabiera sporo miejsca własnym menu, więc dwie
+   nawigacje obok siebie zjadłyby treść. */
+@media (max-width: 1180px) {
+    .qc-shell > .qc-sidenav {
+        width: var(--sidebar-w-collapsed);
+    }
+    .qc-shell > .qc-sidenav .qc-nav-label,
+    .qc-shell > .qc-sidenav .qc-nav-soon {
+        display: none;
+    }
+    .qc-shell > .qc-sidenav .qc-sidenav-section {
+        opacity: 0;
+        height: 8px;
+        padding: 8px 0 0;
+    }
+    .qc-content {
+        padding: 24px 20px 56px;
+    }
+}
+
+/* --- nawigacja na telefonie ---
+   Pasek z ikonami zabierał 56 px z 390 px szerokości i nie mówił, dokąd
+   prowadzą pozostałe pozycje — widać było tylko, która jest aktywna.
+   Zastępuje go przycisk z nazwą bieżącej strony; lista rozwija się pod nim
+   z pełnymi nazwami i nagłówkami grup, tak jak na dużym ekranie. */
+.qc-nav-mobile {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .qc-shell {
+        flex-direction: column;
+        align-items: stretch;
+
+        /* Linia pionowa oddzielała nawigację od treści — w układzie pionowym
+           nie ma czego oddzielać. */
+        background: none;
+    }
+
+    /* Wygląda jak pole wyboru, a nie jak pas na całą szerokość. Pas w bieli
+       stykał się z białym nagłówkiem PrestaShopa i czytał się jak drugi tytuł
+       strony; obwiedziona kontrolka na tle strony mówi wprost, że da się ją
+       dotknąć, i ma widoczny początek oraz koniec. */
+    .qc-nav-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+
+        margin: 12px 16px;
+        padding-inline: 12px;
+        block-size: 40px;
+
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
+
+        color: var(--fg-1);
+        font-size: var(--text-base);
+        font-weight: var(--weight-semibold);
+        text-align: start;
+        cursor: pointer;
+    }
+
+    .qc-nav-mobile:hover {
+        border-color: var(--border-strong);
+    }
+
+    .qc-nav-mobile-arrow {
+        flex: none;
+        color: var(--fg-3);
+        transition: transform var(--dur) var(--ease);
+    }
+
+    .qc-shell.qc-nav-open .qc-nav-mobile-arrow {
+        transform: rotate(180deg);
+    }
+
+    /* Lista wchodzi w przepływ zamiast nakładać się na treść — nie zasłania
+       tego, co sprzedawca właśnie ustawiał, i nie potrzebuje przyciemnienia tła. */
+    /* Rozwinięta lista trzyma się kontrolki: te same marginesy, ta sama obwódka.
+       Widać, że to jej zawartość, a nie kolejna sekcja strony. */
+    .qc-shell > .qc-sidenav {
+        display: none;
+        position: static;
+        inline-size: auto;
+        max-block-size: none;
+
+        margin: -6px 16px 12px;
+        padding: 6px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+    }
+
+    .qc-shell.qc-nav-open > .qc-sidenav {
+        display: block;
+    }
+
+    /* Reguły zwiniętego paska z zakresu ≤1180 px trzeba tu odwołać — w rozwiniętej
+       liście nazwy i nagłówki grup są całym sensem tego rozwiązania. */
+    .qc-shell > .qc-sidenav .qc-nav-label,
+    .qc-shell > .qc-sidenav .qc-nav-soon {
+        display: inline;
+    }
+
+    .qc-shell > .qc-sidenav .qc-sidenav-section {
+        opacity: 1;
+        height: auto;
+        padding: 12px 10px 4px;
+    }
+
+    .qc-shell > .qc-sidenav .qc-nav-item {
+        justify-content: flex-start;
+    }
+}
+
+/* --- drobne układanki wspólne dla ekranów ---
+   Trzy klasy przeniesione z powłoki silnika, bo używa ich każdy nasz ekran:
+   rząd elementów w jednej linii, nagłówek grupy pól i pionowy odstęp między
+   kartami. Nie są komponentami z paczki — to układ, nie wygląd. */
+
+.qc-hstack {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.qc-stack > * + * {
+    margin-top: 20px;
+}
+
+.qc-group-label {
+    font-size: 11px;
+    font-weight: var(--weight-bold);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin: 18px 0 8px;
+}
+
+.qc-group-label:first-child {
+    margin-top: 0;
+}
+
+/* --- przełącznik segmentowy ---
+   Wybór jednej wartości z kilku, bez rozwijania listy. W rejestrze filtruje
+   stan zgody: wszystkie / udzielone / cofnięte. */
+
+.qc-seg {
+    display: inline-flex;
+    gap: 3px;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface-sunken);
+
+    /* Element liniowo-blokowy siada na linii pisma, przez co pod nim zostaje
+       miejsce na wydłużenia dolne — wygląda jak wewnętrzny margines. */
+    vertical-align: top;
+}
+
+.qc-seg-wrap {
+    flex-wrap: wrap;
+}
+
+.qc-seg-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 13px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font-size: var(--text-sm);
+    color: var(--fg-2);
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.qc-seg-btn:hover {
+    color: var(--fg-1);
+}
+
+.qc-seg-btn.is-active {
+    background: var(--surface);
+    color: var(--fg-1);
+    font-weight: var(--weight-semibold);
+    box-shadow: 0 1px 2px oklch(20% 0 0 / .07);
+}
+
+/* Wariant z polami wyboru: stan bierze się z `:checked`, nie z klasy dokładanej
+   przy renderowaniu, więc zaznaczenie widać od razu — bez zapisu i przeładowania. */
+.qc-seg-btn input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.qc-seg-btn:has(input:checked) {
+    background: var(--surface);
+    color: var(--fg-1);
+    font-weight: var(--weight-semibold);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .07);
+}
+
+.qc-seg-btn:has(input:focus-visible) {
+    box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+/* --- klocki ekranów wg prototypów w `prototypy/` --- */
+
+.qc-screen {
+    max-width: 100%;
+}
+
+.qc-content > .qc-screen--wide {
+    max-width: 100%;
+}
+
+/* Nagłówek ekranu: tytuł z opisem po lewej, akcja po prawej. Bez dolnej linii —
+   inaczej niż `qc-page-head` z silnika. */
+.qc-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.qc-head-title {
+    font-size: 22px;
+    font-weight: var(--weight-extrabold);
+    color: var(--fg-1);
+}
+
+.qc-head-desc {
+    font-size: var(--text-sm);
+    color: var(--fg-2);
+    margin-top: 4px;
+    max-width: 560px;
+}
+
+.qc-head .qc-btn {
+    align-self: flex-start;
+}
+
+/* Pasek filtrów: kontrolki bez etykiet, w jednym rzędzie. */
+.qc-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.qc-filters .qc-field-base,
+.qc-filters .qc-select {
+    width: auto;
+    height: 32px;
+    font-size: var(--text-xs);
+}
+
+/* Filtr z ustawioną wartością — widać, że lista jest zawężona. */
+.qc-filters .is-set {
+    background: var(--accent-soft);
+    border-color: var(--accent-soft-border);
+    font-weight: var(--weight-semibold);
+}
+
+/* Przełącznik segmentowy z prototypu: jedna ramka, segmenty rozdzielone linią. */
+.qc-segbar {
+    height: 32px;
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--surface);
+}
+
+.qc-segbar > * {
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: var(--weight-semibold);
+    color: var(--fg-2);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.qc-segbar > * + * {
+    border-left: 1px solid var(--border);
+}
+
+.qc-segbar > .is-active {
+    background: var(--accent-soft);
+    color: var(--fg-1);
+    font-weight: var(--weight-bold);
+}
+
+/* Tabela na siatce, nie na <table> — kolumny mają stałe proporcje z prototypu,
+   a komórka bywa dwuwierszowa (adres plus notka o doszyciu). */
+.qc-grid {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+/* Nagłówek i wiersz są siatką z samej klasy. Szablon dokłada wyłącznie proporcje
+   kolumn — wcześniej musiał powtarzać `display:grid`, a pominięcie go składało
+   całą tabelę w jedną kolumnę. */
+.qc-grid-head {
+    display: grid;
+    gap: 8px;
+    padding: 9px 12px;
+    background: var(--surface-sunken);
+    font-size: 10px;
+    font-weight: var(--weight-semibold);
+    color: var(--fg-2);
+    text-transform: uppercase;
+}
+
+.qc-grid-row {
+    display: grid;
+    gap: 8px;
+    padding: 10px 12px;
+    border-top: 1px solid var(--border);
+    align-items: center;
+}
+
+.qc-grid-row:hover {
+    background: var(--surface-sunken);
+}
+
+.qc-mono {
+    font-family: var(--font-mono);
+    font-size: 11px;
+}
+
+.qc-sub {
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    color: var(--fg-3);
+}
+
+/* Stopka listy: numery stron po lewej, informacja po prawej. */
+.qc-listfoot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+}
+
+/* Wiersz listy jako odnośnik — bez podkreślenia i z kursorem wskazującym. */
+a.qc-grid-row {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Kolumna formularza nie rozciąga się w nieskończoność — długie pole tekstowe
+   na szerokim monitorze jest trudne do odczytania. Tabele limitu nie mają. */
+.qc-formcol {
+    max-width: 720px;
+}
+
+/* Pasek akcji formularza: zapis po prawej, działanie niszczące po lewej.
+   Przy praworęcznej większości przycisk zapisu wypada bliżej kursora. */
+.qc-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.qc-actions .qc-danger-slot {
+    margin-right: auto;
+}
+
+/* -------------------------------------------------------------------
+   Macierz Consent Mode
+
+   Wiersz ma się czytać jako tabela zależności, nie jako formularz — stąd
+   kwadrat zamiast natywnego pola wyboru. Sygnały bez pokrycia wymienia pasek
+   ostrzeżenia nad tabelą; kolumny zostają nietknięte.
+   ------------------------------------------------------------------- */
+.qc-cm-head {
+    text-transform: uppercase;
+}
+
+/* Suwak należy do tabeli, nie do strony: przy siedmiu sygnałach macierz nie
+   mieści się na węższym monitorze, a przewijanie całego ekranu w bok zabrałoby
+   z pola widzenia nazwy kategorii. */
+.qc-cm-scroll {
+    overflow-x: auto;
+    margin: 0 -2px;
+    padding: 0 2px;
+}
+
+/* Kolumny mierzą się zawartością. Pierwsza nie dostaje `1fr`, bo zabierałaby
+   cały zapas szerokości i spychała kolumny sygnałów pod suwak. */
+.qc-cm-grid {
+    display: grid;
+    gap: 0 8px;
+    width: max-content;
+    min-width: 100%;
+}
+
+.qc-cm-cell.qc-cm-lead {
+    line-height: 1.35;
+}
+
+.qc-cm-cell {
+    padding: 9px 6px;
+    font-size: 11px;
+    font-weight: var(--weight-semibold);
+    color: var(--fg-2);
+    display: flex;
+    align-items: center;
+}
+
+.qc-cm-cell.is-center {
+    justify-content: center;
+    text-align: center;
+}
+
+.qc-cm-cell.is-under {
+    border-bottom: 1px solid var(--border);
+}
+
+.qc-cm-cell.is-over {
+    border-top: 1px solid var(--border);
+    padding-top: 11px;
+    padding-bottom: 11px;
+}
+
+.qc-cm-cell.is-granted {
+    color: var(--success);
+}
+
+.qc-cm-cell.qc-cm-head {
+    flex-direction: column;
+    gap: 1px;
+    align-items: center;
+}
+
+.qc-cm-cell.qc-cm-name {
+    font-size: var(--text-sm);
+    color: var(--fg-1);
+    padding-right: 16px;
+}
+
+
+.qc-cm-box {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    width: 16px;
+    height: 16px;
+    margin: 0 auto;
+    display: block;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 4px;
+    background: var(--surface);
+    cursor: pointer;
+}
+
+.qc-cm-box::after {
+    content: "";
+    position: absolute;
+    left: 4.5px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid var(--qc-ink-on-accent);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+}
+
+.qc-cm-box:hover {
+    border-color: var(--fg-3);
+}
+
+.qc-cm-box:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.qc-cm-box:checked::after {
+    opacity: 1;
+}
+
+/* Podpis pola w widoku, ktory pokazuje wartosc, a nie pyta o nia. Lzejszy od
+   `.qc-label`: etykieta formularza wolajaca o uwage nad kazda linijka tekstu
+   zamienia karte odczytu w ankiete. */
+.qc-root .qc-caption {
+    display: block;
+    font-size: 11px;
+    line-height: 1.4;
+    font-weight: var(--weight-semibold);
+    color: var(--fg-3);
+    margin-bottom: 5px;
+}
+
+/* Dzialanie drugoplanowe zapisane jako odnosnik, nie przycisk. Obrys wokol
+   „Rotate" nadawal tej czynnosci range zapisu formularza, ktorej nie ma. */
+.qc-root .qc-linkbtn {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: var(--weight-bold);
+    color: var(--accent-active);
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.qc-root .qc-linkbtn:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+.qc-root .qc-linkbtn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring);
+    border-radius: 3px;
+}
+
+/* Pasek zbiorczy pod lista: podsumowanie po lewej, dzialanie po prawej. */
+.qc-listbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 16px;
+    background: var(--warning-soft);
+    border-top: 1px solid var(--accent-soft-border);
+}
+
+/* -------------------------------------------------------------------
+   Kody wysyłane na zewnątrz
+
+   Pigułka sama niesie stan: zaznaczona ma podbarwienie i ciemniejszy napis,
+   odznaczona jest sam obrys. Kwadrat pola wyboru wsadzony w pigułkę wyglądał
+   jak formularz wciśnięty w odznakę — dwa różne języki w jednym elemencie.
+
+   Znacznik zostaje, bo samo podbarwienie to kolor jako jedyny nośnik stanu;
+   pojawia się tylko przy zaznaczonej i jest rysowany, nie wstawiany ikoną.
+   ------------------------------------------------------------------- */
+.qc-code-pill {
+    height: 28px;
+    padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--fg-2);
+    cursor: pointer;
+    user-select: none;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.qc-code-pill:hover {
+    border-color: var(--border-strong);
+}
+
+.qc-code-pill input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Znacznik zajmuje miejsce także wtedy, gdy jest niewidoczny — inaczej pigułki
+   przeskakiwałyby o kilka pikseli przy każdym kliknięciu. */
+.qc-code-pill-box {
+    position: relative;
+    width: 9px;
+    height: 9px;
+    flex: none;
+    opacity: 0;
+}
+
+.qc-code-pill-box::after {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: -1px;
+    width: 4px;
+    height: 8px;
+    border: solid var(--accent-active);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.qc-code-pill:has(input:checked) {
+    border-color: var(--accent-soft-border);
+    background: var(--accent-soft);
+    color: var(--fg-1);
+    font-weight: var(--weight-semibold);
+}
+
+.qc-code-pill:has(input:checked) .qc-code-pill-box {
+    opacity: 1;
+}
+
+.qc-code-pill:has(input:focus-visible) {
+    box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+/* Blok kodu do przepisania po drugiej stronie. Zawijanie wyłączone tylko
+   poziomo — łamany podpis albo adres przestaje być tym, co trzeba skopiować. */
+.qc-pre {
+    margin: 0;
+    padding: 10px 12px;
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    white-space: pre;
+    overflow-x: auto;
+    line-height: 1.55;
+    color: var(--fg-1);
+}
+
+/* -------------------------------------------------------------------
+   Siatka ustawień
+
+   Dwie kolumny, podpis nad kontrolką, wszystkie kontrolki tej samej
+   wysokości. Ustawienie zajmujące całą szerokość dostaje `qc-span`.
+   Bez tego każdy nowy przełącznik ląduje w osobnym wierszu o własnej
+   budowie i karta przestaje się czytać jako jedna całość.
+   ------------------------------------------------------------------- */
+.qc-fieldgrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+    align-items: start;
+}
+
+.qc-fieldgrid > .qc-span {
+    grid-column: 1 / -1;
+}
+
+.qc-fieldgrid .qc-hint {
+    margin-top: 5px;
+}
+
+@media (max-width: 860px) {
+    .qc-fieldgrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Wybór jednokrotny. Okrąg, nie kwadrat — kształt niesie informację
+   „jedno z", zanim czytelnik zdąży kliknąć. */
+.qc-radio {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    flex: none;
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 50%;
+    background: var(--surface);
+    cursor: pointer;
+}
+
+.qc-radio::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: var(--qc-ink-on-accent);
+    opacity: 0;
+}
+
+.qc-radio:hover {
+    border-color: var(--fg-3);
+}
+
+.qc-radio:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.qc-radio:checked::after {
+    opacity: 1;
+}
+
+.qc-radio:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.qc-optrow {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 6px;
+}
+
+.qc-opt {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+}
+
+/* Wiersz „etykieta: wartosc" na karcie odczytu. Idiom prototypu wszedzie tam,
+   gdzie ekran pokazuje ustawienie, zamiast o nie pytac. */
+.qc-root .qc-line {
+    font-size: var(--text-xs);
+    line-height: normal;
+    font-weight: var(--weight-medium);
+    color: var(--fg-2);
+}
+
+/* Rozstrzygniety konflikt zapisu przychodzacego.
+
+   Swiadomie nie jest paskiem `.qc-alert`: pasek zglasza problem do naprawienia,
+   a tu nie ma czego naprawiac — decyzja juz zapadla i wiersz ja tylko relacjonuje.
+   Stad ciemny nagłowek bez ikony i bez paska przy lewej krawedzi. */
+.qc-conflict {
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    background: var(--warning-soft);
+    border: 1px solid var(--danger-soft-border);
+    border-radius: var(--radius-md);
+}
+
+.qc-root .qc-conflict-head {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    color: var(--fg-1);
+    margin-bottom: 8px;
+}
+
+.qc-conflict-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.qc-root .qc-conflict-card {
+    padding: 8px 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    color: var(--fg-2);
+}
+
+@media (max-width: 860px) {
+    .qc-conflict-pair {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Wartosc w tym samym tonie co etykieta — w prototypie caly wiersz jest
+   jednym szarym, wyroznia sie tylko krojem. */
+.qc-root .qc-line .qc-mono {
+    font-size: inherit;
+    color: inherit;
+}
+
+/* ===================================================================
+   TOASTY
+
+   Selektory z prefiksem `body`: przy zainstalowanym `quince_engine` obie
+   powłoki definiują te same klasy, a jego arkusz ładuje się po naszym.
+   Bez podniesionej swoistości wygrywałaby jego wersja, w której górna
+   krawędź nie ma ograniczenia i toast schodził na środek ekranu.
+
+   Zastępują natywne alerty PrestaShopa, które wchodzą nad treść, przesuwają
+   cały układ w dół i zostają na ekranie aż do przeładowania strony.
+   =================================================================== */
+
+body .qc-toasts {
+    position: fixed;
+    right: 20px;
+    /* Pod przyklejonym nagłówkiem PrestaShopa — wysokość mierzy panel.js.
+       Górna granica, bo pomiar przy długim tytule strony schodzi nisko, a toast
+       ma trzymać się górnej krawędzi, nie środka ekranu. */
+    top: min(calc(var(--qc-top-offset, 85px) + 14px), 96px);
+    z-index: 1200;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: min(420px, calc(100vw - 40px));
+    pointer-events: none;
+}
+
+body .qc-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .06), 0 12px 32px -12px rgba(0, 0, 0, .35);
+    font-size: var(--text-sm);
+    color: var(--fg-1);
+    pointer-events: auto;
+
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity .18s ease, transform .18s ease;
+}
+
+body .qc-toast.is-visible { opacity: 1; transform: translateY(0); }
+body .qc-toast.is-leaving { opacity: 0; transform: translateY(-4px); }
+
+body .qc-toast-icon { flex: none; margin-top: 1px; }
+body .qc-toast-text { flex: 1; min-width: 0; line-height: 1.45; }
+
+/* Komunikat przychodzi z PrestaShopa w oryginalnej strukturze — bywa listą błędów
+   walidacji albo zdaniem z odnośnikiem. Zdejmujemy tylko marginesy back-office,
+   które w wąskim toaście robią pustkę. */
+body .qc-toast-text > :first-child { margin-top: 0; }
+body .qc-toast-text > :last-child  { margin-bottom: 0; }
+body .qc-toast-text p { margin: 0 0 6px; }
+body .qc-toast-text ul,
+body .qc-toast-text ol { margin: 0; padding-left: 18px; }
+body .qc-toast-text li + li { margin-top: 3px; }
+
+/* Odnośnik w komunikacie odróżnia się kolorem, nie podkreśleniem — w projekcie
+   nie podkreślamy linków. Przebija neutralizację `color: inherit` z sekcji wyżej. */
+body .qc-toast-text a {
+    color: var(--accent-active) !important;
+    font-weight: var(--weight-medium);
+}
+
+body .qc-toast-close {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--fg-3);
+    font-size: 17px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+}
+
+body .qc-toast-close:hover { color: var(--fg-1); background: var(--surface-sunken); }
+
+body .qc-toast--success .qc-toast-icon { color: var(--success); }
+body .qc-toast--danger  .qc-toast-icon { color: var(--danger); }
+body .qc-toast--warning .qc-toast-icon { color: var(--warning, #b7791f); }
+body .qc-toast--info    .qc-toast-icon { color: var(--accent); }
+
+body .qc-toast--success { border-left: 3px solid var(--success); }
+.qc-toast--danger  { border-left: 3px solid var(--danger); }
+body .qc-toast--warning { border-left: 3px solid var(--warning, #b7791f); }
+
+@media (max-width: 767px) {
+    body .qc-toasts {
+        right: 12px;
+        left: 12px;
+        top: min(calc(var(--qc-top-offset, 85px) + 8px), 76px);
+        max-width: none;
+    }
+}
+
+/* Natywny pasek komunikatu chowamy stylem, nie skryptem.
+
+   `panel.js` zdejmuje go dopiero po zbudowaniu drzewa, więc zdążył mrugnąć nad
+   treścią i przesunąć układ. Ukryty węzeł nadal ma treść, którą skrypt czyta
+   i pokazuje jako toast — chowamy tylko na naszych ekranach. */
+body:has(.qc-root) .alert.d-print-none {
+    display: none !important;
+}
+
+/* -------------------------------------------------------------------
+   Karta zwijana
+
+   Nagłówek jest przyciskiem na całą szerokość: cel kliknięcia to nazwa
+   sekcji, nie sama strzałka. Kolumna ustawień banera liczy sześć kart,
+   więc bez zwijania dojście do ostatniej wymaga przewinięcia całej.
+   ------------------------------------------------------------------- */
+.qc-fold-head {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 16px;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    background: none;
+    font-family: inherit;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    color: var(--fg-1);
+    text-align: left;
+    cursor: pointer;
+}
+
+.qc-fold-head:hover {
+    background: var(--surface-sunken);
+}
+
+.qc-fold-head:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--focus-ring);
+}
+
+.qc-fold-mark {
+    flex: none;
+    color: var(--fg-3);
+    transition: transform var(--dur) var(--ease);
+}
+
+.qc-fold-head[aria-expanded="false"] .qc-fold-mark {
+    transform: rotate(-90deg);
+}
+
+.qc-fold-head[aria-expanded="false"] {
+    border-bottom-color: transparent;
+}
+
+/* Wybór znaku na pływającym przycisku. */
+.qc-iconpick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.qc-iconpick-item input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.qc-iconpick-item span {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--fg-2);
+    cursor: pointer;
+}
+
+.qc-iconpick-item span:hover {
+    border-color: var(--border-strong);
+}
+
+.qc-iconpick-item input:checked + span {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent-active);
+}
+
+.qc-iconpick-item input:focus-visible + span {
+    box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+/* -------------------------------------------------------------------
+   Podgląd banera — przyciski pierwszej warstwy
+
+   `flex: 1` liczy podstawę wzdłuż osi głównej. W układzie pionowym oznacza
+   to podstawę wysokości równą zeru, przez co zadana wysokość przestawała
+   obowiązywać i przyciski kurczyły się do wysokości napisu. Stąd `min-height`
+   i podstawa `auto`.
+
+   44 px to dolna granica celu dotykowego z WCAG 2.1 — na telefonie przycisk
+   odrzucenia musi być tak samo łatwy do trafienia jak przycisk zgody.
+   ------------------------------------------------------------------- */
+.qc-bpv-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.qc-bpv-actions.is-stacked {
+    flex-direction: column;
+}
+
+.qc-bpv-btn {
+    flex: 1 1 auto;
+    min-height: 44px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: var(--radius-md);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+}
+
+/* -------------------------------------------------------------------
+   Ekran ustawień
+
+   Formularz czytany z góry na dół, nie tabela: jedna kolumna o ograniczonej
+   szerokości. Rozciągnięty na szeroki monitor rozjeżdża etykietę od kontrolki.
+   ------------------------------------------------------------------- */
+.qc-settings {
+    max-width: 760px;
+}
+
+.qc-settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.qc-set-title {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    color: var(--fg-1);
+}
+
+.qc-set-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+/* Kropka stanu przy odczycie integracji. Kolor nie jest jedynym nośnikiem —
+   obok stoi zdanie, które mówi to samo słowami. */
+.qc-dot {
+    width: 8px;
+    height: 8px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--fg-3);
+}
+
+.qc-dot.is-on {
+    background: var(--success);
+}
+
+/* -------------------------------------------------------------------
+   Zakładki karty
+
+   Podkreślenie zamiast tła: zakładka nie jest przyciskiem, tylko wskazaniem,
+   którą część tej samej karty się ogląda. Stan aktywny niesie też
+   `aria-current`, bo samo pogrubienie nie mówi nic czytnikowi ekranu.
+   ------------------------------------------------------------------- */
+.qc-tabs {
+    display: flex;
+    gap: 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+}
+
+.qc-root .qc-tab {
+    padding: 10px 0;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--fg-3);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+}
+
+.qc-root .qc-tab:hover {
+    color: var(--fg-1);
+}
+
+.qc-root .qc-tab.is-active {
+    font-weight: var(--weight-bold);
+    color: var(--fg-1);
+    border-bottom-color: var(--accent);
+}
+
+.qc-root .qc-tab:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring);
+    border-radius: 3px;
+}
+
+/* Lista znalezisk skanera. Krótkie wiersze, bo to nie tabela do porównywania,
+   tylko kolejka rzeczy do rozstrzygnięcia: opisać albo świadomie pominąć. */
+.qc-scanlist {
+    display: flex;
+    flex-direction: column;
+    max-height: 320px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+}
+
+.qc-scanrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 12px;
+}
+
+.qc-scanrow + .qc-scanrow {
+    border-top: 1px solid var(--border);
+}
+
+.qc-scanrow:hover {
+    background: var(--surface-sunken);
+}
+
+/* -------------------------------------------------------------------
+   Ekran wsparcia
+   ------------------------------------------------------------------- */
+.qc-about {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 28px 24px;
+    text-align: center;
+}
+
+.qc-about-mark {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    background: var(--accent-soft);
+    color: var(--accent-active);
+}
+
+.qc-about-name {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: -.01em;
+}
+
+.qc-about-tagline {
+    font-size: var(--text-md);
+    font-weight: var(--weight-semibold);
+    color: var(--accent-active);
+    letter-spacing: -.005em;
+}
+
+.qc-about-claim {
+    max-width: 62ch;
+    font-size: var(--text-sm);
+    color: var(--fg-2);
+    line-height: 1.6;
+}
+
+.qc-featgrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 20px;
+}
+
+.qc-feat {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.qc-feat-icon {
+    flex: none;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: var(--surface-sunken);
+    color: var(--accent-active);
+}
+
+.qc-feat-title {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+}
+
+@media (max-width: 860px) {
+    .qc-featgrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dwie kolumny kart: po lewej to, co się ustawia, po prawej to, co się czyta.
+   Kolumny wyrównane do góry, bo karty mają różną wysokość i rozciąganie
+   niższej z nich zostawiłoby w niej puste pole. */
+.qc-cols {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+@media (max-width: 1100px) {
+    .qc-cols {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Wybór pliku: natywne pole przeglądarki wygląda w każdej inaczej i nie da się
+   go ostylować. Chowamy je w etykiecie udającej przycisk, a nazwę wybranego
+   pliku wypisujemy obok — bez tego nie widać, że cokolwiek wybrano. */
+.qc-root label.qc-btn {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+/* --- wiersz rozwijany ------------------------------------------------------
+   Cały wiersz jest przyciskiem, bo trafienie w samą strzałkę na ekranie
+   dotykowym jest loterią. Obrót strzałki i tło otwartego wiersza mówią, który
+   rekord jest rozwinięty — bez tego przy kilkunastu otwartych naraz nie sposób
+   się połapać. */
+.qc-root .qc-rowtoggle {
+    font: inherit;
+    color: inherit;
+    transition: background var(--dur-fast, 120ms) ease;
+}
+
+.qc-root .qc-rowtoggle:hover {
+    background: var(--surface-sunken);
+}
+
+.qc-root .qc-rowtoggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+
+.qc-root .qc-rowchevron {
+    transition: transform var(--dur-fast, 120ms) ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .qc-root .qc-rowtoggle,
+    .qc-root .qc-rowchevron {
+        transition: none;
+    }
+}

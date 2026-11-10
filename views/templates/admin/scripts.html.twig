@@ -1,0 +1,248 @@
+{# Skrypty i blokowanie. Układ wg prototypy/Scripts.dc.html #}
+{% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
+{% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
+
+{% trans_default_domain 'Modules.Quincecmp.Admin' %}
+
+{% set cols = '1.3fr 1fr 1fr 1.3fr 50px 70px' %}
+
+{# Kolumny sygnałów nie rosną z szerokością ekranu — na szerokim monitorze
+   kwadraty rozjeżdżały się na pół metra od nazwy kategorii. Luz bierze
+   pierwsza kolumna, ta z nazwą. #}
+{% set cmCols = 'minmax(220px,2fr) repeat(' ~ signals|length ~ ',minmax(130px,170px))' %}
+
+{% block quince_body %}
+<div class="qc-screen">
+
+    <div class="qc-head">
+        <div>
+            <div class="qc-head-title">{{ 'Scripts & blocking'|trans }}</div>
+            <div class="qc-head-desc" style="max-width:640px">
+                {{ 'Blocking is the point of this module. The banner is decoration on top of it.'|trans }}
+                {% if shopScoped %}<strong>{{ '(%shop%)'|trans({'%shop%': shopName}) }}</strong>{% endif %}
+            </div>
+        </div>
+        <a href="{{ path('quince_cmp_script_edit', {'idScript': 0}) }}" class="qc-btn qc-btn-primary">
+            {{ 'Add service'|trans }}
+        </a>
+    </div>
+
+    {# --- lista usług --- #}
+    <div class="qc-grid" style="margin-bottom:20px">
+        <div class="qc-grid-head" style="display:grid;grid-template-columns:{{ cols }};gap:8px;font-size:11px;padding:10px 14px">
+            <div>{{ 'Name'|trans }}</div>
+            <div>{{ 'Embedding'|trans }}</div>
+            <div>{{ 'Category'|trans }}</div>
+            <div>{{ 'Blocking technique'|trans }}</div>
+            <div>{{ 'Active'|trans }}</div>
+            <div></div>
+        </div>
+
+        {% for script in scripts %}
+            <div class="qc-grid-row" style="display:grid;grid-template-columns:{{ cols }};gap:8px;padding:11px 14px">
+                <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold)">{{ script.name }}</div>
+                <div><span class="qc-badge">{{ embeddings[script.embedding]|default(script.embedding)|trans }}</span></div>
+                <div style="font-size:var(--text-xs)">
+                    {% if script.category %}
+                        {{ categories[script.category]|default(script.category) }}
+                    {% else %}
+                        <span class="qc-badge qc-badge-warning">{{ 'Unassigned'|trans }}</span>
+                    {% endif %}
+                </div>
+                <div style="font-size:var(--text-xs)">{{ techniques[script.technique]|default(script.technique)|trans }}</div>
+                <div>
+                    <button type="submit" form="tg-{{ script.id_cmp_script }}"
+                            class="qc-toggle-track qc-focusable"
+                            style="border:0;padding:0;cursor:pointer;{{ script.active ? 'background:var(--accent)' : '' }}"
+                            title="{{ script.active ? 'Active'|trans : 'Inactive'|trans }}"></button>
+                </div>
+                <div>
+                    <a href="{{ path('quince_cmp_script_edit', {'idScript': script.id_cmp_script}) }}"
+                       style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--accent-active)">{{ 'Edit'|trans }}</a>
+                </div>
+            </div>
+            <form id="tg-{{ script.id_cmp_script }}" method="post" hidden
+                  action="{{ path('quince_cmp_script_toggle', {'idScript': script.id_cmp_script}) }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_script_toggle') }}">
+            </form>
+        {% else %}
+            <div class="qc-empty" style="padding:24px 20px">
+                {{ icons.icon('shield', 32, 'qc-empty-icon') }}
+                <div class="qc-empty-text">
+                    {{ 'No service listed. Nothing is being held back before consent — every script on the storefront fires immediately.'|trans }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# --- mapowanie Consent Mode --- #}
+    <form method="post" action="{{ path('quince_cmp_scripts_matrix') }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_scripts_matrix') }}">
+        <div class="qc-grid" style="padding:16px 18px;margin-bottom:20px">
+            <div style="font-size:var(--text-sm);font-weight:var(--weight-bold);margin-bottom:12px">
+                {{ 'Consent Mode mapping'|trans }}
+            </div>
+
+            {% if uncovered is not empty %}
+                {# Jeden pasek na wszystkie sygnały bez pokrycia. Osobny pasek na każdy
+                   z nich przy pustej macierzy dawał ścianę czterech identycznych zdań. #}
+                <div class="qc-alert qc-alert-warning" style="margin-bottom:14px">
+                    {{ icons.icon('alertTriangle', 18, 'qc-alert-icon') }}
+                    <div>
+                        {%- for signal in uncovered %}<span class="qc-mono">{{ signal }}</span>{{ not loop.last ? ', ' }}{% endfor %}
+                        {{ uncovered|length > 1
+                            ? 'are not driven by any category.'|trans
+                            : 'is not driven by any category.'|trans }}
+                        {{ 'Consent Mode is incomplete — Google treats such a setup as no consent signal at all.'|trans }}
+                    </div>
+                </div>
+            {% endif %}
+
+            {# Jedna siatka na całą macierz, nie trzy osobne wiersze: tylko wtedy
+               kolumna dopasowuje się do najszerszej zawartości i wszystkie wiersze
+               trafiają w te same krawędzie. Poziomy suwak należy do tabeli, nie do
+               strony — przy siedmiu sygnałach nie mieści się na węższym monitorze.
+
+               Obramowania niosą komórki, bo w jednej siatce nie ma węzła wiersza,
+               na którym dałoby się je zawiesić. #}
+            <div class="qc-cm-scroll">
+                <div class="qc-cm-grid" style="grid-template-columns:minmax(120px,max-content) repeat({{ signals|length }},max-content)">
+
+                    {# stan sprzed decyzji; `security_storage` jest wyjątkiem — odmowa
+                       psuje wykrywanie nadużyć i uwierzytelnianie, a niczego nie chroni #}
+                    <div class="qc-cm-cell qc-cm-lead is-under">{{ 'Default before consent'|trans }}</div>
+                    {% for signal in signals %}
+                        <div class="qc-cm-cell is-under is-center {{ signal == signalGranted ? 'is-granted' : '' }}">
+                            {{ signal == signalGranted ? 'granted'|trans : 'denied'|trans }}
+                        </div>
+                    {% endfor %}
+
+                    <div class="qc-cm-cell"></div>
+                    {% for signal in signals %}
+                        <div class="qc-cm-cell is-center qc-cm-head">
+                            <span class="qc-mono">{{ signal }}</span>
+                            {% if signal not in signalsRequired %}
+                                <div class="qc-sub" style="text-transform:none">{{ 'optional'|trans }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    {% for row in matrix %}
+                        <div class="qc-cm-cell qc-cm-name is-over">{{ row.name }}</div>
+                        {% for signal in signals %}
+                            <div class="qc-cm-cell is-over is-center">
+                                <input type="checkbox" class="qc-cm-box qc-focusable"
+                                       name="cm_{{ row.code }}_{{ signal }}" value="1"
+                                       {{ row.signals[signal] ? 'checked' : '' }}>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% if matrix is empty %}
+                <div class="qc-empty" style="padding:20px">
+                    <div class="qc-empty-text">
+                        {{ 'No cookie category to map. Add one under Consent types first.'|trans }}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if matrix is not empty %}
+                <div class="qc-fieldgrid" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border)">
+                    <div>
+                        <div class="qc-caption">{{ 'Where the default applies'|trans }}</div>
+                        <div class="qc-optrow" style="padding-top:0">
+                            <label class="qc-opt">
+                                <input type="radio" name="cm_scope" value="everywhere" class="qc-radio"
+                                       {{ cmScope == 'everywhere' ? 'checked' : '' }}>
+                                {{ 'Deny everywhere until the visitor agrees'|trans }}
+                            </label>
+                            <label class="qc-opt">
+                                <input type="radio" name="cm_scope" value="regions" class="qc-radio"
+                                       {{ cmScope == 'regions' ? 'checked' : '' }}>
+                                {# Nie „ponizej": pole z krajami stoi obok, w drugiej kolumnie siatki.
+                                   Napis ma byc prawdziwy niezaleznie od tego, gdzie pole stanie. #}
+                                {{ 'Deny only in the countries listed, allow elsewhere'|trans }}
+                            </label>
+                        </div>
+                        <div class="qc-hint">
+                            {{ 'The law asks for consent where it applies. Denying worldwide costs you data you were allowed to collect.'|trans }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="qc-caption">{{ 'Countries'|trans }}</div>
+                        <input type="text" name="cm_regions" class="qc-field-base qc-field-sm qc-focusable qc-mono"
+                               value="{{ cmRegions }}" placeholder="{{ cmRegionsEea }}">
+                        <div class="qc-hint">
+                            {{ 'Two-letter codes, comma separated. Default is the EEA plus the UK and Switzerland.'|trans }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="qc-caption">{{ 'Wait for the visitor to decide'|trans }}</div>
+                        <select name="cm_wait" class="qc-field-base qc-field-sm qc-select qc-focusable">
+                            {% for ms in cmWaitChoices %}
+                                <option value="{{ ms }}" {{ cmWait == ms ? 'selected' : '' }}>
+                                    {{ ms == 0 ? 'do not wait'|trans : '%count% ms'|trans({'%count%': ms}) }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="qc-hint">
+                            {{ 'Without a pause the tag fires on the default state before the banner is even up, and consent given a second later does not recover that page view.'|trans }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="qc-caption">{{ 'Before consent'|trans }}</div>
+
+                        {# Jeden przełącznik na wiersz. Obok siebie zlewały się w jeden pasek
+                           i nie było widać, który napis należy do którego. #}
+                        <div class="qc-optrow" style="padding-top:2px">
+                            <label class="qc-toggle qc-toggle-sm">
+                                <input type="checkbox" name="cm_redact" value="1" {{ cmRedact ? 'checked' : '' }}>
+                                <span class="qc-toggle-track"></span>
+                                <span class="qc-toggle-text" style="font-size:var(--text-xs)">{{ 'Strip ad identifiers from requests'|trans }}</span>
+                            </label>
+
+                            <label class="qc-toggle qc-toggle-sm">
+                                <input type="checkbox" name="cm_passthrough" value="1" {{ cmPassthrough ? 'checked' : '' }}>
+                                <span class="qc-toggle-track"></span>
+                                <span class="qc-toggle-text" style="font-size:var(--text-xs)">{{ 'Carry the click id in the URL instead of a cookie'|trans }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qc-actions">
+                    <button type="submit" class="qc-btn qc-btn-primary">
+                        {{ icons.icon('check', 14) }} {{ 'Save Consent Mode'|trans }}
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </form>
+
+    {# --- zastępnik zablokowanej treści --- #}
+    <div class="qc-grid" style="padding:16px 18px;display:flex;gap:20px;align-items:center">
+        <div style="width:64px;height:40px;background:var(--surface-sunken);border:1px dashed var(--border-strong);border-radius:var(--radius-md);flex:none"></div>
+
+        <div>
+            <div style="font-size:var(--text-sm);font-weight:var(--weight-bold)">
+                {{ 'Blocked-content placeholder'|trans }}
+            </div>
+            <div style="font-size:var(--text-xs);color:var(--fg-2)">
+                {{ 'Shown in place of maps, videos and chat until the visitor allows the category.'|trans }}
+            </div>
+        </div>
+
+        <a href="{{ path('quince_cmp_placeholder') }}" class="qc-btn qc-btn-sm qc-btn-outline" style="margin-left:auto">
+            {{ 'Edit copy'|trans }}
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block quince_actionbar %}{% endblock %}

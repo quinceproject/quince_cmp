@@ -1,0 +1,388 @@
+{#
+  Pola formularzy panelu Quince CMP.
+
+  Własna kopia makr z `quince_engine` — moduł ma działać bez silnika, a `import`
+  z cudzego katalogu zamieniłby to w twardą zależność. Razem z nimi jedzie
+  własna kopia Alpine w `views/js/vendor/`, bo pola wielojęzyczne na niej stoją.
+#}
+{#
+  Pola formularza panelu Quince.
+
+  Komponenty pochodzą z paczki design systemu (views/css/tokens/components.css) —
+  tu jest wyłącznie ich odwzorowanie w Twigu wraz z obsługą Alpine.
+
+  Użycie:
+    {{ fields.multilang('HOURS', 'Godziny pracy'|trans, languages, translations.HOURS) }}
+    {{ fields.toggle('PROMO_ENABLED', settings.PROMO_ENABLED == '1', 'Sekcja włączona'|trans) }}
+#}
+
+{#
+  Pole wielojęzyczne: jedno pole widoczne naraz, obok selektor języka.
+
+  Wszystkie pola siedzą w dokumencie i są wysyłane razem z formularzem — ukrywamy
+  je przez x-show, nie x-if, bo x-if usuwa element z DOM i wartość przepadłaby przy zapisie.
+
+  Kropka przy kodzie języka jest bursztynowa, gdy brakuje tłumaczenia, i zielona,
+  gdy jest komplet. Dzięki temu brak widać przy polu, a nie w osobnym ostrzeżeniu
+  na górze ekranu.
+
+  Stan Alpine budujemy pętlą, a nie filtrem `merge` — `merge` woła array_merge,
+  a ten przenumerowuje klucze liczbowe, więc mapa języków wyszłaby przesunięta.
+
+  Treści wchodzą do x-data przez json_encode BEZ `raw`. Cudzysłowy z JSON-a
+  zamykały atrybut w połowie, x-data stawał się niepoprawnym JS-em i Alpine
+  startował z pustym zakresem — pole tekstowe znikało, bo `lang` nie pasował
+  do żadnego języka. Ucieczka HTML zostawia to, co ma zostać: przeglądarka
+  rozkoduje &quot; z powrotem na cudzysłów przy odczycie atrybutu.
+#}
+{% macro multilang(name, label, languages, values, placeholder = '', hint = '', prefix = '', readonly = false) %}
+
+    {# Nazwa pola z językiem. Nazwa tablicowa — taka, która kończy się nawiasem,
+       jak `person[7][name]` w powtarzalnym wierszu — dostaje język kolejnym
+       poziomem tablicy. Zwykła nazwa dostaje przyrostek. Bez tego rozróżnienia
+       PHP gubi wszystko poza ostatnim językiem: `person[7][name]_1` i `_2`
+       to dla niego ta sama zmienna, bo końcówkę po ostatnim nawiasie pomija. #}
+    {% set tablicowa = name|slice(-1) == "]" %}
+    {% set nazwaPrzed = tablicowa ? name|slice(0, -1) ~ "][" : name ~ "_" %}
+    {% set nazwaPo = tablicowa ? "]" : "" %}
+    <div class="qc-field qc-multilang"
+         x-data="{
+             open: false,
+             {# Domyślny język sklepu, nie pierwszy z listy: w polu otwartym na
+                obcym języku sprzedawca pisze swój tekst w cudzej rubryce. #}
+             lang: {{ (languages|filter(l => l.default ?? false)|first).id_lang|default(languages|first.id_lang) }},
+             values: { {% for language in languages %}'{{ language.id_lang }}': {{ (values[language.id_lang]|default(''))|json_encode }}{{ loop.last ? '' : ',' }}{% endfor %} },
+             filled(id) { return String(this.values[id] || '').trim() !== ''; }
+         }"
+         @click.outside="open = false">
+
+        {% if label %}<label class="qc-label">{{ label }}</label>{% endif %}
+
+        <div class="qc-multilang-row">
+            {{ prefix|raw }}
+
+            {% for language in languages %}
+                <input type="text"
+                       name="{{ nazwaPrzed }}{{ language.id_lang }}{{ nazwaPo }}"
+                       class="qc-field-base qc-focusable"{{ readonly ? " readonly" : "" }}
+                       x-show="lang === {{ language.id_lang }}"
+                       x-model="values['{{ language.id_lang }}']"
+                       value="{{ values[language.id_lang]|default('') }}"
+                       placeholder="{{ placeholder }}">
+            {% endfor %}
+
+            <button type="button" class="qc-lang-toggle" @click="open = !open"
+                    :aria-expanded="open" aria-haspopup="listbox">
+                <span class="qc-lang-dot" :class="filled(lang) && 'qc-complete'"></span>
+                {% for language in languages %}
+                    <span x-show="lang === {{ language.id_lang }}">{{ language.iso_code|upper }}</span>
+                {% endfor %}
+                <svg class="qc-icon" width="12" height="12" viewBox="0 0 16 16" fill="none"
+                     stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
+            </button>
+
+            <div class="qc-lang-menu" x-show="open" x-cloak role="listbox">
+                {% for language in languages %}
+                    <div class="qc-lang-row" :class="lang === {{ language.id_lang }} && 'qc-current'"
+                         role="option" @click="lang = {{ language.id_lang }}; open = false">
+                        <span class="qc-lang-dot" :class="filled({{ language.id_lang }}) && 'qc-complete'"></span>
+                        <span class="qc-lang-row-name">{{ language.name }}</span>
+                        <span class="qc-lang-row-status" x-show="!filled({{ language.id_lang }})" x-cloak>
+                            {{ 'no translation'|trans({}, 'Modules.Quinceengine.Admin') }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if hint %}<div class="qc-hint">{{ hint }}</div>{% endif %}
+    </div>
+{% endmacro %}
+
+{#
+  Przełącznik. Ukryte pole przed nim gwarantuje, że wyłączona wartość dotrze
+  do serwera — niezaznaczony checkbox nie jest wysyłany przez przeglądarkę.
+#}
+{# `bind` wiąże przełącznik ze stanem karty — potrzebne, kiedy inne pola mają
+   się pokazywać zależnie od jego położenia. Bez niego zachowuje się jak dotąd. #}
+{% macro toggle(name, checked, text = '', size = '', bind = null) %}
+    <label class="qc-toggle{{ size ? ' qc-toggle-' ~ size }}">
+        <input type="hidden" name="{{ name }}" value="0">
+        <input type="checkbox" name="{{ name }}" value="1"{{ checked ? ' checked' }}
+               {% if bind %}x-model="{{ bind }}"{% endif %}>
+        <span class="qc-toggle-track"></span>
+        {% if text %}<span class="qc-toggle-text">{{ text }}</span>{% endif %}
+    </label>
+{% endmacro %}
+
+{#
+  Wybór ikony.
+
+  Zestaw ma ponad dwa tysiące pozycji, więc lista nie siedzi w stronie — panel
+  dopytuje o to, co pasuje do wpisanej frazy. Zanim sprzedawca cokolwiek wpisze,
+  dostaje kilkanaście propozycji pasujących do pasa informacyjnego, żeby nie
+  zaczynał od pustego ekranu.
+
+  Wpisywanie samej nazwy z pamięci byłoby gorsze: literówka daje puste miejsce
+  w sklepie bez żadnego sygnału, a tutaj wybiera się wyłącznie z tego, co
+  naprawdę leży w silniku.
+
+  `align` decyduje, w którą stronę rozwija się lista. Przy prawej krawędzi karty
+  musi to być 'end': karta przycina zawartość, a ognisko wskakujące w pole
+  szukania przewija wtedy przyciętą treść w bok i przesuwa całą sekcję.
+#}
+{#
+   Selektor ikon. Dwa sposoby użycia, ta sama postać i to samo zachowanie:
+
+   1. pole samodzielne — podaje się nazwę pola, zapisaną ikonę i jej kod SVG;
+   2. pole w powtarzalnym wierszu — podaje się WYRAŻENIA Alpine (bind*), bo nazwa
+      zawiera numer wiersza, a wartość mieszka w cudzym stanie i musi się z nim
+      zmieniać razem.
+
+   Drugi sposób istnieje po to, żeby nie przepisywać selektora po raz drugi
+   wewnątrz repeatera — jeden zestaw klas, jedno zachowanie, jedno miejsce
+   do poprawienia.
+#}
+{% macro iconpicker(name, value, svg, url, align = 'start', bindName = null, bindValue = null, bindSvg = null) %}
+    <div class="qc-iconpick{{ align == 'end' ? ' qc-iconpick--end' }}"
+         x-data="{
+             open: false,
+             {% if bindValue %}
+             get value() { return {{ bindValue }}; },
+             set value(v) { {{ bindValue }} = v; },
+             get svg() { return {{ bindSvg }}; },
+             set svg(v) { {{ bindSvg }} = v; },
+             {% else %}
+             value: {{ value|json_encode }},
+             svg: {{ svg|json_encode }},
+             {% endif %}
+             url: {{ url|json_encode }},
+             query: '',
+             results: [],
+             loading: false,
+
+             toggle() {
+                 this.open = !this.open;
+
+                 if (this.open) {
+                     if (!this.results.length) { this.load(); }
+                     this.$nextTick(() => this.$refs.query.focus());
+                 }
+             },
+
+             load() {
+                 this.loading = true;
+
+                 // Adres składamy przez URL, a nie doklejaniem '?q=' — PrestaShop
+                 // dopisuje do tras panelu własny parametr `_token`, więc drugie
+                 // pytajnie robiło z niego śmieci i zapytanie wracało puste.
+                 const address = new URL(this.url, window.location.origin);
+                 address.searchParams.set('q', this.query);
+
+                 fetch(address, { credentials: 'same-origin' })
+                     .then(r => r.ok ? r.json() : Promise.reject(r.status))
+                     .then(d => { this.results = d.icons || []; this.loading = false; })
+                     .catch(() => { this.results = []; this.loading = false; });
+             },
+
+             pick(icon) {
+                 this.value = icon ? icon.name : '';
+                 this.svg = icon ? icon.svg : '';
+                 this.open = false;
+             }
+         }"
+         @click.outside="open = false"
+         @keydown.escape.window="open = false">
+
+        {% if bindName %}
+            <input type="hidden" :name="{{ bindName }}" :value="value">
+        {% else %}
+            <input type="hidden" name="{{ name }}" x-model="value">
+        {% endif %}
+
+        <button type="button" class="qc-iconpick-btn" @click="toggle()"
+                :aria-expanded="open" aria-haspopup="listbox"
+                :title="value || '{{ 'No icon'|trans({}, 'Modules.Quinceengine.Admin') }}'">
+            <span class="qc-iconpick-none" x-show="!value">&minus;</span>
+            <svg class="qc-iconpick-ico" viewBox="0 0 16 16" fill="currentColor"
+                 x-show="value" x-html="svg" aria-hidden="true"></svg>
+            <svg class="qc-iconpick-arrow" width="12" height="12" viewBox="0 0 16 16" fill="none"
+                 stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
+        </button>
+
+        <div class="qc-iconpick-menu" x-show="open" x-cloak>
+            <div class="qc-iconpick-search">
+                <input type="text" class="qc-field-base qc-field-sm qc-focusable"
+                       x-ref="query" x-model="query" @input.debounce.250ms="load()"
+                       @keydown.enter.prevent.stop="load()"
+                       placeholder="{{ 'Search icons'|trans({}, 'Modules.Quinceengine.Admin') }}">
+            </div>
+
+            <div class="qc-iconpick-list" role="listbox">
+                <div class="qc-iconpick-row" role="option" :class="!value && 'qc-current'"
+                     @click="pick(null)">
+                    <span class="qc-iconpick-none">&minus;</span>
+                    <span>{{ 'No icon'|trans({}, 'Modules.Quinceengine.Admin') }}</span>
+                </div>
+
+                <template x-for="icon in results" :key="icon.name">
+                    <div class="qc-iconpick-row" role="option"
+                         :class="value === icon.name && 'qc-current'" @click="pick(icon)">
+                        <svg class="qc-iconpick-ico" viewBox="0 0 16 16" fill="currentColor"
+                             x-html="icon.svg" aria-hidden="true"></svg>
+                        <span x-text="icon.name"></span>
+                    </div>
+                </template>
+
+                <div class="qc-iconpick-empty" x-show="!loading && query && !results.length" x-cloak>
+                    {{ 'No icons match that word.'|trans({}, 'Modules.Quinceengine.Admin') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{#
+  Pole wielojęzyczne na dłuższy tekst. Ta sama obsługa co przy jednej linii —
+  różni je wysokość i to, że treść bywa listą, po jednej pozycji w wierszu.
+#}
+{% macro multilangArea(name, label, languages, values, placeholder = '', hint = '', rows = 4, readonly = false) %}
+
+    {# Nazwa pola z językiem. Nazwa tablicowa — taka, która kończy się nawiasem,
+       jak `person[7][name]` w powtarzalnym wierszu — dostaje język kolejnym
+       poziomem tablicy. Zwykła nazwa dostaje przyrostek. Bez tego rozróżnienia
+       PHP gubi wszystko poza ostatnim językiem: `person[7][name]_1` i `_2`
+       to dla niego ta sama zmienna, bo końcówkę po ostatnim nawiasie pomija. #}
+    {% set tablicowa = name|slice(-1) == "]" %}
+    {% set nazwaPrzed = tablicowa ? name|slice(0, -1) ~ "][" : name ~ "_" %}
+    {% set nazwaPo = tablicowa ? "]" : "" %}
+    <div class="qc-field qc-multilang"
+         x-data="{
+             open: false,
+             {# Domyślny język sklepu, nie pierwszy z listy: w polu otwartym na
+                obcym języku sprzedawca pisze swój tekst w cudzej rubryce. #}
+             lang: {{ (languages|filter(l => l.default ?? false)|first).id_lang|default(languages|first.id_lang) }},
+             values: { {% for language in languages %}'{{ language.id_lang }}': {{ (values[language.id_lang]|default(''))|json_encode }}{{ loop.last ? '' : ',' }}{% endfor %} },
+             filled(id) { return String(this.values[id] || '').trim() !== ''; }
+         }"
+         @click.outside="open = false">
+
+        {% if label %}<label class="qc-label">{{ label }}</label>{% endif %}
+
+        <div class="qc-multilang-row">
+            {% for language in languages %}
+                <textarea{{ readonly ? " readonly" : "" }} name="{{ nazwaPrzed }}{{ language.id_lang }}{{ nazwaPo }}"
+                          class="qc-field-base qc-focusable" rows="{{ rows }}"
+                          x-show="lang === {{ language.id_lang }}"
+                          x-model="values['{{ language.id_lang }}']"
+                          placeholder="{{ placeholder }}">{{ values[language.id_lang]|default('') }}</textarea>
+            {% endfor %}
+
+            <button type="button" class="qc-lang-toggle" @click="open = !open"
+                    :aria-expanded="open" aria-haspopup="listbox">
+                <span class="qc-lang-dot" :class="filled(lang) && 'qc-complete'"></span>
+                {% for language in languages %}
+                    <span x-show="lang === {{ language.id_lang }}">{{ language.iso_code|upper }}</span>
+                {% endfor %}
+                <svg class="qc-icon" width="12" height="12" viewBox="0 0 16 16" fill="none"
+                     stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
+            </button>
+
+            <div class="qc-lang-menu" x-show="open" x-cloak role="listbox">
+                {% for language in languages %}
+                    <div class="qc-lang-row" :class="lang === {{ language.id_lang }} && 'qc-current'"
+                         role="option" @click="lang = {{ language.id_lang }}; open = false">
+                        <span class="qc-lang-dot" :class="filled({{ language.id_lang }}) && 'qc-complete'"></span>
+                        <span class="qc-lang-row-name">{{ language.name }}</span>
+                        <span class="qc-lang-row-status" x-show="!filled({{ language.id_lang }})" x-cloak>
+                            {{ 'no translation'|trans({}, 'Modules.Quinceengine.Admin') }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if hint %}<div class="qc-hint">{{ hint }}</div>{% endif %}
+    </div>
+{% endmacro %}
+
+{# Wybór koloru z palety sklepu.
+
+   Wąski przycisk z próbką, a w rozwinięciu komplet skal — po dwanaście stopni
+   każda — i wiersz na własny kolor. Ten sam układ, co selektor ikon: przycisk
+   pokazuje wybraną wartość, lista wychodzi na żądanie i zamyka się po wyborze.
+
+   Zapisujemy stopień skali (`neutral-12`) albo kod barwy (`#7a1f3d`). Stopień
+   idzie za paletą, kiedy zmieni się kolor marki; własny kolor zostaje taki,
+   jaki jest — i tylko przy nim kontrast nie jest liczony przez silnik. #}
+{% macro colorpicker(name, value, palette, scales) %}
+    <div class="qc-colorpick"
+         x-data="{
+             open: false,
+             value: {{ value|json_encode }},
+             paleta: {{ palette|json_encode }},
+             nazwy: {{ scales|json_encode }},
+
+             get wlasny() { return this.value.startsWith('#'); },
+
+             barwa(co) { return co.startsWith('#') ? co : (this.paleta[co] || 'transparent'); },
+
+             etykieta() {
+                 if (this.wlasny) { return '{{ 'Custom colour'|trans({}, 'Modules.Quinceengine.Admin') }}'; }
+
+                 const i = this.value.lastIndexOf('-');
+                 const skala = this.nazwy[this.value.slice(0, i)];
+
+                 // Wartość spoza skal (nazwa roli z czasów, gdy dało się ją zapisać)
+                 // pokazujemy kodem barwy — sklejona nazwa była bełkotem.
+                 return skala ? skala + ' ' + this.value.slice(i + 1) : this.barwa(this.value).toUpperCase();
+             },
+
+             wybierz(co) { this.value = co; this.open = false; }
+         }"
+         @click.outside="open = false"
+         @keydown.escape.window="open = false">
+
+        <input type="hidden" name="{{ name }}" x-model="value">
+
+        <button type="button" class="qc-colorpick-btn" @click="open = !open"
+                :aria-expanded="open" aria-haspopup="listbox">
+            <span class="qc-colorpick-swatch" :style="`background:${barwa(value)}`"></span>
+            <span class="qc-colorpick-name" x-text="etykieta()"></span>
+            <span class="qc-colorpick-hex" x-text="barwa(value).toUpperCase()"></span>
+            <svg class="qc-iconpick-arrow" width="12" height="12" viewBox="0 0 16 16" fill="none"
+                 stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
+        </button>
+
+        <div class="qc-colorpick-menu" x-show="open" x-cloak role="listbox">
+            {% for scale, label in scales %}
+                <div class="qc-skala-wiersz">
+                    <span>{{ label }}</span>
+                    <div class="qc-scale-strip qc-scale-wybor">
+                        {% for n in 1..12 %}
+                            <div class="qc-scale-step" role="option"
+                                 style="background:{{ palette[scale ~ '-' ~ n] }}"
+                                 :class="value === '{{ scale }}-{{ n }}' && 'jest'"
+                                 @click="wybierz('{{ scale }}-{{ n }}')"
+                                 title="{{ label }} {{ n }} — {{ palette[scale ~ '-' ~ n]|upper }}">
+                                <span class="qc-scale-num">{{ n }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+
+            {# Barwa spoza palety sklepu. Stoi na końcu, bo to wyjątek, a nie
+               pierwsza odpowiedź: wybrana tędy nie idzie za paletą. #}
+            <div class="qc-colorpick-wlasny">
+                <label class="qc-label" for="{{ name }}-wlasny">{{ 'Custom colour'|trans({}, 'Modules.Quinceengine.Admin') }}</label>
+                <div class="qc-color-field">
+                    <input type="color" class="qc-color-swatch" id="{{ name }}-wlasny"
+                           :value="barwa(value)" @input="value = $event.target.value">
+                    <input type="text" class="qc-color-hex" :value="barwa(value).toUpperCase()"
+                           @change="value = $event.target.value" spellcheck="false">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

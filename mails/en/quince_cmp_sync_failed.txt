@@ -1,0 +1,12 @@
+[{shop_name}] Consent sync is failing
+
+{count} consent events gave up after {attempts} attempts and are waiting in the outbox.
+
+Last response from {endpoint}:
+{error}
+
+Nothing is lost — the events stay in the consent log and in the queue. Open
+Quince CMP → Sync in your back office to see them and send them again once the
+receiving system is back.
+
+This message is sent at most once a day while the problem lasts.
