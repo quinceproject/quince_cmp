@@ -59,7 +59,7 @@ use Quince\Cmp\ApiPlatform\Provider\ConsentEventProvider;
             extraProperties: ['scopes' => ['quince_cmp_consent_write']],
             openapiContext: [
                 'summary' => 'Record a decision made outside the shop',
-                'description' => 'Requires `shopId` as a query parameter — the body\'s own `shopId` is '
+                'description' => 'Requires `shopId` as a query parameter; the body\'s own `shopId` is '
                     . 'ignored, the same convention as every other write in this API. Otherwise the same '
                     . 'shape the shop sends out. State is derived from the newest event, so a withdrawal is '
                     . 'this call with `granted: false`. A conflict with a newer local event answers 409 and '

@@ -111,7 +111,7 @@
                 <div>
                     <div style="font-size:var(--text-xs);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
                                 {{ event.email ? 'color:var(--accent-active);font-weight:var(--weight-semibold)' : '' }}">
-                        {{ event.email ?: '—' }}
+                        {{ event.email ?: '-' }}
                     </div>
                     {% if event.stitched %}
                         <div class="qc-sub">{{ event.stitched_email ?: 'stitched %date%'|trans({'%date%': event.stitched|slice(0, 10)}) }}</div>
@@ -122,7 +122,7 @@
 
                 <div class="qc-mono" style="color:var(--fg-2)">{{ event.visitor_key }}</div>
                 <div class="qc-mono" style="color:var(--fg-1)">{{ event.code }}</div>
-                <div style="font-size:11px;color:var(--fg-2)">{{ event.version ?: '—' }}</div>
+                <div style="font-size:11px;color:var(--fg-2)">{{ event.version ?: '-' }}</div>
 
                 <div>
                     {% if event.granted %}

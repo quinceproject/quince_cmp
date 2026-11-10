@@ -33,7 +33,7 @@ use Quince\Cmp\ApiPlatform\Provider\ConsentVersionProvider;
             openapiContext: [
                 'summary' => 'Version history of one consent type, newest first',
                 'description' => 'Requires `code` and `shopId`. A closed-text document only; the one '
-                    . 'type it belongs to is NOT repeated per row — the caller already asked for it '
+                    . 'type it belongs to is NOT repeated per row, since the caller already asked for it '
                     . 'through `code`.',
             ],
         ),

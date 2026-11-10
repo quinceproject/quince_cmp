@@ -47,7 +47,7 @@
                 <div class="qc-mono" style="font-size:12px;color:var(--fg-1)">{{ type.code }}</div>
                 <div style="font-size:var(--text-sm)">{{ type.name }}</div>
                 <div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--fg-2)">
-                    {{ type.required ? 'Required'|trans : '—' }}
+                    {{ type.required ? 'Required'|trans : '-' }}
                 </div>
                 <div style="font-size:var(--text-sm)">
                     {{ type.version ?: 'Draft (never published)'|trans }}
@@ -106,7 +106,7 @@
         {% for cookie in cookies %}
             <div class="qc-grid-row" style="display:grid;grid-template-columns:{{ cols }};gap:8px;padding:11px 14px">
                 <div class="qc-mono" style="font-size:12px;color:var(--fg-1)">{{ cookie.name }}</div>
-                <div style="font-size:var(--text-xs)">{{ cookie.provider ?: '—' }}</div>
+                <div style="font-size:var(--text-xs)">{{ cookie.provider ?: '-' }}</div>
                 <div>
                     {% if cookie.category %}
                         <span class="qc-badge qc-badge-accent">{{ categories[cookie.category]|default(cookie.category)|trans }}</span>
@@ -122,7 +122,7 @@
                     {%- endif -%}
                 </div>
                 <div><span class="qc-badge">{{ cookie.source }}</span></div>
-                <div style="font-size:var(--text-xs);color:var(--fg-2)">{{ cookie.description ?: '—' }}</div>
+                <div style="font-size:var(--text-xs);color:var(--fg-2)">{{ cookie.description ?: '-' }}</div>
                 <div class="qc-hstack" style="gap:8px;flex-wrap:nowrap">
                     <a href="{{ path('quince_cmp_cookie_edit', {'idCookie': cookie.id_cmp_cookie}) }}"
                        style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--accent-active)">{{ 'Edit'|trans }}</a>

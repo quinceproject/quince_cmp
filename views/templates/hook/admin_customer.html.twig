@@ -43,7 +43,7 @@
                                     <span class="badge badge-default">{{ 'Withdrawn'|trans({}, 'Modules.Quincecmp.Admin') }}</span>
                                 {% endif %}
                             </td>
-                            <td>{{ row.state is not null ? row.state.date_add|date('Y-m-d H:i') : '—' }}</td>
+                            <td>{{ row.state is not null ? row.state.date_add|date('Y-m-d H:i') : '-' }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

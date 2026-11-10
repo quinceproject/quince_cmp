@@ -317,7 +317,7 @@ final class SupportController extends CmpController
 
         return $usluga['inline']
             ? $this->trans('code running in the page itself', [], 'Modules.Quincecmp.Admin')
-            : '—';
+            : '-';
     }
 
     /**

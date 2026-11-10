@@ -55,11 +55,11 @@
 {{ 'Answer'|trans }}: {{ w.granted ? 'granted'|trans : 'withdrawn'|trans }}
 {{ 'Recorded'|trans }}: {{ kiedy }}
 {{ 'Shop'|trans }}: {{ sklep }}
-{{ 'Version'|trans }}: {{ w.version ?: '—' }}
-{{ 'Text hash'|trans }}: {{ w.text_hash ?: '—' }}
-{{ 'Source'|trans }}: {{ w.source ?: '—' }} / {{ w.origin }}
-{{ 'IP'|trans }}: {{ w.ip ?: '—' }}
-{{ 'Browser key'|trans }}: {{ w.visitor_key ?: '—' }}
+{{ 'Version'|trans }}: {{ w.version ?: '-' }}
+{{ 'Text hash'|trans }}: {{ w.text_hash ?: '-' }}
+{{ 'Source'|trans }}: {{ w.source ?: '-' }} / {{ w.origin }}
+{{ 'IP'|trans }}: {{ w.ip ?: '-' }}
+{{ 'Browser key'|trans }}: {{ w.visitor_key ?: '-' }}
 {% if w.staff.name %}{{ 'Recorded by'|trans }}: {{ w.staff.name }}
 {% endif %}{% if w.note %}{{ 'Based on'|trans }}: {{ w.note }}
 {% endif %}{% if w.short_label %}
@@ -150,7 +150,7 @@
                             <div style="width:150px;flex:none">
                                 {% if cell is null %}
                                     <div style="font-size:var(--text-xs);color:var(--fg-3)"
-                                         title="{{ 'Never recorded in this shop'|trans }}">—</div>
+                                         title="{{ 'Never recorded in this shop'|trans }}">-</div>
                                 {% else %}
                                     {% if cell.granted %}
                                         <span class="qc-badge qc-badge-success">{{ icons.icon('check', 11) }} {{ 'Granted'|trans }}</span>
@@ -158,9 +158,9 @@
                                         <span class="qc-badge qc-badge-danger">{{ icons.icon('x', 11) }} {{ 'Withdrawn'|trans }}</span>
                                     {% endif %}
                                     <div class="qc-sub" style="margin-top:3px">
-                                        {{ cell.version ?: '—' }} · {{ cell.date|slice(0, 10) }}
+                                        {{ cell.version ?: '-' }} · {{ cell.date|slice(0, 10) }}
                                     </div>
-                                    <div class="qc-sub" style="margin-top:1px;color:var(--fg-3)">{{ cell.source ?: '—' }}</div>
+                                    <div class="qc-sub" style="margin-top:1px;color:var(--fg-3)">{{ cell.source ?: '-' }}</div>
                                 {% endif %}
                             </div>
                         {% endfor %}
@@ -194,15 +194,15 @@
 
                                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px 16px;font-size:11px;line-height:1.9;margin-top:10px">
                                         {{ f.fakt('Answered'|trans ~ ':', cell.date) }}
-                                        {{ f.fakt('Version'|trans ~ ':', cell.version ?: '—') }}
-                                        {{ f.fakt('Source'|trans ~ ':', cell.source ?: '—') }}
+                                        {{ f.fakt('Version'|trans ~ ':', cell.version ?: '-') }}
+                                        {{ f.fakt('Source'|trans ~ ':', cell.source ?: '-') }}
                                         {{ f.fakt('Origin'|trans ~ ':', cell.origin) }}
-                                        {{ f.fakt('IP'|trans ~ ':', cell.ip ?: '—', true) }}
+                                        {{ f.fakt('IP'|trans ~ ':', cell.ip ?: '-', true) }}
                                         {{ f.fakt('Recorded by'|trans ~ ':', cell.staff.name ?: '') }}
-                                        {{ f.fakt('Browser key'|trans ~ ':', cell.visitor_key ?: '—', true, true) }}
-                                        {{ f.fakt('Text hash'|trans ~ ':', cell.text_hash ?: '—', true, true) }}
+                                        {{ f.fakt('Browser key'|trans ~ ':', cell.visitor_key ?: '-', true, true) }}
+                                        {{ f.fakt('Text hash'|trans ~ ':', cell.text_hash ?: '-', true, true) }}
                                         {{ f.fakt('Based on'|trans ~ ':', cell.note ?: '', false, true) }}
-                                        {{ f.fakt('User agent'|trans ~ ':', cell.user_agent ?: '—', false, true) }}
+                                        {{ f.fakt('User agent'|trans ~ ':', cell.user_agent ?: '-', false, true) }}
                                     </div>
 
                                     {{ f.dowod(cell, code, shop.name, email, cell.date) }}
@@ -290,7 +290,7 @@
                         </div>
                         <div style="font-size:11px;color:var(--fg-3);margin-top:2px">
                             <span class="qc-mono">{{ entry.code }}</span>
-                            · {{ entry.source ?: '—' }}
+                            · {{ entry.source ?: '-' }}
                             {% if shops|length > 1 %} · {{ entry.shop_name }}{% endif %}
 
                             {# Zdarzenie zapisane, zanim sklep poznał adres. Bez tego
@@ -323,18 +323,18 @@
                         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px 16px;font-size:11px;line-height:1.9;margin-top:10px">
                             {{ f.fakt('Shop'|trans ~ ':', entry.shop_name) }}
                             {{ f.fakt('Answered'|trans ~ ':', entry.date_add) }}
-                            {{ f.fakt('Version'|trans ~ ':', entry.version ?: '—') }}
-                            {{ f.fakt('Source'|trans ~ ':', entry.source ?: '—') }}
+                            {{ f.fakt('Version'|trans ~ ':', entry.version ?: '-') }}
+                            {{ f.fakt('Source'|trans ~ ':', entry.source ?: '-') }}
                             {{ f.fakt('Origin'|trans ~ ':', entry.origin) }}
-                            {{ f.fakt('IP'|trans ~ ':', entry.ip ?: '—', true) }}
+                            {{ f.fakt('IP'|trans ~ ':', entry.ip ?: '-', true) }}
                             {{ f.fakt('Recorded as'|trans ~ ':', entry.email ?: 'anonymous visitor'|trans) }}
-                            {{ f.fakt('Browser key'|trans ~ ':', entry.visitor_key ?: '—', true, true) }}
+                            {{ f.fakt('Browser key'|trans ~ ':', entry.visitor_key ?: '-', true, true) }}
                             {{ f.fakt('Recorded by'|trans ~ ':', entry.staff.name ?: '') }}
-                            {{ f.fakt('Text hash'|trans ~ ':', entry.text_hash ?: '—', true, true) }}
-                            {{ f.fakt('External id'|trans ~ ':', entry.external_id ?: '—', true, true) }}
-                            {{ f.fakt('Form'|trans ~ ':', entry.form_id ?: '—', true, true) }}
+                            {{ f.fakt('Text hash'|trans ~ ':', entry.text_hash ?: '-', true, true) }}
+                            {{ f.fakt('External id'|trans ~ ':', entry.external_id ?: '-', true, true) }}
+                            {{ f.fakt('Form'|trans ~ ':', entry.form_id ?: '-', true, true) }}
                             {{ f.fakt('Based on'|trans ~ ':', entry.note ?: '', false, true) }}
-                            {{ f.fakt('User agent'|trans ~ ':', entry.user_agent ?: '—', false, true) }}
+                            {{ f.fakt('User agent'|trans ~ ':', entry.user_agent ?: '-', false, true) }}
                         </div>
 
                         {{ f.dowod(entry, entry.code, entry.shop_name, email, entry.date_add) }}
