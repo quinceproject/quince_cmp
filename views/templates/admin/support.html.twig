@@ -17,7 +17,7 @@
         <div class="qc-about-tagline">{{ 'One person, one history.'|trans }}</div>
 
         <div class="qc-about-claim">
-            {{ 'One place for every consent in the shop — cookies, marketing, terms and form consents, with proof of what was shown and when.'|trans }}
+            {{ 'One place for every consent in the shop: cookies, marketing, terms and form consents, with proof of what was shown and when.'|trans }}
         </div>
     </div>
 
@@ -100,7 +100,7 @@
             {% if release.configured and release.url %}
                 <div class="qc-hint">
                     {{ 'Source'|trans }}: <span class="qc-mono">{{ release.url }}</span>.
-                    {{ 'The module never updates on its own — it only tells you a newer version exists.'|trans }}
+                    {{ 'The module never updates on its own: it only tells you a newer version exists.'|trans }}
                 </div>
             {% endif %}
         </div>
@@ -125,7 +125,7 @@
             {# Trzy rzeczy zostają na miejscu i sprzedawca musi o tym wiedzieć,
                zanim uzna plik za pełną kopię sklepu. #}
             <div class="qc-hint" style="margin-bottom:14px">
-                {{ 'Not included: the consent log and published clause versions — they say something about the past of this shop — and the signing keys, which are secrets. Each shop gets its own.'|trans }}
+                {{ 'Not included: the consent log and published clause versions (they say something about the past of this shop) and the signing keys, which are secrets. Each shop gets its own.'|trans }}
             </div>
 
             <div class="qc-actions" style="margin:0">
@@ -140,7 +140,7 @@
             <div class="qc-set-title" style="margin-bottom:8px">{{ 'Import a configuration'|trans }}</div>
 
             <div class="qc-line" style="margin-bottom:14px">
-                {{ 'Takes a file exported from another shop and puts that setup here — replacing what is configured now. The consent log and published clause versions are left untouched.'|trans }}
+                {{ 'Takes a file exported from another shop and puts that setup here, replacing what is configured now. The consent log and published clause versions are left untouched.'|trans }}
             </div>
 
             {# Dwa kroki, bo nadpisanie skonfigurowanego sklepu jednym kliknięciem
@@ -169,7 +169,7 @@
                 <div class="qc-hint" style="margin-bottom:12px"
                      x-text="zastap
                         ? '{{ 'The current setup of this shop will be overwritten.'|trans }}'
-                        : '{{ 'Leave this unticked to only see what the file contains — nothing will change.'|trans }}'"></div>
+                        : '{{ 'Leave this unticked to only see what the file contains. Nothing will change.'|trans }}'"></div>
 
                 <div class="qc-actions" style="margin:0">
                     <button type="submit" class="qc-btn qc-btn-sm"

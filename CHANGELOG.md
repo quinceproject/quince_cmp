@@ -4,6 +4,14 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.7] - 2026-11-10
+
+### Changed
+
+- Polish translation completed: the texts added since the previous translation are now translated.
+- The Polish e-mail about failing consent sync is written in Polish.
+- Texts no longer use long dashes.
+
 ## [0.3.6] - 2026-11-10
 
 First public release. It gathers the changes of the internal versions 0.3.2 to 0.3.5.

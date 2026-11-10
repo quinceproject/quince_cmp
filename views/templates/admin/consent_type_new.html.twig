@@ -17,7 +17,7 @@
         </a>
         <div class="qc-head-title" style="font-size:20px">{{ 'New consent type'|trans }}</div>
         <div class="qc-head-desc">
-            {{ 'Set its code and kind once — the wording and the first version come next, on its own card.'|trans }}
+            {{ 'Set its code and kind once. The wording and the first version come next, on its own card.'|trans }}
         </div>
     </div>
 
@@ -31,7 +31,7 @@
                     <input class="qc-field-base qc-focusable" type="text" id="code" name="code"
                            value="" placeholder="loyalty_program" pattern="[a-z][a-z0-9_]{1,63}" required>
                     <div class="qc-hint">
-                        {{ 'Lowercase letters, digits and underscores only — it never changes once saved.'|trans }}
+                        {{ 'Lowercase letters, digits and underscores only. It never changes once saved.'|trans }}
                     </div>
                 </div>
 
@@ -49,17 +49,17 @@
                             </select>
                         </div>
                     {% endif %}
-                    <div class="qc-hint">{{ 'Decides how this consent is collected on the shop — it never changes once saved.'|trans }}</div>
+                    <div class="qc-hint">{{ 'Decides how this consent is collected on the shop. It never changes once saved.'|trans }}</div>
                 </div>
             </div>
 
             {{ fields.multilang('name', 'Working name'|trans, languages, {},
-                '', 'For this panel only — the customer reads the wording you publish next, not this name.'|trans) }}
+                '', 'For this panel only. The customer reads the wording you publish next, not this name.'|trans) }}
 
             <label class="qc-toggle">
                 <input type="checkbox" name="required" value="1">
                 <span class="qc-toggle-track"></span>
-                <span class="qc-toggle-text">{{ 'Required — the shop cannot work without it'|trans }}</span>
+                <span class="qc-toggle-text">{{ 'Required: the shop cannot work without it'|trans }}</span>
             </label>
         </div>
 

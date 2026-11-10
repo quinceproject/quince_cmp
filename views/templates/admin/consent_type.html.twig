@@ -36,7 +36,7 @@
         {% if current %}
             <div class="qc-alert qc-alert-warning" style="margin-bottom:16px">
                 {{ icons.message('warn', 18, 'qc-alert-icon') }}
-                <div>{{ 'A published version cannot be edited — editing would invalidate the proof for %count% collected consents. Publish a new version instead.'|trans({'%count%': collectedCurrent}) }}</div>
+                <div>{{ 'A published version cannot be edited. Editing would invalidate the proof for %count% collected consents. Publish a new version instead.'|trans({'%count%': collectedCurrent}) }}</div>
             </div>
         {% endif %}
 
@@ -88,7 +88,7 @@
 
                 <div style="font-size:11px;font-weight:var(--weight-semibold);color:var(--fg-3);margin-bottom:6px">
                     {{ 'Version number'|trans }}
-                    <span style="font-weight:var(--weight-regular);font-style:italic">{{ '— open decision, SPEC §10.5'|trans }}</span>
+                    <span style="font-weight:var(--weight-regular);font-style:italic">{{ '(open decision, SPEC §10.5)'|trans }}</span>
                 </div>
 
                 <div style="display:flex;gap:10px;margin-bottom:14px">
@@ -246,7 +246,7 @@
                         <label class="qc-label" for="id_cms">{{ 'Document page'|trans }}</label>
                         <div class="qc-select-wrap">
                             <select class="qc-field-base qc-select qc-focusable" id="id_cms" name="id_cms">
-                                <option value="0">{{ '— not linked —'|trans }}</option>
+                                <option value="0">{{ '(not linked)'|trans }}</option>
                                 {% for page in cmsPages %}
                                     <option value="{{ page.id_cms }}" {{ type.id_cms == page.id_cms ? 'selected' : '' }}>{{ page.title }}</option>
                                 {% endfor %}
@@ -264,7 +264,7 @@
                             <span style="font-size:var(--text-sm);font-weight:var(--weight-semibold)">{{ 'Shown natively'|trans }}</span>
                             <span class="qc-badge qc-badge-accent">{{ 'native checkbox'|trans }}</span>
                         </div>
-                        <div class="qc-hint">{{ 'A native PrestaShop mechanism already shows this to the customer — the module does not add its own checkbox here, and does not touch that field\'s own wording. Edit it on its own settings screen.'|trans }}</div>
+                        <div class="qc-hint">{{ 'A native PrestaShop mechanism already shows this to the customer. The module does not add its own checkbox here, and does not touch that field\'s own wording. Edit it on its own settings screen.'|trans }}</div>
                     </div>
                 {% endif %}
 
@@ -272,19 +272,19 @@
                     <label class="qc-label" for="core_field">{{ 'Mirror in customer account'|trans }}</label>
                     <div class="qc-select-wrap">
                         <select class="qc-field-base qc-select qc-focusable" id="core_field" name="core_field">
-                            <option value="">{{ '— not mirrored —'|trans }}</option>
+                            <option value="">{{ '(not mirrored)'|trans }}</option>
                             {% for value, label in coreFields %}
                                 <option value="{{ value }}" {{ type.core_field == value ? 'selected' : '' }}>{{ label|trans }}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="qc-hint">{{ 'Optional. PrestaShop keeps the current state in this column, we keep the history. One consent per column — picking one already used elsewhere is refused.'|trans }}</div>
+                    <div class="qc-hint">{{ 'Optional. PrestaShop keeps the current state in this column, we keep the history. One consent per column: picking one already used elsewhere is refused.'|trans }}</div>
                 </div>
 
                 {% if not isNative %}
                     <div class="qc-field">
                         {{ fields.toggle('show_in_checkout', type.show_in_checkout, 'Show in checkout'|trans) }}
-                        <div class="qc-hint">{{ 'The customer must accept this consent before placing an order. Off by default for a new consent — switch it on only for the ones that belong in checkout.'|trans }}</div>
+                        <div class="qc-hint">{{ 'The customer must accept this consent before placing an order. Off by default for a new consent: switch it on only for the ones that belong in checkout.'|trans }}</div>
                     </div>
                 {% endif %}
 

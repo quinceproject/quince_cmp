@@ -177,7 +177,7 @@ final class ConsentTypesController extends CmpController
 
             if ($wlasciciel !== null) {
                 $this->addFlash('error', $this->trans(
-                    'Already mirrored by "%name%" — one consent per column, or the two would overwrite each other.',
+                    'Already mirrored by "%name%". One consent per column, or the two would overwrite each other.',
                     ['%name%' => $wlasciciel['name'] ?: ('#' . $wlasciciel['id_cmp_type'])],
                     'Modules.Quincecmp.Admin'
                 ));
@@ -263,7 +263,7 @@ final class ConsentTypesController extends CmpController
         // Zgoda dokumentowa musi wskazywać dokument: albo stronę CMS, albo plik.
         if ($dokument && $typ['id_cms'] === 0 && $pdf['file'] === '') {
             $this->addFlash('error', $this->trans(
-                'A document consent needs a document — link a CMS page or attach a PDF.', [],
+                'A document consent needs a document: link a CMS page or attach a PDF.', [],
                 'Modules.Quincecmp.Admin'
             ));
 
@@ -294,7 +294,7 @@ final class ConsentTypesController extends CmpController
         // Wersja bez treści miałaby skrót pustego napisu, jednakowy dla wszystkich
         // takich wersji.
         if ($pusta) {
-            $this->addFlash('error', $this->trans('Write the wording before publishing — an empty version proves nothing.', [], 'Modules.Quincecmp.Admin'));
+            $this->addFlash('error', $this->trans('Write the wording before publishing: an empty version proves nothing.', [], 'Modules.Quincecmp.Admin'));
 
             return $this->redirectToRoute('quince_cmp_type_edit', ['idType' => $idType]);
         }
@@ -384,12 +384,12 @@ final class ConsentTypesController extends CmpController
         $idTypu = $this->types->create($idShop, $code, $kind, $nazwy, $required);
 
         if ($idTypu === 0) {
-            $this->addFlash('error', $this->trans('Could not add it — this code is already used in this shop.', [], 'Modules.Quincecmp.Admin'));
+            $this->addFlash('error', $this->trans('Could not add it: this code is already used in this shop.', [], 'Modules.Quincecmp.Admin'));
 
             return $this->redirectToRoute('quince_cmp_type_new', ['kind' => $kind]);
         }
 
-        $this->addFlash('success', $this->trans('Consent type added — write its wording and publish a version below.', [], 'Modules.Quincecmp.Admin'));
+        $this->addFlash('success', $this->trans('Consent type added. Write its wording and publish a version below.', [], 'Modules.Quincecmp.Admin'));
 
         return $this->redirectToRoute('quince_cmp_type_edit', ['idType' => $idTypu]);
     }
@@ -491,21 +491,21 @@ final class ConsentTypesController extends CmpController
 
         if ($typ['code'] === 'terms_shop') {
             $out[] = [
-                'where' => 'Checkout — PrestaShop’s own checkbox',
+                'where' => 'Checkout: PrestaShop’s own checkbox',
                 'how' => 'Shown through PS_CONDITIONS, pointing at CMS page '
                     . (int) \Configuration::get('PS_CONDITIONS_CMS_ID', null, null, $idShop)
-                    . '. The module does not add its own checkbox here — the page the setting points to is the same one this consent type links to, so the wording is already shared.',
+                    . '. The module does not add its own checkbox here. The page the setting points to is the same one this consent type links to, so the wording is already shared.',
                 'native' => true,
             ];
         } elseif ($typ['code'] === 'privacy_policy') {
             $out[] = [
-                'where' => 'Checkout and customer account forms — informational notice',
-                'how' => 'A plain notice next to the terms checkbox (no checkbox of its own — processing data to fulfil an order is not something the customer can decline).',
+                'where' => 'Checkout and customer account forms: informational notice',
+                'how' => 'A plain notice next to the terms checkbox (no checkbox of its own: processing data to fulfil an order is not something the customer can decline).',
                 'native' => false,
             ];
             $out[] = [
                 'where' => 'Recorded on every order, registration and account update',
-                'how' => 'Unconditional — recording does not depend on any checkbox, native or otherwise.',
+                'how' => 'Unconditional: recording does not depend on any checkbox, native or otherwise.',
                 'native' => true,
             ];
         } elseif ($typ['show_in_checkout']) {
@@ -537,7 +537,7 @@ final class ConsentTypesController extends CmpController
         if ($typ['kind'] === Schema::KIND_COOKIE) {
             $out[] = [
                 'where' => 'Cookie banner',
-                'how' => 'Not built yet — the banner screen is still to come.',
+                'how' => 'Not built yet. The banner screen is still to come.',
                 'native' => false,
             ];
         }

@@ -49,7 +49,7 @@
                     <label class="qc-label" for="category">{{ 'Category'|trans }}</label>
                     <div class="qc-select-wrap">
                         <select class="qc-field-base qc-select qc-focusable" id="category" name="category">
-                            <option value="">{{ '— unassigned —'|trans }}</option>
+                            <option value="">{{ '(unassigned)'|trans }}</option>
                             {% for code, label in categories %}
                                 <option value="{{ code }}" {{ cookie.category|default('') == code ? 'selected' : '' }}>
                                     {{ label|trans }}
@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <div class="qc-hint">
-                        {{ 'The customer reads this in their own language — the module builds the wording from the number and the unit.'|trans }}
+                        {{ 'The customer reads this in their own language: the module builds the wording from the number and the unit.'|trans }}
                     </div>
                 </div>
             </div>

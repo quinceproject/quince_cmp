@@ -64,7 +64,7 @@
                 {{ fields.multilang('b2_save', 'Save button'|trans, languages, values.b2_save, defaults.b2_save) }}
 
                 <div style="font-size:var(--text-xs);color:var(--fg-2);margin-top:10px">
-                    {{ 'Categories and their cookie tables come from Consent types and Cookies — they are not repeated here.'|trans }}
+                    {{ 'Categories and their cookie tables come from Consent types and Cookies. They are not repeated here.'|trans }}
                 </div>
             </div>
         </div>
@@ -226,7 +226,7 @@
                         <span class="qc-mono qc-sub" x-text="plik || '{{ 'no file chosen'|trans }}'"></span>
                     </div>
                     <div class="qc-hint">
-                        {{ 'Up to 32 kB, with a viewBox. Scripts, links and external references are stripped — an SVG is a document, not a picture.'|trans }}
+                        {{ 'Up to 32 kB, with a viewBox. Scripts, links and external references are stripped: an SVG is a document, not a picture.'|trans }}
                     </div>
 
                     {% if fabSvg %}

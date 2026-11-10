@@ -74,7 +74,7 @@
             </label>
 
             <div class="qc-line" style="margin:0 0 12px">
-                {{ 'A new category, a new cookie provider or a newly published clause makes earlier consent describe less than what the visitor now meets. Descriptions and banner wording do not count — fixing a typo should not re-ask everyone.'|trans }}
+                {{ 'A new category, a new cookie provider or a newly published clause makes earlier consent describe less than what the visitor now meets. Descriptions and banner wording do not count: fixing a typo should not re-ask everyone.'|trans }}
             </div>
 
             <div class="qc-hstack" style="justify-content:space-between;gap:16px;padding-top:12px;border-top:1px solid var(--border)">
@@ -86,7 +86,7 @@
             </div>
 
             <div class="qc-hint">
-                {{ 'For changes the fingerprint cannot see — a new purpose inside an existing category, or a sub-processor that sets no cookie. The log is left untouched.'|trans }}
+                {{ 'For changes the fingerprint cannot see: a new purpose inside an existing category, or a sub-processor that sets no cookie. The log is left untouched.'|trans }}
             </div>
         </div>
 
@@ -111,7 +111,7 @@
             <div class="qc-set-title" style="margin-bottom:8px">{{ 'Privacy policy page'|trans }}</div>
 
             <select name="policy_cms" class="qc-field-base qc-select qc-focusable">
-                <option value="0">{{ '— none —'|trans }}</option>
+                <option value="0">{{ '(none)'|trans }}</option>
                 {% for page in cmsPages %}
                     <option value="{{ page.id }}" {{ policyCms == page.id ? 'selected' : '' }}>
                         {{ page.name }} ({{ 'CMS page #%id%'|trans({'%id%': page.id}) }})
@@ -129,7 +129,7 @@
             <div>
                 <div class="qc-set-title">{{ 'Respect GPC'|trans }}</div>
                 <div class="qc-line" style="margin:4px 0 0;max-width:480px">
-                    {{ 'The Global Privacy Control signal is honoured without asking — the banner does not show.'|trans }}
+                    {{ 'The Global Privacy Control signal is honoured without asking. The banner does not show.'|trans }}
                 </div>
             </div>
 
@@ -144,7 +144,7 @@
             <div>
                 <div class="qc-set-title">{{ 'Script blocking'|trans }}</div>
                 <div class="qc-line" style="margin:4px 0 0;max-width:480px">
-                    {{ 'Off stops the module from holding anything back — every service listed in Scripts & blocking runs right away, and the banner only asks, it enforces nothing.'|trans }}
+                    {{ 'Off stops the module from holding anything back: every service listed in Scripts & blocking runs right away, and the banner only asks, it enforces nothing.'|trans }}
                 </div>
             </div>
 
@@ -173,7 +173,7 @@
             </div>
 
             <div class="qc-line" style="margin-top:10px">
-                {{ 'The second option lets analytics run before the visitor answers. Legal in some countries, not in others — check before you pick it.'|trans }}
+                {{ 'The second option lets analytics run before the visitor answers. Legal in some countries, not in others. Check before you pick it.'|trans }}
             </div>
         </div>
 
@@ -198,7 +198,7 @@
                 <div class="qc-line" style="margin-top:6px">
                     {{ 'You are connecting from'|trans }} <span class="qc-mono">{{ myIp }}</span>.
                     {% if myIp not in testIps %}
-                        <strong>{{ 'It is not on the list — switching test mode on now would hide the banner from you as well.'|trans }}</strong>
+                        <strong>{{ 'It is not on the list. Switching test mode on now would hide the banner from you as well.'|trans }}</strong>
                     {% endif %}
                 </div>
             {% endif %}
@@ -212,8 +212,8 @@
                 <span class="qc-dot {{ engineDetected ? 'is-on' : '' }}"></span>
                 <span style="font-size:var(--text-sm);font-weight:var(--weight-semibold)">
                     {{ engineDetected
-                        ? 'Connected — the module uses quince_engine colours and navigation'|trans
-                        : 'Standalone — quince_engine not installed'|trans }}
+                        ? 'Connected: the module uses quince_engine colours and navigation'|trans
+                        : 'Standalone: quince_engine not installed'|trans }}
                 </span>
             </div>
 

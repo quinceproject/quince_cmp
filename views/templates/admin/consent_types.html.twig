@@ -86,7 +86,7 @@
                         <div style="font-size:var(--text-sm)">
                             {{ type.version ?: (versionCounts[type.id_cmp_type]|default(0) > 0
                                 ? 'Not in force yet'|trans
-                                : 'Draft — never published'|trans) }}
+                                : 'Draft (never published)'|trans) }}
                         </div>
 
                         <div style="font-size:var(--text-xs);color:var(--fg-2)">
@@ -102,7 +102,7 @@
                                wygaszony i nie klika się, zamiast znikać bez wyjaśnienia. #}
                             {% if type.required %}
                                 <span class="qc-toggle-track" style="opacity:.5;cursor:not-allowed"
-                                      title="{{ 'Required — cannot be disabled'|trans }}"></span>
+                                      title="{{ 'Required (cannot be disabled)'|trans }}"></span>
                             {% else %}
                                 <button type="submit" form="toggle-{{ type.id_cmp_type }}"
                                         class="qc-toggle-track qc-focusable"

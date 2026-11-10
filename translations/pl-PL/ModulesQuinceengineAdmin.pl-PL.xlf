@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-US" target-language="pl-PL" datatype="plaintext" original="ModulesQuinceengineAdmin">
+    <body>
+      <trans-unit id="quince.no_translation">
+        <source>no translation</source>
+        <target>brak tłumaczenia</target>
+      </trans-unit>
+      <trans-unit id="quince.no_icon">
+        <source>No icon</source>
+        <target>Bez ikony</target>
+      </trans-unit>
+      <trans-unit id="quince.search_icons">
+        <source>Search icons</source>
+        <target>Szukaj ikony</target>
+      </trans-unit>
+      <trans-unit id="quince.no_icons_match">
+        <source>No icons match that word.</source>
+        <target>Żadna ikona nie pasuje do tego słowa.</target>
+      </trans-unit>
+      <trans-unit id="quince.selektor.wlasny.tytul">
+        <source>Custom colour</source>
+        <target>Własny kolor</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

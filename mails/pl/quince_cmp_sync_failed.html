@@ -4,23 +4,23 @@
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e4e2de;border-radius:8px">
     <tr><td style="padding:24px 26px">
       <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#b06a00">Quince CMP</div>
-      <h1 style="margin:8px 0 14px;font-size:20px;line-height:1.3">Consent sync is failing on {shop_name}</h1>
+      <h1 style="margin:8px 0 14px;font-size:20px;line-height:1.3">Synchronizacja zgód nie działa w sklepie {shop_name}</h1>
 
       <p style="margin:0 0 14px;font-size:14px;line-height:1.6">
-        <strong>{count}</strong> consent events gave up after {attempts} attempts and are waiting in the outbox.
+        Zdarzenia zgód, których nie udało się wysłać po {attempts} próbach, czekają w kolejce do wysłania. Liczba zdarzeń: <strong>{count}</strong>.
       </p>
 
-      <p style="margin:0 0 6px;font-size:12px;font-weight:600;color:#5b5f66">Last response from {endpoint}</p>
+      <p style="margin:0 0 6px;font-size:12px;font-weight:600;color:#5b5f66">Ostatnia odpowiedź z {endpoint}</p>
       <div style="padding:10px 12px;background:#f7f6f4;border:1px solid #e4e2de;border-radius:6px;font-family:Consolas,monospace;font-size:12px;color:#a33">{error}</div>
 
       <p style="margin:16px 0 0;font-size:14px;line-height:1.6">
-        Nothing is lost — the events stay in the consent log and in the queue.
-        Open <strong>Quince CMP &rarr; Sync</strong> in your back office to see them
-        and send them again once the receiving system is back.
+        Nic nie przepadło: zdarzenia zostają w dzienniku zgód i w kolejce.
+        Otwórz <strong>Quince CMP &rarr; Synchronizacja</strong> w panelu sklepu, żeby je zobaczyć
+        i wysłać ponownie, gdy system odbierający znów zacznie działać.
       </p>
 
       <p style="margin:16px 0 0;font-size:12px;color:#7a7f87">
-        This message is sent at most once a day while the problem lasts.
+        Ta wiadomość przychodzi najwyżej raz dziennie, dopóki problem trwa.
       </p>
     </td></tr>
   </table>

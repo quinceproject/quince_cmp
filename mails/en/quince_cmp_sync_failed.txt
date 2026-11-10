@@ -5,7 +5,7 @@
 Last response from {endpoint}:
 {error}
 
-Nothing is lost — the events stay in the consent log and in the queue. Open
+Nothing is lost: the events stay in the consent log and in the queue. Open
 Quince CMP → Sync in your back office to see them and send them again once the
 receiving system is back.
 

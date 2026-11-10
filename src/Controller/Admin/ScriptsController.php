@@ -135,7 +135,7 @@ final class ScriptsController extends CmpController
 
         $this->addFlash('success', $wlaczony
             ? $this->trans('Service switched on. It is held back until the visitor agrees.', [], 'Modules.Quincecmp.Admin')
-            : $this->trans('Service switched off. Nothing holds it back — check that it is gone from the theme.', [], 'Modules.Quincecmp.Admin'));
+            : $this->trans('Service switched off. Nothing holds it back. Check that it is gone from the theme.', [], 'Modules.Quincecmp.Admin'));
 
         return $this->redirectToRoute('quince_cmp_scripts');
     }
@@ -152,7 +152,7 @@ final class ScriptsController extends CmpController
         $this->scripts->delete($idScript, Options::biezacySklep());
 
         $this->addFlash('success', $this->trans(
-            'Service removed from the list. Nothing holds it back now — check that it is gone from the theme as well.', [],
+            'Service removed from the list. Nothing holds it back now. Check that it is gone from the theme as well.', [],
             'Modules.Quincecmp.Admin'
         ));
 

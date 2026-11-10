@@ -69,7 +69,7 @@
             <div class="qc-empty" style="padding:24px 20px">
                 {{ icons.icon('shield', 32, 'qc-empty-icon') }}
                 <div class="qc-empty-text">
-                    {{ 'No service listed. Nothing is being held back before consent — every script on the storefront fires immediately.'|trans }}
+                    {{ 'No service listed. Nothing is being held back before consent: every script on the storefront fires immediately.'|trans }}
                 </div>
             </div>
         {% endfor %}
@@ -93,7 +93,7 @@
                         {{ uncovered|length > 1
                             ? 'are not driven by any category.'|trans
                             : 'is not driven by any category.'|trans }}
-                        {{ 'Consent Mode is incomplete — Google treats such a setup as no consent signal at all.'|trans }}
+                        {{ 'Consent Mode is incomplete: Google treats such a setup as no consent signal at all.'|trans }}
                     </div>
                 </div>
             {% endif %}

@@ -93,7 +93,7 @@
     <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:16px">
         <div class="qc-grid" style="padding:16px 18px">
             <div style="font-size:var(--text-sm);font-weight:var(--weight-bold);margin-bottom:12px">
-                {{ 'Decisions — last 30 days'|trans }}
+                {{ 'Decisions (last 30 days)'|trans }}
             </div>
 
             {% set total = decisions.total ?: 1 %}
@@ -129,7 +129,7 @@
                     </div>
                 {% endif %}
             {% else %}
-                <div style="font-size:var(--text-xs);color:var(--fg-3)">{{ 'Never — no external system configured.'|trans }}</div>
+                <div style="font-size:var(--text-xs);color:var(--fg-3)">{{ 'Never (no external system configured).'|trans }}</div>
             {% endif %}
 
             <div style="margin-top:10px">

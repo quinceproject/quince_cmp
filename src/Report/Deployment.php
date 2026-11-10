@@ -160,7 +160,7 @@ final class Deployment
         if (Options::bool(Options::TEST_MODE, false, $idShop)) {
             $out[] = $this->usterka(
                 'warn',
-                'Test mode is on for %shop% — the banner is shown only to the listed IP addresses. Everyone else sees nothing.',
+                'Test mode is on for %shop%: the banner is shown only to the listed IP addresses. Everyone else sees nothing.',
                 'Settings',
                 'quince_cmp_settings',
                 ['%shop%' => $nazwa]
@@ -315,7 +315,7 @@ final class Deployment
 
             $out[] = [
                 'level' => 'danger',
-                'text' => '%code% on %shop% was edited after version %version% was published — %count% consents reference text that no longer matches.',
+                'text' => '%code% on %shop% was edited after version %version% was published: %count% consents reference text that no longer matches.',
                 'params' => [
                     '%code%' => $wiersz['code'],
                     '%shop%' => $nazwaSklepu,
@@ -471,7 +471,7 @@ final class Deployment
         return [
             'key' => 'blocking',
             'label' => 'Script blocking',
-            'value' => $wlaczone ? 'On — %count% services' : 'Off — %count% waiting',
+            'value' => $wlaczone ? 'On (%count% services)' : 'Off (%count% waiting)',
             'params' => ['%count%' => $ile],
             'state' => $wlaczone ? self::STATE_OK : self::STATE_WARN,
         ];

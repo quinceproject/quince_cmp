@@ -364,7 +364,7 @@
                                  style="background:{{ palette[scale ~ '-' ~ n] }}"
                                  :class="value === '{{ scale }}-{{ n }}' && 'jest'"
                                  @click="wybierz('{{ scale }}-{{ n }}')"
-                                 title="{{ label }} {{ n }} — {{ palette[scale ~ '-' ~ n]|upper }}">
+                                 title="{{ label }} {{ n }}: {{ palette[scale ~ '-' ~ n]|upper }}">
                                 <span class="qc-scale-num">{{ n }}</span>
                             </div>
                         {% endfor %}

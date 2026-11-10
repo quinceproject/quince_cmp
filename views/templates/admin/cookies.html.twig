@@ -25,7 +25,7 @@
             <div>
                 <div style="font-size:var(--text-sm);font-weight:var(--weight-bold)">{{ 'Banner categories'|trans }}</div>
                 <div style="font-size:var(--text-xs);color:var(--fg-2)">
-                    {{ 'What the first layer of the banner asks consent for — each cookie below belongs to one.'|trans }}
+                    {{ 'What the first layer of the banner asks consent for. Each cookie below belongs to one.'|trans }}
                 </div>
             </div>
             <a href="{{ path('quince_cmp_type_new', {'kind': 'cookie'}) }}" class="qc-btn qc-btn-sm qc-btn-outline">
@@ -50,12 +50,12 @@
                     {{ type.required ? 'Required'|trans : '—' }}
                 </div>
                 <div style="font-size:var(--text-sm)">
-                    {{ type.version ?: 'Draft — never published'|trans }}
+                    {{ type.version ?: 'Draft (never published)'|trans }}
                 </div>
                 <div>
                     {% if type.required %}
                         <span class="qc-toggle-track" style="opacity:.5;cursor:not-allowed"
-                              title="{{ 'Required — cannot be disabled'|trans }}"></span>
+                              title="{{ 'Required (cannot be disabled)'|trans }}"></span>
                     {% else %}
                         <button type="submit" form="toggle-cat-{{ type.id_cmp_type }}"
                                 class="qc-toggle-track qc-focusable"
@@ -79,7 +79,7 @@
         {% else %}
             <div class="qc-empty" style="padding:24px 20px">
                 {{ icons.icon('box', 32, 'qc-empty-icon') }}
-                <div class="qc-empty-text">{{ 'No category yet — the banner has nothing to ask consent for.'|trans }}</div>
+                <div class="qc-empty-text">{{ 'No category yet, so the banner has nothing to ask consent for.'|trans }}</div>
             </div>
         {% endfor %}
     </div>
@@ -210,7 +210,7 @@
             {% else %}
                 <div class="qc-empty" style="padding:12px 0">
                     <div class="qc-empty-text">
-                        {{ 'Nothing observed yet. Start a scan and browse the shop — the checkout and a product page set the most.'|trans }}
+                        {{ 'Nothing observed yet. Start a scan and browse the shop. The checkout and a product page set the most.'|trans }}
                     </div>
                 </div>
             {% endif %}

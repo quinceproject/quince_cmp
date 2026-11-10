@@ -170,7 +170,7 @@ final class Inbox
     private function zapiszKonflikt(int $idShop, array $dane, string $kiedy, array $nasze): void
     {
         $opis = sprintf(
-            'External event %s (%s) lost to shop event %s (%s) — newer event wins.',
+            'External event %s (%s) lost to shop event %s (%s). Newer event wins.',
             substr($kiedy, 0, 16),
             ((bool) $dane['granted']) ? 'granted' : 'withdrawn',
             substr($nasze['date_add'], 0, 16),

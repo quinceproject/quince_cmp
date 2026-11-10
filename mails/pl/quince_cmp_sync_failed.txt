@@ -1,12 +1,12 @@
-[{shop_name}] Consent sync is failing
+[{shop_name}] Synchronizacja zgód nie działa
 
-{count} consent events gave up after {attempts} attempts and are waiting in the outbox.
+Zdarzenia zgód, których nie udało się wysłać po {attempts} próbach, czekają w kolejce do wysłania. Liczba zdarzeń: {count}.
 
-Last response from {endpoint}:
+Ostatnia odpowiedź z {endpoint}:
 {error}
 
-Nothing is lost — the events stay in the consent log and in the queue. Open
-Quince CMP → Sync in your back office to see them and send them again once the
-receiving system is back.
+Nic nie przepadło: zdarzenia zostają w dzienniku zgód i w kolejce. Otwórz
+Quince CMP → Synchronizacja w panelu sklepu, żeby je zobaczyć i wysłać ponownie,
+gdy system odbierający znów zacznie działać.
 
-This message is sent at most once a day while the problem lasts.
+Ta wiadomość przychodzi najwyżej raz dziennie, dopóki problem trwa.

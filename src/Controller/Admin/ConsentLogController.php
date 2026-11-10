@@ -144,7 +144,7 @@ final class ConsentLogController extends CmpController
 
         if ($podstawa === '') {
             $this->addFlash('error', $this->trans(
-                'Say what this is based on — a ticket number or the date of the message. The entry is not saved without it.', [],
+                'Say what this is based on: a ticket number or the date of the message. The entry is not saved without it.', [],
                 'Modules.Quincecmp.Admin'
             ));
 

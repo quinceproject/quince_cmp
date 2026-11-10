@@ -110,7 +110,7 @@
     window.addEventListener('load', function () {
         var pasek = document.createElement('div');
         pasek.className = 'qcmp-scanbar';
-        pasek.textContent = cfg.label || 'Cookie scan in progress — all services are temporarily unblocked for this browser.';
+        pasek.textContent = cfg.label || 'Cookie scan in progress: all services are temporarily unblocked for this browser.';
         document.body.appendChild(pasek);
     });
 })();

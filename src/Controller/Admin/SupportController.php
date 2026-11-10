@@ -212,7 +212,7 @@ final class SupportController extends CmpController
             // ludźmi i zwykle nikt nie ogląda jego zawartości.
             foreach ($podglad['services'] as $usluga) {
                 $this->addFlash('warning', $this->trans(
-                    'Service to be added: %name% — %where%',
+                    'Service to be added: %name% (%where%)',
                     [
                         '%name%' => $usluga['name'] !== '' ? $usluga['name'] : '(unnamed)',
                         '%where%' => $this->skad($usluga),

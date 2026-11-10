@@ -134,7 +134,7 @@ final class CookiesController extends CmpController
             $zapisane ? 'success' : 'error',
             $zapisane
                 ? $this->trans('Cookie saved.', [], 'Modules.Quincecmp.Admin')
-                : $this->trans('Could not save — a cookie with this name already exists in this shop.', [], 'Modules.Quincecmp.Admin')
+                : $this->trans('Could not save: a cookie with this name already exists in this shop.', [], 'Modules.Quincecmp.Admin')
         );
 
         return $zapisane
@@ -171,7 +171,7 @@ final class CookiesController extends CmpController
         $adres = Tools::getProtocol($ssl) . $domena . $sklep->getBaseURI() . '?' . Scanner::PARAM . '=' . $skaner->start($idShop);
 
         $this->addFlash('success', $this->trans(
-            'Scan started. Browse the shop in the tab that just opened — every page you visit is checked.', [],
+            'Scan started. Browse the shop in the tab that just opened. Every page you visit is checked.', [],
             'Modules.Quincecmp.Admin'
         ));
 
@@ -218,7 +218,7 @@ final class CookiesController extends CmpController
         $this->cookies->delete($idCookie, Options::biezacySklep());
 
         $this->addFlash('success', $this->trans(
-            'Cookie removed from the table. The cookie itself is set by the service — this list only describes it.', [],
+            'Cookie removed from the table. The cookie itself is set by the service. This list only describes it.', [],
             'Modules.Quincecmp.Admin'
         ));
 

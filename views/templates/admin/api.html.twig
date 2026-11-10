@@ -61,7 +61,7 @@
             {{ icons.icon('check', 18, 'qc-alert-icon') }}
             <div style="width:100%">
                 <b>{{ 'Access created. The secret is shown once.'|trans }}</b>
-                <div>{{ 'It is stored hashed — nobody can read it back, here or anywhere else. If it is lost, generate a new one on the PrestaShop screen.'|trans }}</div>
+                <div>{{ 'It is stored hashed: nobody can read it back, here or anywhere else. If it is lost, generate a new one on the PrestaShop screen.'|trans }}</div>
 
                 <div class="qc-caption" style="margin-top:10px">client_id</div>
                 <div class="qc-mono qc-pre">{{ freshSecret.clientId }}</div>
@@ -174,7 +174,7 @@
         <div class="qc-grid" style="padding:16px 18px;margin-top:16px">
             <div class="qc-set-title">{{ 'Recording a decision made elsewhere'|trans }}</div>
             <div class="qc-line">
-                {{ 'The log is append-only. A withdrawal is a new event with granted: false, never a deletion — otherwise the proof would stop being proof.'|trans }}
+                {{ 'The log is append-only. A withdrawal is a new event with granted: false, never a deletion. Otherwise the proof would stop being proof.'|trans }}
             </div>
 
             <div class="qc-mono qc-pre" style="margin-top:10px">POST {{ baseUrl }}/quince-cmp/consent-events
