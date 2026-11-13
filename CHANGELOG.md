@@ -4,6 +4,15 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.9] - 2026-11-13
+
+### Fixed
+
+- The back office no longer sends you to the shop's home page after this module is
+  installed from its release ZIP. The index.php file in every folder of the package
+  redirected and stopped the process also when PrestaShop loaded it while scanning
+  `src/ApiPlatform/Resources`, so the back office could not be built.
+
 ## [0.3.8] - 2026-11-10
 
 ### Changed
