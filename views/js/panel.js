@@ -1,5 +1,5 @@
 /**
- * Quince CMP — warstwa panelu.
+ * Quince CMP: warstwa panelu.
  *
  * Własna kopia skryptu z `quince_engine`, nie odnośnik do niego: moduł ma
  * działać w sklepie, w którym silnika nie ma.
@@ -38,7 +38,7 @@
     /**
      * Przepisuje treść alertu PrestaShopa, zachowując jej strukturę.
      * Komunikaty bywają wielopunktowe (lista błędów walidacji) albo zawierają odnośnik
-     * do miejsca, w którym trzeba coś poprawić — spłaszczenie do jednego zdania gubi
+     * do miejsca, w którym trzeba coś poprawić. Spłaszczenie do jednego zdania gubi
      * jedno i drugie. Przepuszczamy wyłącznie znaczniki z listy: alert idzie do nas
      * jako gotowy HTML, więc wstawienie go bez filtra byłoby otwarciem na wstrzyknięcie.
      */
@@ -60,7 +60,7 @@
 
             var allowed = ALLOWED[child.tagName];
             if (!allowed) {
-                // Znacznik odpada, ale jego treść zostaje — inaczej zniknąłby cały komunikat
+                // Znacznik odpada, ale jego treść zostaje. Inaczej zniknąłby cały komunikat
                 // opakowany w nieznany kontener.
                 while (child.firstChild) {
                     node.insertBefore(child.firstChild, child);
@@ -75,7 +75,7 @@
                 }
             });
 
-            // Odnośniki tylko na zwykłe adresy — javascript: i data: wypadają.
+            // Odnośniki tylko na zwykłe adresy, javascript: i data: wypadają.
             var href = child.getAttribute && child.getAttribute('href');
             if (href && !/^(https?:|\/|#|mailto:)/i.test(href.trim())) {
                 child.removeAttribute('href');
@@ -116,7 +116,7 @@
         stack().appendChild(el);
         requestAnimationFrame(function () { el.classList.add('is-visible'); });
 
-        // Błędy zostają — użytkownik musi je przeczytać i zwykle coś poprawić.
+        // Błędy zostają: użytkownik musi je przeczytać i zwykle coś poprawić.
         if (type !== 'danger') {
             setTimeout(close, 4500);
         }
@@ -146,9 +146,9 @@
             var r = el.getBoundingClientRect();
 
             // Paski układają się piętrowo: czarny z wyszukiwarką stoi na top: 0,
-            // biały z tytułem strony dopiero pod nim. Warunek `top <= 4` wyłapywał
-            // tylko pierwszy z nich, przez co offset był o wysokość nagłówka za mały.
-            // Bierzemy najniższą krawędź wszystkiego, co trzyma się górnej części ekranu.
+            // biały z tytułem strony dopiero pod nim. Dlatego liczy się najniższa
+            // krawędź wszystkiego, co trzyma się górnej części ekranu, a nie tylko
+            // elementu stojącego na samej górze.
             if (r.height > 0 && r.top >= -2 && r.top < 240
                 && r.bottom > bottom && r.bottom < window.innerHeight / 2) {
                 bottom = r.bottom;
@@ -159,7 +159,7 @@
     }
 
     /**
-     * Mierzy, co przykleja się do DOŁU ekranu — w praktyce pasek debugowania Symfony,
+     * Mierzy, co przykleja się do DOŁU ekranu: w praktyce pasek debugowania Symfony,
      * który w trybie deweloperskim zasłaniałby pasek akcji. Ma inną wysokość na
      * desktopie i na telefonie, a na produkcji nie ma go wcale.
      *
@@ -200,7 +200,7 @@
 
         sync();
         window.addEventListener('resize', sync);
-        // Paski doklejają się dopiero po przewinięciu — mierzymy ponownie.
+        // Paski doklejają się dopiero po przewinięciu, więc pomiar się powtarza.
         window.addEventListener('scroll', sync, { passive: true });
         // Pasek debugowania Symfony montuje się asynchronicznie, już po DOMContentLoaded.
         setTimeout(sync, 400);
@@ -221,7 +221,7 @@
                 return;
             }
 
-            // Bierzemy całą treść alertu — z listami błędów i odnośnikami — odrzucając
+            // Bierzemy całą treść alertu (z listami błędów i odnośnikami), odrzucając
             // wyłącznie sterowanie samego alertu (przycisk zamknięcia, ikony materialowe).
             var clone = alert.cloneNode(true);
             clone.querySelectorAll('button, .close, svg, .material-icons').forEach(function (n) { n.remove(); });
@@ -286,7 +286,7 @@
      *
      * Natywne `confirm` zamiast własnego okna: blokuje wysłanie formularza bez
      * przechwytywania zdarzenia, więc przycisk działa tak samo, gdy skrypt się
-     * nie wczyta. Operacja bez potwierdzenia jest gorsza niż brzydkie okno.
+     * nie wczyta.
      */
     document.addEventListener('click', function (event) {
         var el = event.target.closest('[data-qc-confirm]');

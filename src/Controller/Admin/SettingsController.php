@@ -96,9 +96,6 @@ final class SettingsController extends CmpController
 
     /**
      * Kasuje zdarzenia po terminie od razu, bez czekania na cron.
-     *
-     * Przydaje się po skróceniu terminu: sprzedawca chce zobaczyć skutek
-     * wtedy, gdy podejmuje decyzję, a nie następnego dnia.
      */
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function purgeAction(Request $request): RedirectResponse
@@ -122,7 +119,7 @@ final class SettingsController extends CmpController
     /**
      * Unieważnia wszystkie zgody w tym sklepie.
      *
-     * Dla zmian, których odcisk konfiguracji nie wyłapie — nowego celu
+     * Dla zmian, których odcisk konfiguracji nie wyłapie: nowego celu
      * przetwarzania w istniejącej kategorii albo zmiany podwykonawcy, która
      * nie dokłada ciasteczka. Dziennik zostaje nietknięty.
      */
@@ -148,8 +145,8 @@ final class SettingsController extends CmpController
     /**
      * Liczba miesięcy w rozsądnych granicach.
      *
-     * Zero oznaczałoby kasowanie dziennika przy każdym przebiegu, a wartość
-     * bez górnej granicy — pole, w które ktoś wpisze rok zamiast liczby miesięcy.
+     * Zero oznaczałoby kasowanie dziennika przy każdym przebiegu. Górna granica
+     * łapie rok wpisany zamiast liczby miesięcy.
      */
     private function miesiace(mixed $wartosc, int $domyslnie, int $min, int $max): int
     {
@@ -176,7 +173,7 @@ final class SettingsController extends CmpController
         return $out;
     }
 
-    /** Adres, z którego sprzedawca właśnie patrzy — żeby nie musiał go szukać. */
+    /** Adres IP zalogowanego pracownika, podpowiadany przy trybie testowym. */
     private function mojAdres(): string
     {
         $adres = (string) ($_SERVER['REMOTE_ADDR'] ?? '');

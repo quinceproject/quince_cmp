@@ -23,12 +23,12 @@ use Quince\Cmp\Sync\Transport;
  * Wyzwalacz wysyłki dla harmonogramu systemowego.
  *
  * PrestaShop nie ma własnego zegara, więc przebieg uruchamia cron serwera albo
- * zewnętrzny monitor. Adres chroni token wyprowadzony z klucza podpisu — bez
+ * zewnętrzny monitor. Adres chroni token wyprowadzony z klucza podpisu. Bez
  * niego każdy mógłby wywoływać przebieg dowolnie często.
  *
  * Przebieg robi dwie rzeczy: wysyła to, co czeka w kolejce, i kasuje zdarzenia,
  * które przekroczyły termin retencji. Retencja nie zależy od tego, czy wymiana
- * jest w ogóle włączona — termin przechowywania danych obowiązuje sklep
+ * jest w ogóle włączona: termin przechowywania danych obowiązuje sklep
  * niezależnie od tego, czy wysyła je gdziekolwiek.
  */
 class Quince_CmpCronModuleFrontController extends ModuleFrontController
@@ -47,8 +47,7 @@ class Quince_CmpCronModuleFrontController extends ModuleFrontController
         $wynik = (new Transport(new SyncQueue()))->run($idShop);
 
         // Retencja idzie tym samym przebiegiem: to jedyne miejsce, w którym
-        // moduł dostaje regularny sygnał czasu. Bez tego termin z ustawień
-        // byłby obietnicą, za którą nic nie stoi.
+        // moduł dostaje regularny sygnał czasu.
         $wynik['retention'] = (new Retention())->run($idShop);
 
         $this->wyslij($wynik['skipped'] && $wynik['retention']['events'] === 0 ? 503 : 200, $wynik);

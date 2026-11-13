@@ -18,7 +18,7 @@ use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 /**
  * Zakładka „Consent log" w menu PrestaShopa.
  *
- * Sam nie renderuje niczego — ekran jest trasą Symfony (`quince_cmp_log`).
+ * Sam nie renderuje niczego. Ekran jest trasą Symfony (`quince_cmp_log`).
  */
 class AdminQuinceCmpLogController extends ModuleAdminController
 {

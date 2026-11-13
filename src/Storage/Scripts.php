@@ -50,8 +50,8 @@ final class Scripts
     /**
      * Sygnał, który zwykle wolno ustawić na `granted` już przed pytaniem.
      *
-     * `security_storage` obsługuje wykrywanie nadużyć i uwierzytelnianie —
-     * odmowa przed zgodą psuje mechanizmy bezpieczeństwa, a nie chroni prywatności.
+     * `security_storage` obsługuje wykrywanie nadużyć i uwierzytelnianie.
+     * Odmowa przed zgodą psuje mechanizmy bezpieczeństwa, a nie chroni prywatności.
      */
     public const SIGNAL_DEFAULT_GRANTED = 'security_storage';
 
@@ -169,7 +169,7 @@ final class Scripts
     /**
      * Kategorie ciasteczkowe wraz z ustawionymi sygnałami Consent Mode.
      *
-     * Kategoria oznaczona jako wymagana jest pomijana — zgoda na nią nie zapada,
+     * Kategoria oznaczona jako wymagana jest pomijana: zgoda na nią nie zapada,
      * więc nie może warunkować żadnego sygnału.
      *
      * @return array<int,array{code:string,name:string,signals:array<string,bool>}>

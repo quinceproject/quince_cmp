@@ -21,10 +21,7 @@ use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
  * Sam nie renderuje niczego. Ekran jest trasą Symfony (`quince_cmp_overview`),
  * a ta klasa istnieje z dwóch powodów: PrestaShop musi mieć klasę dla pozycji
  * w menu, a `_legacy_controller` w `config/routes.yml` musi mieć na czym oprzeć
- * sprawdzenie uprawnień do trasy.
- *
- * Każdy kolejny ekran modułu dostanie taki sam plik obok — to jest cała
- * ceremonia potrzebna, żeby wszedł do menu.
+ * sprawdzenie uprawnień do trasy. Każdy ekran modułu ma obok taki sam plik.
  */
 class AdminQuinceCmpOverviewController extends ModuleAdminController
 {

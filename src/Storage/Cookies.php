@@ -18,7 +18,7 @@ use DbQuery;
  * Tabela ciasteczek prezentowana w drugiej warstwie banera.
  *
  * Wpis pochodzi albo od sprzedawcy (`manual`), albo ze skanera (`scan`).
- * Skaner nie modyfikuje wpisów ręcznych — kategoria i opis wprowadzone ręcznie
+ * Skaner nie modyfikuje wpisów ręcznych: kategoria i opis wprowadzone ręcznie
  * pozostają po kolejnym skanowaniu.
  */
 final class Cookies
@@ -28,7 +28,7 @@ final class Cookies
 
     /**
      * Kategorie pochodzą z rodzajów zgód o rodzaju `cookie` zdefiniowanych
-     * w danym sklepie, a nie ze stałej listy — sprzedawca może kategorie dodać
+     * w danym sklepie, a nie ze stałej listy. Sprzedawca może kategorie dodać
      * lub usunąć.
      *
      * @return array<string,string> kod => nazwa

@@ -21,8 +21,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * Lista rodzajów zgód czytana przez Admin API.
  *
- * Woła dokładnie to samo `ConsentTypes::all()`, co ekran „Rodzaje zgód" —
- * jedno źródło listy, nie osobne zapytanie pisane pod API.
+ * Woła dokładnie to samo `ConsentTypes::all()`, co ekran „Rodzaje zgód".
  *
  * @implements ProviderInterface<ConsentType>
  */

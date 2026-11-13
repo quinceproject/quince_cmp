@@ -28,8 +28,7 @@
 
     {# ---------- wychodzące ----------
        Jedna siatka pól, dwie kolumny. Każde ustawienie to podpis nad kontrolką
-       tej samej wysokości — wcześniej harmonogram, retencja i powiadomienie
-       stały w osobnych wierszach o różnej budowie i karta się rozjeżdżała. #}
+       tej samej wysokości. #}
     <form method="post" action="{{ path('quince_cmp_sync_save') }}">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_sync_save') }}">
         <div class="qc-grid" style="padding:16px 18px;margin-bottom:16px">
@@ -253,10 +252,8 @@
     </div>
 
     {# ---------- kontrakt ----------
-       Bez opisu formatu druga strona nie ma jak tego zaimplementować, a sekcja
-       przychodząca stoi pusta nie dlatego, że nikt nie chce wysyłać, tylko
-       dlatego, że nikt nie wie jak. Przykład liczony jest z tej samej metody,
-       którą moduł buduje ładunek — nie da się rozjechać z rzeczywistością. #}
+       Opis formatu dla drugiej strony. Przykład liczony jest tą samą metodą,
+       którą moduł buduje ładunek, więc nie rozjedzie się z rzeczywistością. #}
     <div class="qc-grid" style="padding:16px 18px;margin-bottom:16px" x-data="{ open: false }">
         <div class="qc-hstack" style="justify-content:space-between">
             <div>
@@ -328,12 +325,12 @@ Content-Type: application/json
 
         {# Prototyp trzyma tu wlasny blok, nie pasek `.qc-alert`: nagłowek jest ciemny
            i bez ikony, a lewa krawedz nie ma paska ostrzegawczego. To nie jest
-           ostrzezenie do naprawienia — to zapis rozstrzygniecia. #}
+           ostrzezenie do naprawienia, tylko zapis rozstrzygniecia. #}
         {% for conflict in incoming.conflicts %}
             <div class="qc-conflict">
                 <div class="qc-conflict-head">{{ conflict.reason }}</div>
 
-                {# Bez odnośnika wiersz mówi, że był spór, ale nie mówi o kim —
+                {# Bez odnośnika wiersz mówi, że był spór, ale nie mówi o kim,
                    a to jest pierwsza rzecz, której szuka obsługa. #}
                 {% if conflict.email %}
                     <div class="qc-line" style="margin-bottom:8px">

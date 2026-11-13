@@ -18,17 +18,14 @@ use Language;
  * Ciasteczka, które ustawia sam PrestaShop.
  *
  * Zestaw startowy tabeli ciasteczek. Wchodzą tu **wyłącznie te, które istnieją
- * w każdym sklepie na tym silniku** — nie „popularne ciasteczka z internetu".
- * Tabela ciasteczek jest oświadczeniem wobec klienta: mówi, co ten sklep u niego
- * zapisuje. Wpisanie tam Google Analytics w sklepie, który go nie ma, jest
- * nieprawdą wobec klienta, a nie ułatwieniem dla sprzedawcy. Resztę znajduje
- * skaner, bo tylko on widzi, co naprawdę się dzieje na stronie.
+ * w każdym sklepie na tym silniku**. Tabela ciasteczek jest oświadczeniem wobec
+ * klienta: mówi, co ten sklep u niego zapisuje. Resztę znajduje skaner, bo tylko
+ * on widzi, co naprawdę się dzieje na stronie.
  *
  * Nazwy sprawdzone na PrestaShop 9.2: `PHPSESSID` z konfiguracji PHP oraz
  * ciasteczko sklepu z `classes/Cookie.php`, gdzie nazwa powstaje jako
  * `'PrestaShop-' . md5(wersja . nazwa . domena)`. Skrót jest inny w każdej
- * instalacji, więc w tabeli idzie jako wzorzec z gwiazdką — dokładnie po to
- * ten wzorzec w module jest.
+ * instalacji, więc w tabeli idzie jako wzorzec z gwiazdką.
  *
  * Obu tych ciasteczek nie da się odrzucić: bez nich nie ma koszyka ani sesji.
  * Dlatego trafiają do kategorii wymaganej.
@@ -60,7 +57,7 @@ final class DefaultCookies
     ];
 
     /**
-     * Zakłada zestaw w każdym sklepie. Pomija wpisy, które już są — ponowna
+     * Zakłada zestaw w każdym sklepie. Pomija wpisy, które już są, więc ponowna
      * instalacja nie kasuje opisów poprawionych ręcznie.
      */
     public function seedAllShops(): bool

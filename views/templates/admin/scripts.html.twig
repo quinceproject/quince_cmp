@@ -6,8 +6,8 @@
 
 {% set cols = '1.3fr 1fr 1fr 1.3fr 50px 70px' %}
 
-{# Kolumny sygnałów nie rosną z szerokością ekranu — na szerokim monitorze
-   kwadraty rozjeżdżały się na pół metra od nazwy kategorii. Luz bierze
+{# Kolumny sygnałów nie rosną z szerokością ekranu, inaczej na szerokim
+   monitorze kwadraty odjeżdżają daleko od nazwy kategorii. Luz bierze
    pierwsza kolumna, ta z nazwą. #}
 {% set cmCols = 'minmax(220px,2fr) repeat(' ~ signals|length ~ ',minmax(130px,170px))' %}
 
@@ -84,8 +84,8 @@
             </div>
 
             {% if uncovered is not empty %}
-                {# Jeden pasek na wszystkie sygnały bez pokrycia. Osobny pasek na każdy
-                   z nich przy pustej macierzy dawał ścianę czterech identycznych zdań. #}
+                {# Jeden pasek na wszystkie sygnały bez pokrycia, nie osobny na każdy:
+                   przy pustej macierzy byłyby to identyczne zdania jedno pod drugim. #}
                 <div class="qc-alert qc-alert-warning" style="margin-bottom:14px">
                     {{ icons.icon('alertTriangle', 18, 'qc-alert-icon') }}
                     <div>
@@ -101,14 +101,14 @@
             {# Jedna siatka na całą macierz, nie trzy osobne wiersze: tylko wtedy
                kolumna dopasowuje się do najszerszej zawartości i wszystkie wiersze
                trafiają w te same krawędzie. Poziomy suwak należy do tabeli, nie do
-               strony — przy siedmiu sygnałach nie mieści się na węższym monitorze.
+               strony, bo przy siedmiu sygnałach nie mieści się na węższym monitorze.
 
                Obramowania niosą komórki, bo w jednej siatce nie ma węzła wiersza,
                na którym dałoby się je zawiesić. #}
             <div class="qc-cm-scroll">
                 <div class="qc-cm-grid" style="grid-template-columns:minmax(120px,max-content) repeat({{ signals|length }},max-content)">
 
-                    {# stan sprzed decyzji; `security_storage` jest wyjątkiem — odmowa
+                    {# stan sprzed decyzji; `security_storage` jest wyjątkiem, bo odmowa
                        psuje wykrywanie nadużyć i uwierzytelnianie, a niczego nie chroni #}
                     <div class="qc-cm-cell qc-cm-lead is-under">{{ 'Default before consent'|trans }}</div>
                     {% for signal in signals %}
@@ -197,8 +197,8 @@
                     <div>
                         <div class="qc-caption">{{ 'Before consent'|trans }}</div>
 
-                        {# Jeden przełącznik na wiersz. Obok siebie zlewały się w jeden pasek
-                           i nie było widać, który napis należy do którego. #}
+                        {# Jeden przełącznik na wiersz. Obok siebie zlewają się w jeden pasek
+                           i nie widać, który napis należy do którego. #}
                         <div class="qc-optrow" style="padding-top:2px">
                             <label class="qc-toggle qc-toggle-sm">
                                 <input type="checkbox" name="cm_redact" value="1" {{ cmRedact ? 'checked' : '' }}>

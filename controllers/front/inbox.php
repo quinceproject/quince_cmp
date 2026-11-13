@@ -19,7 +19,7 @@ use Quince\Cmp\Sync\Inbox;
  * Punkt przyjmowania zmian zgody z systemu zewnętrznego.
  *
  * Odpowiada JSON-em i nie renderuje szablonu. Uwierzytelnienie opiera się
- * wyłącznie na podpisie ciała żądania — bez sesji i bez tokenu z adresu, bo
+ * wyłącznie na podpisie ciała żądania, bez sesji i bez tokenu z adresu, bo
  * wywołujący jest serwerem, nie przeglądarką.
  */
 class Quince_CmpInboxModuleFrontController extends ModuleFrontController

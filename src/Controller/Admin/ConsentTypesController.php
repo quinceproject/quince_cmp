@@ -44,9 +44,9 @@ final class ConsentTypesController extends CmpController
     /**
      * Kolumny `ps_customer`, które rodzaj zgody może odwzorowywać.
      *
-     * Jedyne dwie w rdzeniu PrestaShopa o znaczeniu zgody marketingowej —
-     * zamiast wolnego pola na nazwę kolumny, bo błędna wartość zapisywałaby
-     * się prosto do karty klienta.
+     * Jedyne dwie w rdzeniu PrestaShopa o znaczeniu zgody marketingowej.
+     * Lista zamknięta, bo błędna nazwa kolumny zapisywałaby się prosto do karty
+     * klienta.
      */
     private const POLA_CORE = [
         'newsletter' => 'Newsletter subscription (ps_customer.newsletter)',
@@ -69,7 +69,7 @@ final class ConsentTypesController extends CmpController
         $kind = trim((string) $request->query->get('kind', ''));
 
         // Kategorie ciasteczek mają własną listę i własny formularz dodawania
-        // w zakładce „Ciasteczka" (`CookiesController::indexAction`) — tutaj
+        // w zakładce „Ciasteczka" (`CookiesController::indexAction`). Tutaj
         // zostają rodzaje bez tamtej listy: formularz i dokument.
         $typy = array_values(array_filter(
             $this->types->all($idShop, $idLang, $search, $kind),
@@ -148,7 +148,7 @@ final class ConsentTypesController extends CmpController
         ]);
     }
 
-    /** Zapis wskazania strony CMS. Treść klauzuli tędy nie idzie — patrz `publishAction`. */
+    /** Zapis wskazania strony CMS. Treść klauzuli tędy nie idzie (patrz `publishAction`). */
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function saveAction(int $idType, Request $request): RedirectResponse
     {
@@ -186,8 +186,8 @@ final class ConsentTypesController extends CmpController
             }
         }
 
-        // `terms_shop`/`privacy_policy` mają już działający natywny odpowiednik —
-        // ten checkbox moduł trwale ustępuje mu miejsca, patrz `CoreBridge::NATYWNE`.
+        // `terms_shop`/`privacy_policy` mają działający natywny odpowiednik
+        // i moduł trwale ustępuje mu miejsca, patrz `CoreBridge::NATYWNE`.
         $pokazWCheckoucie = in_array($typ['code'], CoreBridge::NATYWNE, true)
             ? false
             : $request->request->getBoolean('show_in_checkout');
@@ -217,7 +217,7 @@ final class ConsentTypesController extends CmpController
      * Wydaje nową wersję klauzuli.
      *
      * Numer wersji może pochodzić z zewnętrznego rejestru dokumentów albo być
-     * nadany automatycznie (SPEC §10.5).
+     * nadany automatycznie.
      */
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function publishAction(int $idType, Request $request): RedirectResponse
@@ -317,9 +317,8 @@ final class ConsentTypesController extends CmpController
     /**
      * Formularz założenia nowego rodzaju zgody.
      *
-     * Osobny, krótki ekran zamiast trybu „nowy" w pełnym edytorze karty —
-     * ten zakłada istniejący rodzaj (wersje, mapowanie, dziennik) na każdym
-     * kroku. `kind` w adresie zawęża i blokuje wybór rodzaju, gdy formularz
+     * Osobny ekran, bo pełny edytor karty zakłada istniejący rodzaj (wersje,
+     * mapowanie, dziennik) na każdym kroku. `kind` w adresie zawęża i blokuje wybór rodzaju, gdy formularz
      * wywołuje konkretna lista (np. zakładka „Ciasteczka" zakłada tylko
      * kategorie ciasteczek, nie formularze).
      */
@@ -331,7 +330,7 @@ final class ConsentTypesController extends CmpController
         $kindZablokowany = array_key_exists($kindZadany, $wszystkie) ? $kindZadany : '';
 
         return $this->renderPanel('@Modules/quince_cmp/views/templates/admin/consent_type_new.html.twig', [
-            // Lista rozwijana pomija „Cookie" — kategorię ciasteczka zakłada
+            // Lista rozwijana pomija „Cookie": kategorię ciasteczka zakłada
             // się wyłącznie z zablokowanym `kind` przez link z „Ciasteczek".
             'kinds' => $this->rodzaje(),
             'lockedKindLabel' => $wszystkie[$kindZablokowany] ?? '',
@@ -398,8 +397,7 @@ final class ConsentTypesController extends CmpController
      * Zapisuje kolejność po przeciągnięciu wierszy na liście.
      *
      * `order` przychodzi jako lista id oddzielonych przecinkiem, spisana przez
-     * JS z aktualnego układu DOM tuż przed wysłaniem formularza — ten sam
-     * wzorzec, co rozstawianie elementów strony głównej w `quince_engine`.
+     * JS z aktualnego układu DOM tuż przed wysłaniem formularza.
      */
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function reorderAction(Request $request): RedirectResponse
@@ -450,7 +448,7 @@ final class ConsentTypesController extends CmpController
             : $this->trans('Consent type switched off. Records already collected stay in the log.', [], 'Modules.Quincecmp.Admin'));
 
         // Kategorie ciasteczek mają ten sam przełącznik, ale swoją listę w
-        // zakładce „Ciasteczka" — „Rodzaje zgód" ich w ogóle nie pokazuje
+        // zakładce „Ciasteczka". „Rodzaje zgód" ich w ogóle nie pokazuje
         // (patrz indexAction), więc przełączona kategoria musi wrócić tam,
         // skąd przyszła, inaczej ląduje na liście, na której jej nie ma.
         return $this->redirectToRoute(
@@ -592,7 +590,7 @@ final class ConsentTypesController extends CmpController
     private function rodzaje(): array
     {
         // Bez „Cookie": kategorie ciasteczek mają własną listę w zakładce
-        // „Ciasteczka" — na tej liście by tylko prowadziły w dwie strony.
+        // „Ciasteczka".
         return [
             Schema::KIND_FORM => 'Form',
             Schema::KIND_DOCUMENT => 'Document',

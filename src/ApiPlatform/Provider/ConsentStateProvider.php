@@ -19,14 +19,12 @@ use Quince\Cmp\Storage\ConsentRegister;
 /**
  * Skąd Admin API bierze stan zgód jednej osoby.
  *
- * Czyta ten sam rejestr, co ekran profilu zgody — nie ma drugiego źródła prawdy
- * i nie ma zapytania pisanego osobno pod API. Gdyby były dwa, prędzej czy później
- * odpowiadałyby co innego, a różnicy nikt by nie zauważył.
+ * Czyta ten sam rejestr, co ekran profilu zgody. Nie ma osobnego zapytania
+ * pisanego pod API.
  *
  * **Zwracamy podzbiór.** Adres IP, nagłówek przeglądarki i klucz odwiedzającego
- * zostają w sklepie: system zewnętrzny pyta, na co osoba się zgodziła, a nie
- * z jakiego łącza wtedy korzystała. Wychodzi to, co jest odpowiedzią, plus numer
- * wersji i skrót treści — czyli dowód, do czego ta odpowiedź się odnosiła.
+ * zostają w sklepie. Wychodzi odpowiedź, numer wersji i skrót treści (dowód,
+ * do czego ta odpowiedź się odnosiła).
  *
  * @implements ProviderInterface<ConsentState>
  */

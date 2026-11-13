@@ -18,7 +18,7 @@ use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 /**
  * Zakładka „Consent types" w menu PrestaShopa.
  *
- * Sam nie renderuje niczego — ekran jest trasą Symfony (`quince_cmp_types`).
+ * Sam nie renderuje niczego. Ekran jest trasą Symfony (`quince_cmp_types`).
  * Klasa istnieje po to, żeby PrestaShop miał czym opisać pozycję w menu
  * i na czym oprzeć sprawdzenie uprawnień do tej trasy.
  */

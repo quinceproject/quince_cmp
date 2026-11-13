@@ -16,11 +16,11 @@ if (!defined('_PS_VERSION_')) {
 /**
  * 0.3.4 -> 0.3.5
  *
- * Klauzula informacyjna o przetwarzaniu danych obok checkboxa regulaminu —
- * `displayCheckoutBeforeConfirmation`, bez checkboxa, bo przetwarzanie danych
+ * Klauzula informacyjna o przetwarzaniu danych obok checkboxa regulaminu
+ * (`displayCheckoutBeforeConfirmation`), bez checkboxa, bo przetwarzanie danych
  * do realizacji zamówienia nie jest wyborem do odmówienia (RODO art. 6 ust. 1
- * lit. b). Historia zapisuje się bezwarunkowo niezależnie od tego hooka —
- * patrz `CoreBridge::recordOrder()`/`recordCustomer()`.
+ * lit. b). Historia zapisuje się bezwarunkowo niezależnie od tego hooka, patrz
+ * `CoreBridge::recordOrder()`/`recordCustomer()`.
  */
 function upgrade_module_0_3_5(Module $module): bool
 {

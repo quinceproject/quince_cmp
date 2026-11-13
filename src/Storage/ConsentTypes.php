@@ -19,7 +19,7 @@ use DbQuery;
  *
  * Rodzaj zgody należy do pojedynczego sklepu, dlatego każda metoda przyjmuje
  * `id_shop` i zawęża zapytanie. Dane pochodne (obowiązujące wersje, liczba
- * zebranych zgód) pobierane są osobnymi zapytaniami — liczba rodzajów zgód
+ * zebranych zgód) pobierane są osobnymi zapytaniami, bo liczba rodzajów zgód
  * w sklepie jest niewielka.
  */
 final class ConsentTypes
@@ -228,8 +228,7 @@ final class ConsentTypes
     /**
      * Odwzorowanie kolumn `ps_customer` na kody zgód w danym sklepie.
      *
-     * Zastępuje sztywną stałą `CoreBridge::MAPOWANIE` — sprzedawca ustawia
-     * to teraz na karcie rodzaju zgody, w zakładce „Where it appears".
+     * Ustawiane na karcie rodzaju zgody, w zakładce „Where it appears".
      *
      * @return array<string,string> core_field => code
      */
@@ -250,7 +249,7 @@ final class ConsentTypes
     }
 
     /**
-     * Rodzaj zgody, który już mapuje daną kolumnę `ps_customer` w tym sklepie —
+     * Rodzaj zgody, który już mapuje daną kolumnę `ps_customer` w tym sklepie,
      * albo `null`, gdy kolumna jest wolna. Dwie zgody nie mogą dzielić jednej
      * kolumny: `recordCustomer()`/`pushToCore()` zakładają jedno odwzorowanie
      * na kolumnę.
@@ -283,7 +282,7 @@ final class ConsentTypes
         ];
     }
 
-    /** Czy kod jest już zajęty w tym sklepie — do walidacji przed założeniem nowego rodzaju. */
+    /** Czy kod jest już zajęty w tym sklepie (walidacja przed założeniem nowego rodzaju). */
     public function kodZajety(string $code, int $idShop): bool
     {
         return (bool) Db::getInstance()->getValue(
@@ -293,7 +292,7 @@ final class ConsentTypes
     }
 
     /**
-     * Zakłada nowy rodzaj zgody — bez treści ani wersji, tak jak zasiewane
+     * Zakłada nowy rodzaj zgody bez treści ani wersji, tak jak zasiewane
      * przy instalacji (patrz `DefaultConsentTypes`). Wersję sprzedawca
      * wydaje osobno, na karcie rodzaju, po wpisaniu treści.
      *
@@ -408,7 +407,7 @@ final class ConsentTypes
      *
      * `$orderedIds` to id w kolejności, w jakiej stoją po przeciągnięciu. Lista
      * schodzi z ekranu, więc przy filtrze zakładki (Ciasteczko/Formularz/
-     * Dokument) obejmuje tylko widoczny podzbiór — stąd nowe pozycje to nie
+     * Dokument) obejmuje tylko widoczny podzbiór. Dlatego nowe pozycje to nie
      * 0..N od zera, tylko te same wartości `position`, które ten podzbiór już
      * zajmował, przełożone na nową kolejność. Rodzaje spoza listy (spoza
      * filtra albo spoza sklepu) zostają przy swoich pozycjach bez zmian.

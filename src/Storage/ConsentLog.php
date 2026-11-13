@@ -36,7 +36,7 @@ final class ConsentLog
      *
      * Numer wersji i skrót treści pobierane są z wersji obowiązującej w chwili
      * zapisu; wywołujący ich nie podaje. Brak opublikowanej wersji nie blokuje
-     * zapisu — zdarzenie trafia do dziennika z pustym numerem wersji.
+     * zapisu: zdarzenie trafia do dziennika z pustym numerem wersji.
      *
      * @param array{
      *     email?:string, id_customer?:int, visitor_key?:string, source?:string,
@@ -82,9 +82,8 @@ final class ConsentLog
      * czytające natywne pole (np. wysyłka newslettera) widziały aktualną
      * wartość, nie tę sprzed ostatniej zmiany w dzienniku.
      *
-     * Dotyczy też zdarzeń przyjętych z zewnątrz (`origin: external`) —
-     * ta sama zasada co przy zapisie przez kartę klienta: pole ma pokazywać
-     * to, co jest prawdą, bez względu na to, skąd przyszła zmiana.
+     * Dotyczy też zdarzeń przyjętych z zewnątrz (`origin: external`): pole ma
+     * pokazywać stan bieżący bez względu na to, skąd przyszła zmiana.
      */
     private function pushToCore(string $code, bool $granted, int $idShop, int $idCustomer): void
     {
@@ -104,7 +103,7 @@ final class ConsentLog
     /**
      * Dokłada świeże zdarzenie do skrzynki nadawczej.
      *
-     * Zdarzenia przyjęte z zewnątrz nie wracają do nadawcy — inaczej każda
+     * Zdarzenia przyjęte z zewnątrz nie wracają do nadawcy. Inaczej każda
      * przyjęta zmiana odbijałaby się z powrotem i wracała jako kolejna.
      *
      * @param array{version:string,text_hash:string} $wersja
@@ -226,7 +225,7 @@ final class ConsentLog
     }
 
     /**
-     * Ostatni stan każdego kodu dla tej osoby — karta klienta w rdzeniu.
+     * Ostatni stan każdego kodu dla tej osoby (karta klienta w rdzeniu).
      *
      * Dopasowanie po `id_customer`, a dla zdarzeń sprzed założenia konta
      * (np. zapis na newsletter jako gość) także po adresie, żeby historia
@@ -250,7 +249,7 @@ final class ConsentLog
         ) ?: [];
 
         // Sortowanie rosnąco i nadpisywanie w pętli daje ostatni wiersz na kod,
-        // tak samo jak `obowiazujaceWersje()` — bez `GROUP BY` i jego pułapek
+        // tak samo jak `obowiazujaceWersje()`, bez `GROUP BY` i jego pułapek
         // przy włączonym `ONLY_FULL_GROUP_BY`.
         $out = [];
 

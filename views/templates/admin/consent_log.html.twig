@@ -1,4 +1,4 @@
-{# Rejestr — strumień zdarzeń. Układ wg prototypy/LogStream.dc.html #}
+{# Rejestr: strumień zdarzeń. Układ wg prototypy/LogStream.dc.html #}
 {% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
 {% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
 
@@ -18,7 +18,7 @@
     </div>
 
     {# Formularz GET: przeglądarka przy wysłaniu odrzuca zapytanie z `action`
-       i buduje nowe wyłącznie z pól formularza — token z adresu `path()` ginie,
+       i buduje nowe wyłącznie z pól formularza. Token z adresu `path()` ginie,
        więc musi wejść jako pole, inaczej trafiamy na „Invalid token". #}
     <form method="get" action="{{ path('quince_cmp_log') }}" class="qc-filters">
         <input type="hidden" name="_token" value="{{ path('quince_cmp_log')|split('?_token=')[1] }}">

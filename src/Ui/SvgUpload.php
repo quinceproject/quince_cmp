@@ -16,7 +16,7 @@ namespace Quince\Cmp\Ui;
  *
  * SVG jest dokumentem, nie obrazkiem: potrafi nieść skrypt, odwołanie do
  * zasobu zewnętrznego i zdarzenie. Plik wgrany przez sprzedawcę trafia na
- * każdą stronę sklepu, więc nie wystarczy sprawdzić rozszerzenia — czyścimy
+ * każdą stronę sklepu, więc nie wystarczy sprawdzić rozszerzenia. Czyścimy
  * treść i przepuszczamy wyłącznie to, co potrzebne do narysowania kształtu.
  *
  * Wynik zapisujemy jako treść, nie jako plik: znak wchodzi w stronę wprost,
@@ -62,14 +62,13 @@ final class SvgUpload
             return ['svg' => '', 'error' => 'This is not an SVG file.'];
         }
 
-        // Deklaracja typu dokumentu w ikonie nie ma czego opisywać, a jest drogą
-        // do plików serwera przez encję zewnętrzną. Odrzucamy plik, zamiast
-        // próbować ją unieszkodliwić.
+        // Deklaracja typu dokumentu jest drogą do plików serwera przez encję
+        // zewnętrzną, więc plik z nią odrzucamy w całości.
         if (preg_match('/<!DOCTYPE/i', $tresc) === 1) {
             return ['svg' => '', 'error' => 'The file declares a document type. An icon has no use for one.'];
         }
 
-        // Bez `LIBXML_NOENT`: ta flaga nie wyłącza encji, tylko każe je rozwinąć —
+        // Bez `LIBXML_NOENT`: ta flaga nie wyłącza encji, tylko każe je rozwinąć,
         // czyli wstawić do dokumentu treść, na którą wskazują.
         $poprzedni = libxml_use_internal_errors(true);
         $dokument = new \DOMDocument();
@@ -89,7 +88,7 @@ final class SvgUpload
 
         $korzen = $dokument->documentElement;
 
-        // Rozmiar bierze się z przycisku, nie z pliku — inaczej wgrany plik
+        // Rozmiar bierze się z przycisku, nie z pliku. Inaczej wgrany plik
         // 512 px rozsadziłby przycisk.
         $korzen->removeAttribute('width');
         $korzen->removeAttribute('height');

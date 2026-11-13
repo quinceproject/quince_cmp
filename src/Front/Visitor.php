@@ -17,7 +17,7 @@ use Quince\Cmp\Storage\Options;
 /**
  * Wybór odwiedzającego przechowywany po jego stronie.
  *
- * Ciasteczko niesie wyłącznie kody kategorii i znacznik czasu — nie treść zgody
+ * Ciasteczko niesie wyłącznie kody kategorii i znacznik czasu, nie treść zgody
  * i nie dowód. Dowód mieszka w dzienniku po stronie sklepu; to tutaj jest tylko
  * podręczną odpowiedzią na pytanie „czy pokazać baner i co wolno uruchomić",
  * którą trzeba znać przed pierwszym zapytaniem do bazy.
@@ -145,7 +145,6 @@ final class Visitor
      * Klucz przeglądarki. Zakładany przy pierwszym zapisie zgody, nie wcześniej.
      *
      * Ciasteczko zakładane każdemu, kto wejdzie na stronę, samo wymagałoby zgody.
-     * To zakładamy dopiero w chwili, w której odwiedzający czegoś od nas chce.
      */
     public static function key(): string
     {

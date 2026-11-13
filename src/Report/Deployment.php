@@ -65,7 +65,7 @@ final class Deployment
     }
 
     /**
-     * Nazwy kolumn — ekran bierze je stąd, żeby nagłówek nie rozjechał się z treścią.
+     * Nazwy kolumn. Ekran bierze je stąd, żeby nagłówek nie rozjechał się z treścią.
      *
      * @return array<int,string>
      */
@@ -112,10 +112,8 @@ final class Deployment
     }
 
     /**
-     * Ustawienia, które w zestawieniu nie trzymają się kupy.
-     *
-     * Każde z osobna wygląda niewinnie; razem znaczą, że sklep zbiera zgody,
-     * których nie ma jak wyegzekwować, albo egzekwuje coś, o co nie pyta.
+     * Ustawienia sprzeczne ze sobą: sklep zbiera zgody, których nie ma jak
+     * wyegzekwować, albo egzekwuje coś, o co nie pyta.
      *
      * @return array<int,array{level:string,text:string,action:?string,route:?string,routeParams?:array<string,int|string>}>
      */
@@ -178,7 +176,7 @@ final class Deployment
             );
         }
 
-        // Usługa bez kategorii nie ma czyjej zgody czekać — nic jej nie zwolni.
+        // Usługi bez kategorii nie zwolni żadna zgoda.
         $bezKategorii = (int) Db::getInstance()->getValue(
             'SELECT COUNT(*) FROM `' . _DB_PREFIX_ . Schema::TABLE_SCRIPT . '`
               WHERE `id_shop` = ' . $idShop . ' AND `active` = 1 AND (`category` = "" OR `category` IS NULL)'
@@ -241,9 +239,6 @@ final class Deployment
         return array_map(static fn (array $w): string => (string) $w['code'], $wiersze);
     }
 
-    /**
-     * @return array{level:string,text:string,action:?string,route:?string,routeParams?:array<string,int|string>}
-     */
     /**
      * Jedno znalezisko.
      *
@@ -479,7 +474,7 @@ final class Deployment
 
     /**
      * Pokrycie sygnałów Consent Mode przez kategorie sklepu. Niepełne pokrycie
-     * traktowane jest jako ostrzeżenie — brakujący sygnał Google interpretuje
+     * traktowane jest jako ostrzeżenie, bo brakujący sygnał Google interpretuje
      * jako brak zgody.
      *
      * @return array{key:string,label:string,value:string,state:string}
@@ -580,7 +575,7 @@ final class Deployment
              WHERE t.`code` = "' . pSQL($code) . '" AND t.`id_shop` = ' . $idShop . '
                AND v.`date_from` <= NOW()
              ORDER BY v.`date_from` DESC'
-            // Bez `LIMIT 1` — `Db::getRow()` dokłada je samo, a dwa pod rząd
+            // Bez `LIMIT 1`: `Db::getRow()` dokłada je samo, a dwa pod rząd
             // to błąd składni MySQL-a.
         );
 

@@ -18,7 +18,7 @@ use Db;
  *
  * Kolejka jest pochodną rejestru: każda pozycja wskazuje zdarzenie z `_log`,
  * które ma pojechać na zewnątrz. Rejestr pozostaje tylko do dopisywania, więc
- * nieudana wysyłka nie ma jak zepsuć dowodu — zmienia się wyłącznie stan pozycji
+ * nieudana wysyłka nie ma jak zepsuć dowodu. Zmienia się wyłącznie stan pozycji
  * w kolejce.
  */
 final class SyncQueue
@@ -32,7 +32,7 @@ final class SyncQueue
     /**
      * Dopisuje zdarzenie do wysyłki.
      *
-     * Nie sprawdza, czy kod podlega wysyłce — to decyzja warstwy wywołującej,
+     * Nie sprawdza, czy kod podlega wysyłce. To decyzja warstwy wywołującej,
      * która zna ustawienia sklepu.
      */
     public function enqueue(int $idShop, int $idLog, string $payload): bool
@@ -117,7 +117,7 @@ final class SyncQueue
      *
      * Kolejka napełnia się od chwili włączenia, więc bez tego historia zostaje
      * w dzienniku i nigdy nie dojedzie. Zdarzenia przyjęte z zewnątrz są
-     * pomijane — wróciłyby do nadawcy.
+     * pomijane, bo wróciłyby do nadawcy.
      *
      * @param array<int,int> $idShops
      * @param array<int,string> $kody
@@ -175,9 +175,8 @@ final class SyncQueue
         $ile = (int) $db->Affected_Rows();
 
         // Przychodzące: cały dziennik, razem z zapisami konfliktów. To relacja
-        // z tego, co się wydarzyło, a nie kolejka — po terminie retencji znika
-        // tak samo jak reszta. Bez tego konflikty rosłyby w nieskończoność
-        // i po roku nie dałoby się odróżnić świeżego od dawno zamkniętego.
+        // z tego, co się wydarzyło, a nie kolejka, więc po terminie retencji
+        // znika tak samo jak reszta.
         $db->execute(
             'DELETE FROM `' . _DB_PREFIX_ . Schema::TABLE_SYNC . '`
               WHERE `id_shop` IN (' . $sklepy . ')
@@ -246,9 +245,8 @@ final class SyncQueue
     /**
      * Odnotowuje nieudaną próbę i wyznacza termin następnej.
      *
-     * Po wyczerpaniu prób pozycja zostaje w stanie `failed` — nie znika i nie
-     * ponawia się w nieskończoność, bo powtarzanie zapytania do adresu, który
-     * odpowiada błędem, nie jest naprawą.
+     * Po wyczerpaniu prób pozycja zostaje w stanie `failed`: nie znika i nie
+     * ponawia się w nieskończoność.
      */
     public function markFailed(int $idSync, int $attempts, int $httpCode, string $blad, string $response = ''): bool
     {
@@ -340,10 +338,9 @@ final class SyncQueue
     /**
      * Zdarzenia przyjęte z zewnątrz od podanej chwili wraz z rozstrzygnięciami.
      *
-     * Ekran liczy je od ostatniego przebiegu wysyłki, bo to jest odcinek, o który
-     * pyta sprzedawca: „co się wydarzyło, odkąd ostatnio patrzyłem".
+     * Ekran liczy je od ostatniego przebiegu wysyłki.
      *
-     * Konflikt rozstrzyga czas zdarzenia, nie czas przyjęcia (SPEC §4.1), więc
+     * Konflikt rozstrzyga czas zdarzenia, nie czas przyjęcia, więc
      * zapis z zewnątrz starszy od naszego trafia do dziennika jako odrzucony.
      *
      * @return array{accepted:int,rejected:int,conflicts:array<int,array<string,mixed>>}

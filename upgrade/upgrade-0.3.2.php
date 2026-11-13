@@ -20,17 +20,14 @@ use Quince\Cmp\Storage\Schema;
  *
  * Dwie nowe kolumny w rodzajach zgód: `show_in_checkout` (czy zgoda ma stać
  * w checkoucie, niezależnie od `kind`) i `core_field` (kolumna `ps_customer`,
- * którą zgoda odzwierciedla — zastępuje sztywną stałą `CoreBridge::MAPOWANIE`).
+ * którą zgoda odzwierciedla).
  *
- * Do dziś w checkoucie stawało KAŻDE aktywne `kind = document` — bez wyjątku.
- * Żeby sklep po aktualizacji nie stracił zgód, które klient już akceptuje,
- * istniejące aktywne zgody dokumentowe dostają `show_in_checkout = 1`: to
- * odtwarza dzisiejsze zachowanie, a nie zmienia je. Nowe zgody, założone od
- * teraz, startują z `0` — sprzedawca włącza checkout świadomie.
+ * Przed 0.3.2 w checkoucie stawało każde aktywne `kind = document`. Żeby sklep
+ * po aktualizacji nie stracił zgód, które klient już akceptuje, istniejące
+ * aktywne zgody dokumentowe dostają `show_in_checkout = 1`. Nowe zgody startują
+ * z `0`.
  *
- * `core_field` zostaje pusty dla wszystkich: `CoreBridge::MAPOWANIE` nadal
- * obsługuje `newsletter`/`optin` po kodzie, dopóki panel nie dostanie pola do
- * wpisania tego wprost.
+ * `core_field` zostaje pusty dla wszystkich; wypełnia go `upgrade-0.3.3.php`.
  */
 function upgrade_module_0_3_2(Module $module): bool
 {

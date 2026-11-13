@@ -25,7 +25,7 @@ use Quince\Cmp\Storage\VisitorLink;
  *
  * Ciasteczko po stronie przeglądarki wystarcza, żeby wiedzieć, co uruchomić.
  * Nie wystarcza jako dowód: przeglądarkę czyści się jednym kliknięciem, a treść
- * ciasteczka można podmienić. Dowód powstaje tutaj — w dzienniku, ze skrótem
+ * ciasteczka można podmienić. Dowód powstaje tutaj, w dzienniku, ze skrótem
  * treści, która była wtedy wyświetlona.
  *
  * Zapisujemy zdarzenie dla **każdej** kategorii, także odmowy. Rejestr odmów
@@ -70,7 +70,7 @@ class Quince_CmpConsentModuleFrontController extends ModuleFrontController
         }
 
         // Kategorie wymagane wchodzą do wyboru niezależnie od tego, co przyszło
-        // z przeglądarki — bez nich sklep nie działa i nikt ich nie odznacza.
+        // z przeglądarki. Bez nich sklep nie działa i nikt ich nie odznacza.
         $przyznane = array_values(array_unique(array_merge(
             array_keys(array_filter($wszystkie, static fn (bool $wymagana): bool => $wymagana)),
             array_values(array_intersect($wybrane, array_keys($wszystkie)))

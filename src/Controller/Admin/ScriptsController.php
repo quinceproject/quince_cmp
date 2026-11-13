@@ -162,8 +162,8 @@ final class ScriptsController extends CmpController
     /**
      * Porządkuje listę krajów: wielkie litery, po dwa znaki, bez powtórzeń.
      *
-     * Google odrzuca całą deklarację, gdy trafi na kod, którego nie rozumie —
-     * literówka w jednym kraju kasowałaby stan domyślny dla wszystkich.
+     * Google odrzuca całą deklarację, gdy trafi na kod, którego nie rozumie.
+     * Literówka w jednym kraju kasowałaby stan domyślny dla wszystkich.
      */
     private function kodyKrajow(string $surowe): string
     {

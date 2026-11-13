@@ -15,14 +15,14 @@ namespace Quince\Cmp\Storage;
  * Dokumenty PDF dołączone do wersji klauzuli.
  *
  * Alternatywa dla strony CMS, nie jej zamiennik. Strona CMS jest wygodniejsza
- * w utrzymaniu, ale zmienia się w miejscu — a dowód ma pokazywać treść z chwili
+ * w utrzymaniu, ale zmienia się w miejscu, a dowód ma pokazywać treść z chwili
  * udzielenia zgody. PDF jest zamrożony: raz wgrany, nie zmieni się razem
  * z resztą sklepu.
  *
  * Pliki leżą w katalogu pobrań PrestaShopa, nie w katalogu modułu: tamten jest
  * już zabezpieczony przed odczytem wprost i przeżyje aktualizację modułu.
- * Wydaje je kontroler, więc `.htaccess` nie jest jedyną linią obrony —
- * na nginksie i tak by nie zadziałał.
+ * Wydaje je kontroler, więc `.htaccess` nie jest jedyną linią obrony
+ * (na nginksie i tak by nie zadziałał).
  */
 final class PdfStore
 {
@@ -70,7 +70,6 @@ final class PdfStore
 
         // Nazwa nadana przez nas, nie wzięta z formularza. Przeglądarka przysyła
         // nazwę oryginalną, a ta bywa ścieżką w rodzaju `../../config/settings.inc.php`.
-        // Własna nazwa usuwa problem, zamiast go filtrować.
         $nazwa = date('Ymd') . '-' . bin2hex(random_bytes(8)) . '.pdf';
 
         if (!@copy($sciezkaTymczasowa, self::katalog() . $nazwa)) {

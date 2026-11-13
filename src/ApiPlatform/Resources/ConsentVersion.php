@@ -19,8 +19,8 @@ use Quince\Cmp\ApiPlatform\Provider\ConsentVersionProvider;
 /**
  * Jedna wersja treści klauzuli jednego rodzaju zgody.
  *
- * Zdarzenie zgody niesie `textHash` — skrót treści pokazanej w chwili
- * odpowiedzi — nie samą treść: dowód zostaje w sklepie. System zewnętrzny,
+ * Zdarzenie zgody niesie `textHash` (skrót treści pokazanej w chwili
+ * odpowiedzi), nie samą treść: dowód zostaje w sklepie. System zewnętrzny,
  * który chce przechować treść obok zgody (nie tylko sam skrót), czyta ją
  * stąd, dopasowując po `textHash` do pozycji w `texts`.
  */

@@ -53,7 +53,7 @@ use Quince\Cmp\Storage\VisitorLink;
 use Quince\Cmp\Sync\SyncConfig;
 
 /**
- * Quince CMP — zgody, ciasteczka i regulaminy.
+ * Quince CMP: zgody, ciasteczka i regulaminy.
  *
  * Jedno miejsce w sklepie, w którym mieszkają **wszystkie zgody**: ciasteczkowe,
  * marketingowe, regulaminy i zgody z formularzy. Razem z dowodem, co i kiedy
@@ -64,8 +64,7 @@ use Quince\Cmp\Sync\SyncConfig;
  * nawigacyjnego i korzysta z jego tokenów kolorów, bez wpisu w `dependencies`.
  *
  * Zakres standardów: Consent Mode v2 w komplecie czterech sygnałów. TCF
- * (`window.__tcfapi`) nie jest obsługiwany — dotyczy wydawców sprzedających
- * powierzchnię reklamową, nie sklepów kupujących reklamy.
+ * (`window.__tcfapi`) nie jest obsługiwany.
  */
 class Quince_Cmp extends Module
 {
@@ -126,7 +125,7 @@ class Quince_Cmp extends Module
             && $this->installTabs()
             && $this->registerHook('actionQuinceRegisterFeature')
             && $this->registerHook('actionObjectShopAddAfter')
-            // Most do zgód wbudowanych w PrestaShopa — patrz `Front\CoreBridge`.
+            // Most do zgód wbudowanych w PrestaShopa, patrz `Front\CoreBridge`.
             && $this->registerHook('termsAndConditions')
             && $this->registerHook('actionValidateOrder')
             && $this->registerHook('actionCustomerAccountAdd')
@@ -145,7 +144,7 @@ class Quince_Cmp extends Module
      * Sygnały Consent Mode w sekcji `<head>`.
      *
      * Musi wyjść przed jakimkolwiek tagiem Google, dlatego siedzi w `displayHeader`,
-     * a nie w `actionFrontControllerSetMedia`. Tagi Google nie są wstrzymywane —
+     * a nie w `actionFrontControllerSetMedia`. Tagi Google nie są wstrzymywane:
      * ładują się zawsze i pytają o zgodę tym kanałem.
      */
     public function hookDisplayHeader(): string
@@ -179,7 +178,7 @@ class Quince_Cmp extends Module
         // Obie warstwy na dole strony, za definicją `quinceCmpConfig`, którą
         // PrestaShop wstawia w treści. W nagłówku skrypt startowałby bez adresu
         // zapisu i bez danych banera. Wcześnie musi wyjść tylko deklaracja
-        // Consent Mode — a ta idzie z PHP, w `displayHeader`.
+        // Consent Mode, a ta idzie z PHP, w `displayHeader`.
         $this->context->controller->registerJavascript(
             'quince-cmp-front',
             'modules/' . $this->name . '/views/js/front.js',
@@ -206,7 +205,7 @@ class Quince_Cmp extends Module
     }
 
     /**
-     * Zbieracz skanera — tylko dla przeglądarki, która ma ważny token.
+     * Zbieracz skanera, tylko dla przeglądarki, która ma ważny token.
      *
      * Token przychodzi raz w adresie i od razu ląduje w ciasteczku, żeby skan
      * przetrwał przejście na kolejną podstronę. Bez tego trzeba by doklejać
@@ -320,15 +319,14 @@ class Quince_Cmp extends Module
     /**
      * Czy odwiedzający zgodził się na wskazany rodzaj zgody.
      *
-     * Punkt wejścia dla innych modułów — tagów, mierników, integracji:
+     * Punkt wejścia dla innych modułów (tagów, mierników, integracji):
      *
      *     $cmp = Module::getInstanceByName('quince_cmp');
      *     if ($cmp && $cmp->allowed('cookies_analytics')) { … }
      *
      * Odpowiedź jest liczona po stronie serwera, więc działa też tam, gdzie
-     * przeglądarki nie ma — w potwierdzeniu zamówienia, w zadaniu crona,
-     * w wysyłce protokołu pomiarowego. Pomiar server-side, który tego nie
-     * sprawdza, omija zgody i psuje atrybucję.
+     * przeglądarki nie ma: w potwierdzeniu zamówienia, w zadaniu crona,
+     * w wysyłce protokołu pomiarowego.
      */
     public function allowed(string $code, ?int $idShop = null): bool
     {
@@ -375,7 +373,7 @@ class Quince_Cmp extends Module
      * Zapisuje akceptację warunków przy złożeniu zamówienia.
      *
      * PrestaShop nie dopuszcza zamówienia bez zaznaczenia warunków i nie zapisuje
-     * tego faktu — `ps_orders` nie zawiera odpowiedniej kolumny.
+     * tego faktu: `ps_orders` nie zawiera odpowiedniej kolumny.
      *
      * @param array{order?:object} $params
      */
@@ -433,9 +431,8 @@ class Quince_Cmp extends Module
     /**
      * Sekcja ze zgodami tej osoby na natywnej karcie klienta w rdzeniu.
      *
-     * Jedyny punkt zaczepienia, jaki rdzeń tu daje — pełna szerokość, pod
-     * istniejącymi sekcjami. Widok, nic więcej: admin nie zmienia tu niczego,
-     * zgodę wyraża klient.
+     * Jedyny punkt zaczepienia, jaki rdzeń tu daje: pełna szerokość, pod
+     * istniejącymi sekcjami. Tylko do odczytu.
      *
      * @param array{id_customer?:int} $params
      */
@@ -536,18 +533,13 @@ class Quince_Cmp extends Module
             $istniejaca = (int) Tab::getIdFromClassName($opis['class_name']);
 
             // Zakładka pozostała po wcześniejszej instalacji jest aktualizowana,
-            // nie duplikowana — PrestaShop dopuszcza wiele wpisów o tej samej klasie.
+            // nie duplikowana: PrestaShop dopuszcza wiele wpisów o tej samej klasie.
             $tab = $istniejaca ? new Tab($istniejaca) : new Tab();
 
             // Zakładka istnieje, ale **nie pokazuje się w menu**. Potrzebna jest
             // wyłącznie jako wieszak na uprawnienia: atrybuty `#[AdminSecurity]`
             // pytają o prawa do `_legacy_controller`, a te siedzą w rolach
             // wypisanych przy zakładce, nie w jej widoczności.
-            //
-            // Dziewięć pozycji w bocznym pasku PrestaShopa to nie jest docelowa
-            // postać — decyzja właściciela projektu z 03.09.2026. Wszystkie moduły
-            // Quince mają się kiedyś zejść pod jedną zakładkę, w kolejności, którą
-            // ustali sam. Do tego czasu ich tam nie ma.
             $tab->active = 0;
             $tab->class_name = $opis['class_name'];
             $tab->module = $this->name;
@@ -578,9 +570,8 @@ class Quince_Cmp extends Module
         }
 
         $kontener = new Tab();
-        // **Widoczny.** To jedyna pozycja modułu w menu sklepu; dziewięć ekranów
-        // pod nią zostaje ukrytych, bo każdy ma własny boczny pasek po wejściu,
-        // a menu sklepu urosłoby o dziesięć wpisów zamiast jednego.
+        // **Widoczny.** To jedyna pozycja modułu w menu sklepu; ekrany pod nią
+        // są ukryte, bo nawigację między nimi prowadzi boczny pasek modułu.
         $kontener->active = 1;
         $kontener->route_name = 'quince_cmp_overview';
         $kontener->class_name = self::TAB_PARENT;
@@ -602,7 +593,7 @@ class Quince_Cmp extends Module
      * Gałąź menu, pod którą wieszamy moduł.
      *
      * Najpierw „Quince project" silnika, żeby wszystkie nasze moduły stały razem.
-     * Gdy silnika w sklepie nie ma, gałęzi nie ma też — wtedy zostaje sekcja
+     * Gdy silnika w sklepie nie ma, gałęzi nie ma też. Wtedy zostaje sekcja
      * „Ulepszanie", a moduł działa dalej: CMP nie zależy od silnika.
      *
      * **Kopia z przyrostkiem `_MTR` idzie pierwsza.** Gdy do gałęzi trafia pierwsze
@@ -662,9 +653,6 @@ class Quince_Cmp extends Module
 
     /**
      * Kasuje dokumenty dołączone do wersji klauzul.
-     *
-     * Zostawione pliki nie zaszkodzą, ale są danymi sklepu leżącymi bez
-     * właściciela — po odinstalowaniu nic już nie wie, czemu służyły.
      */
     private function usunDokumenty(): void
     {
@@ -682,9 +670,8 @@ class Quince_Cmp extends Module
             return;
         }
 
-        // Katalog należy wyłącznie do nas, więc sprzątamy go w całości. Pliki
-        // osierocone — po wersji skasowanej wcześniej — inaczej zostałyby na
-        // dysku bez niczego, co by o nich wiedziało.
+        // Katalog należy wyłącznie do modułu, więc sprzątamy go w całości,
+        // razem z plikami osieroconymi po wcześniej skasowanych wersjach.
         foreach (glob($katalog . DIRECTORY_SEPARATOR . '*.pdf') ?: [] as $plik) {
             @unlink($plik);
         }
@@ -697,9 +684,8 @@ class Quince_Cmp extends Module
      * Kasuje ustawienia modułu ze wszystkich sklepów.
      *
      * `Configuration::deleteByName()` zdejmuje wpis razem z wariantami dla
-     * poszczególnych witryn, ale trzeba znać nazwę — dlatego pytamy bazę
-     * o wszystko z naszym przedrostkiem, zamiast wypisywać klucze ręcznie
-     * i zapominać o połowie przy każdej kolejnej zmianie.
+     * poszczególnych witryn, ale trzeba znać nazwę. Dlatego pytamy bazę
+     * o wszystkie klucze z przedrostkiem `QUINCE_CMP_`.
      */
     private function usunUstawienia(): bool
     {

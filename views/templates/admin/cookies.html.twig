@@ -19,7 +19,7 @@
     </div>
 
     {# --- kategorie bannera: zgoda z własną treścią i wersją, jak regulamin
-       czy newsletter — tylko tutaj widoczna i edytowalna. --- #}
+       czy newsletter, ale widoczna i edytowalna tylko tutaj. --- #}
     <div class="qc-grid" style="margin-bottom:20px">
         <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
             <div>
@@ -173,7 +173,7 @@
                 <div style="color:{{ scanPending ? 'var(--warning)' : 'inherit' }}">{{ scanPending }} {{ 'to review'|trans }}</div>
             </div>
 
-            {# Skaner melduje, co zastał — nie dopisuje niczego do tabeli sam.
+            {# Skaner melduje, co zastał, i nie dopisuje niczego do tabeli sam.
                Dostawcę i przeznaczenie zna sprzedawca, skaner widzi tylko nazwę. #}
             {% if findings %}
                 <div class="qc-scanlist">

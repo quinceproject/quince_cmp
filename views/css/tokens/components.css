@@ -159,8 +159,8 @@
 
 /* Wybór wielokrotny jako lista rozwijana z polami wyboru.
    Wyzwalacz wygląda jak zwykłe pole ze strzałką, menu i wiersze mają geometrię
-   listy języków — żeby to był ten sam panel, a nie nowy wynalazek. */
-/* Listy rozwijane muszą wyjść ponad pasek zapisu (z-index 20) — inaczej wybór
+   listy języków. */
+/* Listy rozwijane muszą wyjść ponad pasek zapisu (z-index 20). Inaczej wybór
    przy dolnej krawędzi ekranu chowa się pod nim. */
 .qc-multipick{position:relative}
 .qc-multipick-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;cursor:pointer}

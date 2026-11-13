@@ -1,5 +1,5 @@
 /* ===================================================================
-   Quince CMP — sklep
+   Quince CMP: sklep
 
    Osobny arkusz od panelu: nie zaciągamy tokenów design systemu na front,
    bo zderzałyby się ze zmiennymi motywu sklepu. Wartości są tu wpisane
@@ -75,7 +75,7 @@
     border-color: transparent;
     background: #f49000;
 
-    /* Ciemny napis na bursztynie daje 8,8:1. Biały dałby 2,4:1 — poniżej
+    /* Ciemny napis na bursztynie daje 8,8:1. Biały dałby 2,4:1, poniżej
        progu WCAG AA i nieczytelny na jasnym tle. */
     color: #2b1c00;
 }
@@ -173,7 +173,7 @@
 }
 
 /* Trzy przyciski o jednakowej wadze i wysokości. Odrzucenie słabiej widoczne
-   od zgody to zgoda wymuszona, nie udzielona — i tak czyta to każdy audyt. */
+   od zgody to zgoda wymuszona, nie udzielona, i tak czyta to każdy audyt. */
 .qcmp-actions {
     display: flex;
     gap: 8px;
@@ -427,7 +427,7 @@
 /* Pasek trybu skanowania.
 
    Widoczny wyłącznie dla osoby skanującej. Bez niego łatwo zapomnieć, że sklep
-   chodzi w tej przeglądarce z odblokowanymi wszystkimi usługami — i wziąć ten
+   chodzi w tej przeglądarce z odblokowanymi wszystkimi usługami, i wziąć ten
    stan za normalny. */
 .qcmp-scanbar {
     position: fixed;

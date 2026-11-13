@@ -14,19 +14,17 @@ namespace Quince\Cmp\Integration;
 use Quince\Cmp\Storage\Options;
 
 /**
- * Spis wydań Quince — jeden plik JSON dla wszystkich modułów.
+ * Spis wydań Quince: jeden plik JSON dla wszystkich modułów.
  *
- * Adres jest wpisany w moduł, nie w ustawienia. Pole, w które sprzedawca wpisuje
- * dowolny adres, byłoby furtką: kto ma dostęp do panelu, wskazuje własny plik
- * i moduł instaluje stamtąd kod.
+ * Adres jest wpisany w moduł, nie w ustawienia. Pole z dowolnym adresem
+ * byłoby furtką: kto ma dostęp do panelu, wskazuje własny plik i moduł
+ * instaluje stamtąd kod.
  *
- * Dlaczego plik, a nie zapytanie do GitHub API. API bez tokenu dopuszcza
- * sześćdziesiąt żądań na godzinę **z jednego adresu IP**. Na hostingu
- * współdzielonym setki sklepów wychodzą jednym adresem, więc limit rozchodzi się
- * w kilka minut i od tego momentu każdy sprzedawca na tym serwerze widzi odmowę,
- * choć jego sklep zapytał raz na dobę. Plik statyczny nie ma limitu, a przy tym
- * mieści więcej niż „istnieje tag vX": wymagania wersji, wycofanie błędnego
- * wydania, odwzorowanie nazwy modułu na repozytorium.
+ * Nie zastępować zapytaniem do GitHub API. API bez tokenu dopuszcza
+ * sześćdziesiąt żądań na godzinę **z jednego adresu IP**, a na hostingu
+ * współdzielonym setki sklepów wychodzą jednym adresem. Plik statyczny nie ma
+ * limitu i mieści wymagania wersji, wycofanie błędnego wydania i odwzorowanie
+ * nazwy modułu na repozytorium.
  *
  * Oczekiwany kształt:
  *
@@ -45,7 +43,7 @@ use Quince\Cmp\Storage\Options;
  * }
  * ```
  *
- * Nieznane pola pomijamy — plik obsługuje też silnik i motyw, a każdy z nich
+ * Nieznane pola pomijamy: plik obsługuje też silnik i motyw, a każdy z nich
  * czyta z niego co innego.
  */
 final class Manifest

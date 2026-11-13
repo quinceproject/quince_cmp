@@ -22,9 +22,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * Historia wersji jednej klauzuli, czytana przez Admin API.
  *
- * `ConsentVersions::forType()` pracuje po `id_cmp_type`, nie po kodzie — ten
- * dostawca rozwiązuje kod na typ przez `ConsentTypes`, tak jak robi to panel,
- * zamiast pisać drugie zapytanie pod to samo dopasowanie.
+ * `ConsentVersions::forType()` pracuje po `id_cmp_type`, nie po kodzie, więc
+ * kod rozwiązujemy na typ przez `ConsentTypes`, tak jak robi to panel.
  *
  * @implements ProviderInterface<ConsentVersion>
  */

@@ -26,7 +26,7 @@ use Quince\Cmp\Storage\Schema;
  * Integracja ze zgodami wbudowanymi w PrestaShopa.
  *
  * Moduł nie podmienia natywnych pól wyboru ani nie duplikuje kolumn stanu.
- * PrestaShop przechowuje stan bieżący, moduł — historię zdarzeń wraz z datą,
+ * PrestaShop przechowuje stan bieżący, moduł historię zdarzeń wraz z datą,
  * adresem IP, źródłem i treścią, na którą wyrażono zgodę.
  *
  * Zakres uzupełnienia: akceptacja warunków w kasie nie jest w ogóle zapisywana
@@ -34,24 +34,24 @@ use Quince\Cmp\Storage\Schema;
  * a `ps_customer.optin` nie zawiera daty ani adresu IP.
  *
  * `PS_CONDITIONS`, `ps_dataprivacy` i `psgdpr` zostają aktywne i to one pokazują
- * checkbox klientowi — moduł nie dokłada obok własnego dla `terms_shop`/
+ * checkbox klientowi. Moduł nie dokłada obok własnego dla `terms_shop`/
  * `privacy_policy`. `terms_shop` zapisuje się po skutecznej walidacji (checkbox
  * był wymagany, więc dotarcie tutaj już jest dowodem). `privacy_policy` zapisuje
- * się zawsze, bezwarunkowo — przetwarzanie danych do realizacji zamówienia albo
+ * się zawsze, bezwarunkowo: przetwarzanie danych do realizacji zamówienia albo
  * konta nie jest wyborem do odmówienia, więc nie zależy od żadnego checkboxa.
  * `ps_dataprivacy` i `psgdpr` nie zapisują nigdzie faktu zaznaczenia swojego
- * checkboxa (sprawdzone: żadna z ich tabel tego nie trzyma), więc bez tego
- * zapisu ten dowód ginie bezpowrotnie.
+ * checkboxa (żadna z ich tabel tego nie trzyma), więc bez tego zapisu ten dowód
+ * ginie bezpowrotnie.
  */
 final class CoreBridge
 {
     /**
-     * Kody zgód, które mają już działający natywny odpowiednik — `terms_shop`
+     * Kody zgód, które mają już działający natywny odpowiednik: `terms_shop`
      * przez `PS_CONDITIONS`, `privacy_policy` przez `ps_dataprivacy`/`psgdpr`.
      *
      * Dla tych dwóch kodów moduł nigdy nie pokazuje własnego checkboxa
-     * w checkoucie (patrz `ConsentTypesController::saveAction()`) — jedno
-     * miejsce decyduje, które to natywne, żeby oba nie pytały naraz o to samo.
+     * w checkoucie (patrz `ConsentTypesController::saveAction()`), żeby moduł
+     * i rdzeń nie pytały naraz o to samo.
      */
     public const NATYWNE = ['terms_shop', 'privacy_policy'];
 
@@ -127,14 +127,13 @@ final class CoreBridge
      * Dopisuje do dziennika zgody, które w checkoucie pyta `PS_CONDITIONS` albo
      * `ps_dataprivacy`/`psgdpr` zamiast własnego checkboxa modułu.
      *
-     * Warunek `!in_array($kod, $aktywne, true)` chroni przed podwójnym wpisem
-     * w okresie, w którym własny checkbox modułu jeszcze stoi obok natywnego
-     * (zanim `show_in_checkout` zostanie wyłączone) — i tak nie zaszkodzi, gdy
-     * `show_in_checkout` jest już wyłączone na stałe.
+     * Warunek `!in_array($kod, $aktywne, true)` chroni przed podwójnym wpisem,
+     * gdy własny checkbox modułu stoi obok natywnego (`show_in_checkout`
+     * włączone).
      *
      * `privacy_policy` zapisuje się zawsze, bezwarunkowo: przetwarzanie danych
      * do realizacji zamówienia nie jest opcją do odmówienia, więc nie zależy
-     * od żadnego checkboxa — samo złożenie zamówienia już je oznacza.
+     * od żadnego checkboxa. Samo złożenie zamówienia już je oznacza.
      *
      * @param array<int,string> $aktywne kody z `aktywneKodyDoCheckoutu()`
      * @param array<string,mixed> $kontekst
@@ -156,15 +155,14 @@ final class CoreBridge
      * Zapisuje stan zgód z karty klienta. Zdarzenia niezmieniające stanu są
      * pomijane, ponieważ hook wywoływany jest przy każdym zapisie karty.
      *
-     * Nieodznaczony checkbox nie zawsze znaczy „odmowa" — formularz
+     * Nieodznaczony checkbox nie zawsze znaczy „odmowa": formularz
      * rejestracji nie jest bannerem zgód, więc puste pole przy rejestracji
      * znaczy „nie podjęto decyzji". Jedyne miejsce, gdzie odznaczenie liczy
      * się jako świadome wycofanie, to edycja karty klienta (`source` =
-     * `ACCOUNT`), i tylko wtedy, gdy zgoda realnie BYŁA wcześniej udzielona —
+     * `ACCOUNT`), i tylko wtedy, gdy zgoda realnie BYŁA wcześniej udzielona:
      * ta sama osoba, ten sam rodzaj zgody, choćby jako gość pod tym
      * e-mailem (stąd `ostatnieDlaOsoby()`, nie wyłącznie po `id_customer`).
-     * Odznaczenie pola, którego nikt nigdy nie zaznaczył, niczego nie
-     * wycofuje — nie ma czego.
+     * Odznaczenie pola, którego nikt nigdy nie zaznaczył, niczego nie wycofuje.
      */
     public function recordCustomer(Customer $klient, string $source): void
     {
@@ -200,7 +198,7 @@ final class CoreBridge
             ]);
         }
 
-        // Bezwarunkowo, tak jak w `zlapNatywneZgody()` — to nie jest wybór,
+        // Bezwarunkowo, tak jak w `zlapNatywneZgody()`. To nie jest wybór,
         // który formularz mógłby odrzucić, więc złożenie formularza już
         // je oznacza. `bezZmiany()` i tak chroni przed wpisem przy każdej
         // kolejnej, niezwiązanej edycji karty klienta.

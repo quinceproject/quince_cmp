@@ -22,13 +22,13 @@ use Db;
  * (gość, adres bez konta, przeglądarka przed powiązaniem z adresem).
  *
  * `_log` działa w trybie append-only i przechowuje `code`, `version` oraz
- * `text_hash` jako wartości, nie odwołania — zdarzenie pozostaje kompletne po
+ * `text_hash` jako wartości, nie odwołania, więc zdarzenie pozostaje kompletne po
  * usunięciu rodzaju zgody.
  *
  * Wielosklepowość: tabele konfiguracyjne mają `id_shop`, ponieważ rodzaje zgód,
  * wersje klauzul, ciasteczka i skrypty należą do pojedynczego sklepu. Dziennik
  * jest jedną tabelą z `id_shop` w roli etykiety; zakres pojęcia „ta sama osoba"
- * wyznacza `share_customer` na grupie sklepów — patrz `Identity\IdentityScope`.
+ * wyznacza `share_customer` na grupie sklepów (patrz `Identity\IdentityScope`).
  *
  * `_version` nie ma `id_shop`: wersja należy do rodzaju zgody, a ten do sklepu.
  */
@@ -38,7 +38,7 @@ final class Schema
     public const TABLE_TYPE = 'quince_cmp_type';
     public const TABLE_TYPE_LANG = 'quince_cmp_type_lang';
 
-    /** Wersje treści. Nowa wersja to nowy wiersz — stare zostają jako dowód. */
+    /** Wersje treści. Nowa wersja to nowy wiersz, stare zostają jako dowód. */
     public const TABLE_VERSION = 'quince_cmp_version';
     public const TABLE_VERSION_LANG = 'quince_cmp_version_lang';
 
@@ -117,9 +117,8 @@ final class Schema
      * Kolumny dołożone po pierwszym wydaniu.
      *
      * `CREATE TABLE IF NOT EXISTS` nie rusza tabeli, która już stoi, więc sklep
-     * zaktualizowany z wcześniejszej wersji zostałby bez nowych kolumn. Zamiast
-     * pisać osobny skrypt migracji przy każdej zmianie, trzymamy tu listę
-     * i uzgadniamy ją z rzeczywistością przy instalacji i przy aktualizacji.
+     * zaktualizowany z wcześniejszej wersji zostałby bez nowych kolumn. Lista
+     * jest uzgadniana z tabelami przy instalacji i przy aktualizacji.
      *
      * @var array<string,array<string,string>> tabela => kolumna => definicja
      */
@@ -137,8 +136,8 @@ final class Schema
                dokumentowe mogą służyć różnym celom (np. jedna do checkoutu,
                druga tylko do umowy B2B), a sprzedawca musi mieć to rozróżnienie. */
             'show_in_checkout' => 'TINYINT(1) UNSIGNED NOT NULL DEFAULT 0',
-            /* Kolumna `ps_customer`, którą ta zgoda odzwierciedla — pusta, gdy
-               żadnej nie ma. Zastępuje sztywną stałą `CoreBridge::MAPOWANIE`. */
+            /* Kolumna `ps_customer`, którą ta zgoda odzwierciedla. Pusta, gdy
+               żadnej nie ma. */
             'core_field' => 'VARCHAR(64) NOT NULL DEFAULT ""',
         ],
     ];
@@ -167,7 +166,7 @@ final class Schema
             $istniejace = $this->kolumny($tabela);
 
             if ($istniejace === []) {
-                continue;                       // tabeli nie ma — założy ją `definicje()`
+                continue;                       // tabeli nie ma, założy ją `definicje()`
             }
 
             foreach ($kolumny as $nazwa => $definicja) {
@@ -251,7 +250,7 @@ final class Schema
                 `id_cms` INT(11) UNSIGNED NOT NULL DEFAULT 0,
                 `required` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
                 /* Sygnały Consent Mode ustawiane przez tę kategorię. Mapowanie
-                   należy do kategorii, nie do pojedynczej usługi — dwie usługi
+                   należy do kategorii, nie do pojedynczej usługi: dwie usługi
                    w jednej kategorii nie mogą sterować różnymi sygnałami.
                    Osobne kolumny zamiast maski bitowej upraszczają diagnostykę.
 
@@ -285,7 +284,7 @@ final class Schema
             // --- wersje treści --------------------------------------------------
 
             // `version` jest napisem, ponieważ numeracja może pochodzić z zewnętrznego
-            // rejestru dokumentów (SPEC §10.5).
+            // rejestru dokumentów.
             //
             // `date_to` jest wyliczalne z następnej wersji, ale przechowywane wprost:
             // zapytanie o stan na dany dzień sprowadza się wtedy do warunku na dacie.
@@ -336,7 +335,7 @@ final class Schema
 
             // Odnormalizowany: `code`, `version` i `text_hash` przechowywane są jako
             // wartości z chwili zapisu. Indeksy odpowiadają sposobom przeszukiwania
-            // rejestru — po adresie, kluczu przeglądarki, kodzie z datą oraz
+            // rejestru: po adresie, kluczu przeglądarki, kodzie z datą oraz
             // identyfikatorze zewnętrznym.
             //
             // `id_employee` i `note` wypełnia wyłącznie wpis obsługi: podpis osoby,
@@ -450,7 +449,7 @@ final class Schema
 
                Osobna tabela, a nie dopisywanie wprost do `_cookie`: skaner
                melduje, co zastał, a nie co ma stać w tabeli ciasteczek. Decyzja
-               należy do sprzedawcy — on zna dostawcę i przeznaczenie, a skaner
+               należy do sprzedawcy: on zna dostawcę i przeznaczenie, a skaner
                widzi tylko nazwę.
 
                `name` razem z `kind` i `id_shop` jest kluczem naturalnym, więc

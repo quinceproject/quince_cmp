@@ -43,10 +43,9 @@ final class CookiesController extends CmpController
         return $this->renderPanel('@Modules/quince_cmp/views/templates/admin/cookies.html.twig', [
             'cookies' => $this->cookies->all($idShop, $idLang),
             'categories' => $this->cookies->categories($idShop, $idLang),
-            // Kategorie banera: ta sama zgoda co regulamin czy newsletter — ma
-            // treść i wersję, wydawaną na jej karcie. Tylko tutaj widoczna
-            // i edytowalna, nie na liście „Rodzaje zgód" — patrz indexAction
-            // w ConsentTypesController.
+            // Kategorie banera: ta sama zgoda co regulamin czy newsletter, z treścią
+            // i wersją wydawaną na jej karcie. Widoczna i edytowalna tylko tutaj,
+            // nie na liście „Rodzaje zgód" (patrz indexAction w ConsentTypesController).
             'categoryTypes' => $this->types->all($idShop, $idLang, '', Schema::KIND_COOKIE),
             'shopName' => (string) (new Shop($idShop))->name,
             'shopScoped' => Shop::getContextShopID() === null,
@@ -72,7 +71,7 @@ final class CookiesController extends CmpController
         // Nazwa podana w adresie przychodzi ze skanera: sprzedawca opisuje coś,
         // co sklep faktycznie zapisał, i nie ma powodu przepisywać nazwy ręcznie.
         // Osobna zmienna, nie `cookie`: ten rekord jeszcze nie istnieje, więc
-        // `cookie` zostaje `null`, tak jak przy zwykłym „nowe" — inaczej odznaka
+        // `cookie` zostaje `null`, tak jak przy zwykłym „nowe". Inaczej odznaka
         // źródła i przycisk usuwania, które sprawdzają tylko czy `cookie` nie
         // jest puste, pokazałyby się dla czegoś, co nie ma jeszcze żadnych pól.
         $zeSkanera = trim((string) $request->query->get('name', ''));
@@ -145,9 +144,8 @@ final class CookiesController extends CmpController
     /**
      * Uruchamia skanowanie i odsyła do sklepu.
      *
-     * Token wchodzi w adres sklepu, bo skan musi się odbyć w przeglądarce —
-     * z serwera nie widać ciasteczek zakładanych przez JavaScript, a to one
-     * stanowią większość tych, o które chodzi.
+     * Token wchodzi w adres sklepu, bo skan musi się odbyć w przeglądarce:
+     * z serwera nie widać ciasteczek zakładanych przez JavaScript.
      */
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function scanStartAction(Request $request): RedirectResponse
@@ -163,9 +161,8 @@ final class CookiesController extends CmpController
         $skaner->reset($idShop);
 
         $sklep = new Shop($idShop);
-        // Adres na sztywno pod „https://" wywalał skan na sklepie bez SSL —
-        // przeglądarka odmawiała otwarcia karty błędem protokołu, zanim
-        // skrypt skanera zdążył się w ogóle załadować.
+        // Protokół z ustawień sklepu: na sklepie bez SSL adres pod „https://"
+        // kończy się błędem protokołu, zanim skrypt skanera się załaduje.
         $ssl = (bool) Configuration::get('PS_SSL_ENABLED', null, null, $idShop);
         $domena = $ssl && $sklep->domain_ssl ? $sklep->domain_ssl : $sklep->domain;
         $adres = Tools::getProtocol($ssl) . $domena . $sklep->getBaseURI() . '?' . Scanner::PARAM . '=' . $skaner->start($idShop);

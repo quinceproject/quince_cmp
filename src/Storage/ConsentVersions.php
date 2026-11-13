@@ -16,7 +16,7 @@ use Db;
 /**
  * Wersje treści zgód.
  *
- * Każda wersja przechowuje `text_hash` — skrót treści faktycznie wyświetlonej —
+ * Każda wersja przechowuje `text_hash` (skrót treści faktycznie wyświetlonej)
  * osobno dla każdego języka, ponieważ klauzula w każdym języku stanowi odrębny
  * dowód.
  *
@@ -61,7 +61,7 @@ final class ConsentVersions
                 'version' => (string) $wiersz['version'],
                 'date_from' => (string) $wiersz['date_from'],
                 // Zerowa data z dawniejszych zapisów znaczy „nie zamknięta",
-                // tak samo jak NULL — ekran nie ma prawa pokazać roku 0000
+                // tak samo jak NULL. Ekran nie może pokazać roku 0000
                 // jako końca obowiązywania.
                 'date_to' => self::dataAlboNic($wiersz['date_to'] ?? null),
                 'pdf' => (string) $wiersz['pdf'],
@@ -235,7 +235,7 @@ final class ConsentVersions
         );
     }
 
-    /** Ostatnia wersja w ogóle — także ta z datą w przyszłości. */
+    /** Ostatnia wersja w ogóle, także ta z datą w przyszłości. */
     private function ostatniaId(int $idType): int
     {
         return (int) Db::getInstance()->getValue(
@@ -268,8 +268,8 @@ final class ConsentVersions
 
         foreach ($wiersze as $wiersz) {
             // Skrót dowodzi treści, ale administrator musi móc tę treść też
-            // PRZECZYTAĆ — stąd etykieta i klauzula obok hasza, nie w osobnym
-            // zapytaniu: ten sam wiersz, ta sama tabela.
+            // przeczytać, więc etykieta i klauzula idą obok hasza z tego samego
+            // wiersza.
             $out[(int) $wiersz['id_cmp_version']][] = [
                 'iso' => (string) $wiersz['iso_code'],
                 'hash' => (string) $wiersz['text_hash'],

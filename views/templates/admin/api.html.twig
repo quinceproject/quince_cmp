@@ -1,9 +1,9 @@
 {# API: jak się podłączyć, czym, i czy ktoś już to zrobił.
 
-   Nie ma tu generatora kluczy. PrestaShop 9 ma OAuth2, ekran klientów API,
-   zakresy uprawnień i odwoływanie dostępu — dorabianie drugiego mechanizmu
-   rozproszyłoby integracje sklepu po kilku miejscach. Ten ekran mówi, co
-   wystawiamy, zakłada klienta z naszymi zakresami i pokazuje, kto go ma. #}
+   Nie ma tu generatora kluczy: dostęp wydaje rdzeń PrestaShopa 9 (OAuth2,
+   ekran klientów API, zakresy uprawnień, odwoływanie dostępu). Ten ekran
+   mówi, co moduł wystawia, zakłada klienta z jego zakresami i pokazuje,
+   kto go ma. #}
 {% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
 {% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
 
@@ -16,7 +16,7 @@
 
     {# Wielosklepowość wyłącza API całkowicie, dopóki nie włączy się flagi.
        Rdzeń nie mówi o tym ani słowa na swoim ekranie API, a objawia się to
-       kodem 404 na każdym żądaniu — czyli wygląda jak literówka w adresie. #}
+       kodem 404 na każdym żądaniu, co wygląda jak literówka w adresie. #}
     {% if readiness.multistore and not readiness.flag %}
         <div class="qc-alert qc-alert-danger">
             {{ icons.icon('alertCircle', 18, 'qc-alert-icon') }}

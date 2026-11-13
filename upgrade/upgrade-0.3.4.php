@@ -18,7 +18,7 @@ if (!defined('_PS_VERSION_')) {
  *
  * Nowa sekcja „Quince consents" na natywnej karcie klienta w rdzeniu, przez
  * hook `displayAdminCustomers`. Rejestracja tutaj, bo `install()` odpala się
- * tylko raz — bez tego istniejące instalacje nigdy by go nie dostały.
+ * tylko raz. Bez tego istniejące instalacje nigdy by go nie dostały.
  */
 function upgrade_module_0_3_4(Module $module): bool
 {

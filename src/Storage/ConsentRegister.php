@@ -29,8 +29,8 @@ final class ConsentRegister
     private array $pracownicy = [];
 
     /**
-     * Strumień zdarzeń, od najnowszego — albo, z `afterId` w filtrach,
-     * rosnąco po kluczu od wskazanego miejsca. Drugi tryb jest kursorem
+     * Strumień zdarzeń od najnowszego, a z `afterId` w filtrach rosnąco
+     * po kluczu od wskazanego miejsca. Drugi tryb jest kursorem
      * do odpytywania przyrostowego (Admin API): `strona`/`offset` nie mają
      * tam zastosowania, bo kursor sam pamięta, gdzie się skończyło.
      *
@@ -271,7 +271,7 @@ final class ConsentRegister
     /**
      * Nazwy rodzajów zgód, po kodzie.
      *
-     * Kod jest identyfikatorem, nie napisem dla człowieka — w widoku ma stać
+     * Kod jest identyfikatorem, nie napisem dla człowieka. W widoku ma stać
      * obok nazwy, nie zamiast niej.
      *
      * @param array<int,int> $idShops
@@ -310,8 +310,8 @@ final class ConsentRegister
      *
      * Pobieramy je przy odczycie, a nie zapisujemy w dzienniku, bo zmiana
      * nazwiska w koncie ma zmienić je wszędzie. Identyfikator zostaje w wierszu
-     * i to on jest dowodem — nazwisko jest tylko jego czytelną postacią.
-     * Skasowane konto zostawia sam numer, co też jest prawdą.
+     * i to on jest dowodem, a nazwisko jest tylko jego czytelną postacią.
+     * Skasowane konto zostawia sam numer.
      *
      * @return array{id:int,name:string}
      */
@@ -502,7 +502,7 @@ final class ConsentRegister
      * Warunek „to zdarzenie należy do tej osoby".
      *
      * Sam adres nie wystarczy. Zgoda kliknięta w banerze przez gościa zapisuje
-     * się bez adresu, bo adresu wtedy nie ma — dopiero późniejszy zakup albo
+     * się bez adresu, bo adresu wtedy nie ma. Dopiero późniejszy zakup albo
      * rejestracja wiąże klucz przeglądarki z osobą. Filtrowanie po samym adresie
      * gubiłoby wszystko sprzed tego momentu, czyli zwykle cały wybór ciasteczek.
      *

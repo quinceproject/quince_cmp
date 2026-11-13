@@ -28,15 +28,15 @@ if (!defined('_PS_VERSION_')) {
  *   wskazują je w `_legacy_controller`, a to po tej nazwie PrestaShop sprawdza,
  *   czy pracownik ma prawo wejść. Skasowanie zabrałoby dostęp do 45 tras.
  *
- * Bez silnika gałęzi nie ma i wtedy rodzica nie ruszamy — moduł ma działać
- * samodzielnie, a wtedy PrestaShop zostawia go tam, gdzie wiesza moduły bez rodzica.
+ * Bez silnika gałęzi nie ma i wtedy rodzica nie ruszamy. Moduł działa wtedy
+ * samodzielnie, a PrestaShop zostawia go tam, gdzie wiesza moduły bez rodzica.
  */
 function upgrade_module_0_3_1(Module $module): bool
 {
     $idKontenera = (int) Tab::getIdFromClassName(Quince_Cmp::TAB_PARENT);
 
     if ($idKontenera === 0) {
-        // Moduł bez zakładek — nic do przestawienia.
+        // Moduł bez zakładek: nic do przestawienia.
         return true;
     }
 

@@ -21,7 +21,7 @@ use Quince\Cmp\Storage\Schema;
  *
  * Plik leży poza katalogiem dostępnym z sieci, więc wychodzi tędy. Dostęp jest
  * otwarty celowo: to jest treść, na którą ktoś się zgodził, i musi być możliwa
- * do przeczytania — także przez osobę, która nie ma konta w sklepie.
+ * do przeczytania także przez osobę, która nie ma konta w sklepie.
  *
  * Otwarte nie znaczy odgadywalne: adres wskazuje wersję po identyfikatorze,
  * a wydajemy wyłącznie wersje należące do bieżącego sklepu.
@@ -53,8 +53,7 @@ class Quince_CmpDocumentModuleFrontController extends ModuleFrontController
             $this->brak();
         }
 
-        // `inline`, nie `attachment`: dokument ma się otworzyć, a nie pobrać —
-        // czytelnik zwykle chce sprawdzić jedno zdanie, nie archiwizować plik.
+        // `inline`, nie `attachment`: dokument ma się otworzyć, a nie pobrać.
         header('Content-Type: application/pdf');
         header('Content-Length: ' . filesize($sciezka));
         header('Content-Disposition: inline; filename="consent-' . $idVersion . '.pdf"');

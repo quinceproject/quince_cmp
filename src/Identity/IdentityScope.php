@@ -24,7 +24,7 @@ use Shop;
  * profili.
  *
  * Zasięg wyznaczany jest na podstawie sklepu, w którym zapisano zdarzenie, a nie
- * `id_customer` — zgody zbierane są również przed założeniem konta.
+ * `id_customer`, bo zgody zbierane są również przed założeniem konta.
  */
 final class IdentityScope
 {

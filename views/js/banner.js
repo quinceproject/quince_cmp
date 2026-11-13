@@ -1,11 +1,11 @@
 /**
- * Quince CMP — baner i okno preferencji.
+ * Quince CMP: baner i okno preferencji.
  *
  * Rysowane w przeglądarce, nie w szablonie sklepu: motywów jest tyle, ile
  * sklepów, a strona bywa serwowana z pamięci podręcznej i nie zna stanu zgody
  * tego konkretnego odwiedzającego.
  *
- * Warstwa opiera się na `window.QuinceCMP` z `front.js` — sama nie zapisuje
+ * Warstwa opiera się na `window.QuinceCMP` z `front.js`. Sama nie zapisuje
  * ciasteczek i nie rozmawia z serwerem.
  */
 (function () {
@@ -48,7 +48,7 @@
     /* ================================================================
        SZKIELET
 
-       Kolory sprzedawcy wchodzą jako zmienne CSS na korzeniu — reszta arkusza
+       Kolory sprzedawcy wchodzą jako zmienne CSS na korzeniu. Reszta arkusza
        jest stała, więc motyw sklepu nie ma czego nadpisać.
        ================================================================ */
 
@@ -290,7 +290,7 @@
         if (typeof cfg.fab.offsetMobile === 'number') {
             b.style.setProperty('--qcmp-fab-bottom-m', cfg.fab.offsetMobile + 'px');
         }
-        // Własny znak jest już oczyszczony po stronie serwera — tutaj trafia
+        // Własny znak jest już oczyszczony po stronie serwera, tutaj trafia
         // wprost, bo inaczej nie dałoby się go narysować.
         b.innerHTML = cfg.fab.svg || ikona(cfg.fab.icon);
 
@@ -342,7 +342,7 @@
     /**
      * Fokus zamknięty w oknie preferencji.
      *
-     * Okno zasłania stronę, więc klawiatura nie może z niego wyjść — inaczej
+     * Okno zasłania stronę, więc klawiatura nie może z niego wyjść. Inaczej
      * użytkownik klawiatury wędruje po elementach, których nie widzi.
      */
     function pulapkaFokusu(okno) {

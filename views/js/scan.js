@@ -1,5 +1,5 @@
 /**
- * Quince CMP — zbieracz skanera.
+ * Quince CMP: zbieracz skanera.
  *
  * Ładowany wyłącznie w trybie skanowania, uruchomionym z panelu. Melduje, co
  * sklep zapisał w przeglądarce i do kogo wysłał żądanie.
@@ -47,7 +47,7 @@
             }
         } catch (e) {
             // Prywatny tryb przeglądarki potrafi zablokować dostęp do magazynu.
-            // Brak dostępu nie jest błędem skanu — reszta melduje się dalej.
+            // Brak dostępu nie jest błędem skanu, reszta melduje się dalej.
         }
 
         // Żądanie do obcego serwera samo w sobie przekazuje adres IP i nagłówki,
@@ -105,7 +105,7 @@
         }
     });
 
-    // Pasek widoczny tylko dla osoby skanującej — inaczej łatwo zapomnieć,
+    // Pasek widoczny tylko dla osoby skanującej. Inaczej łatwo zapomnieć,
     // że sklep chodzi z odblokowanymi wszystkimi usługami.
     window.addEventListener('load', function () {
         var pasek = document.createElement('div');

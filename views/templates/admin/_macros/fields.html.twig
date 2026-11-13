@@ -1,15 +1,15 @@
 {#
   Pola formularzy panelu Quince CMP.
 
-  Własna kopia makr z `quince_engine` — moduł ma działać bez silnika, a `import`
+  Własna kopia makr z `quince_engine`: moduł ma działać bez silnika, a `import`
   z cudzego katalogu zamieniłby to w twardą zależność. Razem z nimi jedzie
   własna kopia Alpine w `views/js/vendor/`, bo pola wielojęzyczne na niej stoją.
 #}
 {#
   Pola formularza panelu Quince.
 
-  Komponenty pochodzą z paczki design systemu (views/css/tokens/components.css) —
-  tu jest wyłącznie ich odwzorowanie w Twigu wraz z obsługą Alpine.
+  Komponenty pochodzą z paczki design systemu (views/css/tokens/components.css).
+  Tu jest wyłącznie ich odwzorowanie w Twigu wraz z obsługą Alpine.
 
   Użycie:
     {{ fields.multilang('HOURS', 'Godziny pracy'|trans, languages, translations.HOURS) }}
@@ -19,26 +19,26 @@
 {#
   Pole wielojęzyczne: jedno pole widoczne naraz, obok selektor języka.
 
-  Wszystkie pola siedzą w dokumencie i są wysyłane razem z formularzem — ukrywamy
-  je przez x-show, nie x-if, bo x-if usuwa element z DOM i wartość przepadłaby przy zapisie.
+  Wszystkie pola siedzą w dokumencie i są wysyłane razem z formularzem, więc
+  ukrywamy je przez x-show, nie x-if, bo x-if usuwa element z DOM i wartość przepadłaby przy zapisie.
 
   Kropka przy kodzie języka jest bursztynowa, gdy brakuje tłumaczenia, i zielona,
   gdy jest komplet. Dzięki temu brak widać przy polu, a nie w osobnym ostrzeżeniu
   na górze ekranu.
 
-  Stan Alpine budujemy pętlą, a nie filtrem `merge` — `merge` woła array_merge,
+  Stan Alpine budujemy pętlą, a nie filtrem `merge`: `merge` woła array_merge,
   a ten przenumerowuje klucze liczbowe, więc mapa języków wyszłaby przesunięta.
 
-  Treści wchodzą do x-data przez json_encode BEZ `raw`. Cudzysłowy z JSON-a
-  zamykały atrybut w połowie, x-data stawał się niepoprawnym JS-em i Alpine
-  startował z pustym zakresem — pole tekstowe znikało, bo `lang` nie pasował
+  Treści wchodzą do x-data przez json_encode BEZ `raw`. Z `raw` cudzysłowy
+  z JSON-a zamykają atrybut w połowie, x-data staje się niepoprawnym JS-em
+  i Alpine startuje z pustym zakresem: pole tekstowe znika, bo `lang` nie pasuje
   do żadnego języka. Ucieczka HTML zostawia to, co ma zostać: przeglądarka
   rozkoduje &quot; z powrotem na cudzysłów przy odczycie atrybutu.
 #}
 {% macro multilang(name, label, languages, values, placeholder = '', hint = '', prefix = '', readonly = false) %}
 
-    {# Nazwa pola z językiem. Nazwa tablicowa — taka, która kończy się nawiasem,
-       jak `person[7][name]` w powtarzalnym wierszu — dostaje język kolejnym
+    {# Nazwa pola z językiem. Nazwa tablicowa (taka, która kończy się nawiasem,
+       jak `person[7][name]` w powtarzalnym wierszu) dostaje język kolejnym
        poziomem tablicy. Zwykła nazwa dostaje przyrostek. Bez tego rozróżnienia
        PHP gubi wszystko poza ostatnim językiem: `person[7][name]_1` i `_2`
        to dla niego ta sama zmienna, bo końcówkę po ostatnim nawiasie pomija. #}
@@ -101,10 +101,10 @@
 
 {#
   Przełącznik. Ukryte pole przed nim gwarantuje, że wyłączona wartość dotrze
-  do serwera — niezaznaczony checkbox nie jest wysyłany przez przeglądarkę.
+  do serwera, bo niezaznaczony checkbox nie jest wysyłany przez przeglądarkę.
 #}
-{# `bind` wiąże przełącznik ze stanem karty — potrzebne, kiedy inne pola mają
-   się pokazywać zależnie od jego położenia. Bez niego zachowuje się jak dotąd. #}
+{# `bind` wiąże przełącznik ze stanem karty. Potrzebne, kiedy inne pola mają
+   się pokazywać zależnie od jego położenia. #}
 {% macro toggle(name, checked, text = '', size = '', bind = null) %}
     <label class="qc-toggle{{ size ? ' qc-toggle-' ~ size }}">
         <input type="hidden" name="{{ name }}" value="0">
@@ -118,14 +118,9 @@
 {#
   Wybór ikony.
 
-  Zestaw ma ponad dwa tysiące pozycji, więc lista nie siedzi w stronie — panel
-  dopytuje o to, co pasuje do wpisanej frazy. Zanim sprzedawca cokolwiek wpisze,
-  dostaje kilkanaście propozycji pasujących do pasa informacyjnego, żeby nie
-  zaczynał od pustego ekranu.
-
-  Wpisywanie samej nazwy z pamięci byłoby gorsze: literówka daje puste miejsce
-  w sklepie bez żadnego sygnału, a tutaj wybiera się wyłącznie z tego, co
-  naprawdę leży w silniku.
+  Zestaw ma ponad dwa tysiące pozycji, więc lista nie siedzi w stronie: panel
+  dopytuje o to, co pasuje do wpisanej frazy. Przed wpisaniem czegokolwiek
+  lista pokazuje kilkanaście propozycji pasujących do pasa informacyjnego.
 
   `align` decyduje, w którą stronę rozwija się lista. Przy prawej krawędzi karty
   musi to być 'end': karta przycina zawartość, a ognisko wskakujące w pole
@@ -134,14 +129,10 @@
 {#
    Selektor ikon. Dwa sposoby użycia, ta sama postać i to samo zachowanie:
 
-   1. pole samodzielne — podaje się nazwę pola, zapisaną ikonę i jej kod SVG;
-   2. pole w powtarzalnym wierszu — podaje się WYRAŻENIA Alpine (bind*), bo nazwa
+   1. pole samodzielne: podaje się nazwę pola, zapisaną ikonę i jej kod SVG;
+   2. pole w powtarzalnym wierszu: podaje się WYRAŻENIA Alpine (bind*), bo nazwa
       zawiera numer wiersza, a wartość mieszka w cudzym stanie i musi się z nim
       zmieniać razem.
-
-   Drugi sposób istnieje po to, żeby nie przepisywać selektora po raz drugi
-   wewnątrz repeatera — jeden zestaw klas, jedno zachowanie, jedno miejsce
-   do poprawienia.
 #}
 {% macro iconpicker(name, value, svg, url, align = 'start', bindName = null, bindValue = null, bindSvg = null) %}
     <div class="qc-iconpick{{ align == 'end' ? ' qc-iconpick--end' }}"
@@ -173,9 +164,9 @@
              load() {
                  this.loading = true;
 
-                 // Adres składamy przez URL, a nie doklejaniem '?q=' — PrestaShop
-                 // dopisuje do tras panelu własny parametr `_token`, więc drugie
-                 // pytajnie robiło z niego śmieci i zapytanie wracało puste.
+                 // Adres składamy przez URL, a nie doklejaniem '?q='. PrestaShop
+                 // dopisuje do tras panelu własny parametr `_token`, więc drugi
+                 // pytajnik psuje adres i zapytanie wraca puste.
                  const address = new URL(this.url, window.location.origin);
                  address.searchParams.set('q', this.query);
 
@@ -243,13 +234,13 @@
 {% endmacro %}
 
 {#
-  Pole wielojęzyczne na dłuższy tekst. Ta sama obsługa co przy jednej linii —
-  różni je wysokość i to, że treść bywa listą, po jednej pozycji w wierszu.
+  Pole wielojęzyczne na dłuższy tekst. Ta sama obsługa co przy jednej linii.
+  Różni je wysokość i to, że treść bywa listą, po jednej pozycji w wierszu.
 #}
 {% macro multilangArea(name, label, languages, values, placeholder = '', hint = '', rows = 4, readonly = false) %}
 
-    {# Nazwa pola z językiem. Nazwa tablicowa — taka, która kończy się nawiasem,
-       jak `person[7][name]` w powtarzalnym wierszu — dostaje język kolejnym
+    {# Nazwa pola z językiem. Nazwa tablicowa (taka, która kończy się nawiasem,
+       jak `person[7][name]` w powtarzalnym wierszu) dostaje język kolejnym
        poziomem tablicy. Zwykła nazwa dostaje przyrostek. Bez tego rozróżnienia
        PHP gubi wszystko poza ostatnim językiem: `person[7][name]_1` i `_2`
        to dla niego ta sama zmienna, bo końcówkę po ostatnim nawiasie pomija. #}
@@ -308,13 +299,13 @@
 
 {# Wybór koloru z palety sklepu.
 
-   Wąski przycisk z próbką, a w rozwinięciu komplet skal — po dwanaście stopni
-   każda — i wiersz na własny kolor. Ten sam układ, co selektor ikon: przycisk
+   Wąski przycisk z próbką, a w rozwinięciu komplet skal (po dwanaście stopni
+   każda) i wiersz na własny kolor. Ten sam układ, co selektor ikon: przycisk
    pokazuje wybraną wartość, lista wychodzi na żądanie i zamyka się po wyborze.
 
    Zapisujemy stopień skali (`neutral-12`) albo kod barwy (`#7a1f3d`). Stopień
    idzie za paletą, kiedy zmieni się kolor marki; własny kolor zostaje taki,
-   jaki jest — i tylko przy nim kontrast nie jest liczony przez silnik. #}
+   jaki jest, i tylko przy nim kontrast nie jest liczony przez silnik. #}
 {% macro colorpicker(name, value, palette, scales) %}
     <div class="qc-colorpick"
          x-data="{
@@ -333,8 +324,8 @@
                  const i = this.value.lastIndexOf('-');
                  const skala = this.nazwy[this.value.slice(0, i)];
 
-                 // Wartość spoza skal (nazwa roli z czasów, gdy dało się ją zapisać)
-                 // pokazujemy kodem barwy — sklejona nazwa była bełkotem.
+                 // Wartość spoza skal (np. zapisana dawniej nazwa roli) pokazujemy
+                 // kodem barwy, bo sklejona z niej nazwa byłaby nieczytelna.
                  return skala ? skala + ' ' + this.value.slice(i + 1) : this.barwa(this.value).toUpperCase();
              },
 

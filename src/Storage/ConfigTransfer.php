@@ -19,13 +19,13 @@ use Db;
  * Wywożone jest to, co sprzedawca ustawił: kategorie zgód, tabela ciasteczek,
  * usługi i wzorce blokowania, mapowanie Consent Mode, teksty banera i ustawienia.
  *
- * Świadomie nie wywozimy trzech rzeczy:
+ * Nie wywozimy trzech rzeczy:
  *
- * - **dziennika zgód** — to dowód, że konkretnej osobie coś pokazano. Wgrany
+ * - **dziennika zgód**: to dowód, że konkretnej osobie coś pokazano. Wgrany
  *   do innego sklepu przestaje nim być, bo tam nikomu niczego nie pokazano;
- * - **wydanych wersji klauzul** — niosą skrót treści i daty obowiązywania,
+ * - **wydanych wersji klauzul**: niosą skrót treści i daty obowiązywania,
  *   czyli też twierdzą coś o przeszłości. Wersje wydaje się na miejscu;
- * - **kluczy podpisu wymiany** — to sekrety. Każdy sklep ma własne.
+ * - **kluczy podpisu wymiany**: to sekrety. Każdy sklep ma własne.
  */
 final class ConfigTransfer
 {
@@ -63,9 +63,6 @@ final class ConfigTransfer
     /**
      * Co zmieni wgranie pliku, bez wgrywania go.
      *
-     * Import nadpisuje konfigurację; pokazanie skutku przed decyzją jest tańsze
-     * niż odtwarzanie ustawień, których nikt nie zapisał.
-     *
      * @param array<string,mixed> $dane
      *
      * @return array{valid:bool,error:string,summary:array<string,array{incoming:int,current:int}>}
@@ -99,8 +96,8 @@ final class ConfigTransfer
      * Usługi, które plik wprowadzi na stronę sklepu.
      *
      * Sama liczba nie wystarcza. Wpis usługi niesie kod, który trafia do stopki
-     * sklepu, a plik konfiguracyjny krąży między ludźmi — „wgraj sobie nasz
-     * standard". Kto go wgrywa, ma zobaczyć, co dokłada, zanim to zrobi.
+     * sklepu, a plik konfiguracyjny krąży między ludźmi. Kto go wgrywa, ma
+     * zobaczyć, co dokłada, zanim to zrobi.
      *
      * @param array<int,array<string,mixed>> $skrypty
      *
@@ -118,7 +115,7 @@ final class ConfigTransfer
                 'category' => (string) ($skrypt['category'] ?? ''),
                 'hosts' => implode(', ', self::hosty($kod)),
                 // Kod bez adresu zewnętrznego wykonuje się na miejscu i nie da się
-                // go ocenić po nazwie domeny — to trzeba powiedzieć wprost.
+                // go ocenić po nazwie domeny, więc oznaczamy go osobno.
                 'inline' => self::hosty($kod) === [] && trim($kod) !== '',
             ];
         }
@@ -153,7 +150,7 @@ final class ConfigTransfer
         $teraz = date('Y-m-d H:i:s');
 
         // Typy zgód mają wersje i zdarzenia w dzienniku, więc nie kasujemy ich
-        // hurtem — uzgadniamy po kodzie. Kod, którego w pliku nie ma, zostaje
+        // hurtem, tylko uzgadniamy po kodzie. Kod, którego w pliku nie ma, zostaje
         // wyłączony zamiast usunięty: jego zgody dalej są w dzienniku.
         $przychodzace = [];
 
@@ -177,7 +174,7 @@ final class ConfigTransfer
             );
         }
 
-        // Ciasteczka i skrypty są czystym opisem — te da się wymienić w całości.
+        // Ciasteczka i skrypty są czystym opisem, więc wymieniamy je w całości.
         $db->execute('DELETE FROM `' . _DB_PREFIX_ . Schema::TABLE_COOKIE . '` WHERE `id_shop` = ' . $idShop);
         $db->execute('DELETE FROM `' . _DB_PREFIX_ . Schema::TABLE_SCRIPT . '` WHERE `id_shop` = ' . $idShop);
 
@@ -401,7 +398,7 @@ final class ConfigTransfer
      *
      * Sklep docelowy ma zwykle inne identyfikatory języków niż źródłowy, więc
      * po numerach nic by się nie zgadzało. Język, którego docelowy nie ma,
-     * jest pomijany — nie zakładamy go za sprzedawcę.
+     * jest pomijany (nie zakładamy go za sprzedawcę).
      *
      * @param array<string,string> $wartosci
      */

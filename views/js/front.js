@@ -1,10 +1,10 @@
 /**
- * Quince CMP — warstwa sklepu.
+ * Quince CMP: warstwa sklepu.
  *
  * Trzy zadania: zapisać wybór odwiedzającego, zwolnić usługi, na które padła
  * zgoda, i wystawić stan innym skryptom na stronie.
  *
- * Bez zależności i bez budowania — plik ma się wykonać przed czymkolwiek, co
+ * Bez zależności i bez budowania: plik ma się wykonać przed czymkolwiek, co
  * czeka na zgodę, więc nie może czekać na framework.
  */
 (function () {
@@ -48,7 +48,7 @@
        ZWALNIANIE WSTRZYMANYCH USŁUG
 
        Serwer przepisał stronę: skrypty mają `type="text/plain"`, ramki mają
-       adres w `data-qc-src`. Tutaj wracają do życia — ale tylko te, których
+       adres w `data-qc-src`. Tutaj wracają do życia, ale tylko te, których
        kategoria właśnie dostała zgodę.
        ================================================================ */
 
@@ -101,7 +101,7 @@
      * Zastępnik w miejscu ramki, której nie wolno pobrać.
      *
      * Pusta luka w treści wygląda jak awaria sklepu. Zastępnik mówi, czego
-     * brakuje i co zrobić, żeby to zobaczyć — zgoda udzielana tutaj dotyczy
+     * brakuje i co zrobić, żeby to zobaczyć. Zgoda udzielana tutaj dotyczy
      * tylko jednej kategorii, nie wszystkiego naraz.
      */
     function wstawZastepniki() {
@@ -162,7 +162,7 @@
        SYGNAŁY GOOGLE
 
        Deklaracja `default` poszła już z serwera, w sekcji <head>. Tutaj idzie
-       wyłącznie `update` — po decyzji odwiedzającego.
+       wyłącznie `update`, po decyzji odwiedzającego.
        ================================================================ */
 
     function aktualizujGoogle(sygnaly) {
@@ -232,7 +232,7 @@
        API DLA INNYCH MODUŁÓW
 
        Tag manager, miernik czy czat mają pytać stąd, zamiast czytać ciasteczko
-       na własną rękę — format ciasteczka jest naszą sprawą i może się zmienić.
+       na własną rękę: format ciasteczka jest naszą sprawą i może się zmienić.
        ================================================================ */
 
     var api = {
@@ -249,7 +249,7 @@
         /**
          * Wywołanie po udzieleniu zgody na kategorię.
          *
-         * Jeśli zgoda już jest, wywołanie leci natychmiast — inaczej skrypt
+         * Jeśli zgoda już jest, wywołanie leci natychmiast. Inaczej skrypt
          * dołączony po decyzji nigdy by się nie doczekał.
          */
         whenAllowed: function (kod, fn) {

@@ -1,4 +1,4 @@
-{# Rodzaje zgód — lista. Układ wg prototypy/ConsentTypesList.dc.html #}
+{# Rodzaje zgód: lista. Układ wg prototypy/ConsentTypesList.dc.html #}
 {% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
 {% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
 
@@ -18,7 +18,7 @@
     </div>
 
     {# Formularz GET: przeglądarka przy wysłaniu odrzuca zapytanie z `action`
-       i buduje nowe wyłącznie z pól formularza — token z adresu `path()` ginie,
+       i buduje nowe wyłącznie z pól formularza. Token z adresu `path()` ginie,
        więc musi wejść jako pole, inaczej trafiamy na „Invalid token". #}
     <form method="get" action="{{ path('quince_cmp_types') }}" class="qc-filters">
         <input type="hidden" name="_token" value="{{ path('quince_cmp_types')|split('?_token=')[1] }}">
@@ -48,11 +48,11 @@
             </div>
         </div>
     {% else %}
-        {# Przeciąganie wierszy na nowe miejsce nie robi nic samo z siebie —
-           dopiero `reorder.js` spisuje układ DOM do pola `order` tuż przed
-           wysłaniem tego formularza, tak jak rozstawianie strony głównej
-           w `quince_engine` (ten sam mechanizm `x-sort`, ten sam wzorzec
-           zapisu). Każdy wiersz ma `data-id` — po tym go odczytuje. #}
+        {# Przeciąganie wierszy nie zapisuje niczego samo z siebie. Dopiero
+           `reorder.js` spisuje układ DOM do pola `order` tuż przed wysłaniem
+           tego formularza (ten sam mechanizm `x-sort` i wzorzec zapisu co
+           rozstawianie strony głównej w `quince_engine`). Skrypt rozpoznaje
+           wiersze po `data-id`. #}
         <div class="qc-grid">
             <div class="qc-grid-head" style="display:grid;grid-template-columns:{{ cols }};gap:8px">
                 <div></div>
@@ -98,7 +98,7 @@
                         </div>
 
                         <div>
-                            {# Wymaganej zgody nie da się zgasić — przełącznik jest wtedy
+                            {# Wymaganej zgody nie da się zgasić: przełącznik jest wtedy
                                wygaszony i nie klika się, zamiast znikać bez wyjaśnienia. #}
                             {% if type.required %}
                                 <span class="qc-toggle-track" style="opacity:.5;cursor:not-allowed"
@@ -148,7 +148,7 @@
 
 {# Blok nadpisany w całości, nie przez `{{ parent() }}`: paczka sortowania
    musi wejść PRZED Alpine, a layout modułu ładuje Alpine na końcu swojego
-   własnego bloku — doklejenie po `parent()` wstawiłoby ją za nim. #}
+   własnego bloku, więc doklejenie po `parent()` wstawiłoby ją za nim. #}
 {% block javascripts %}
     <script src="{{ asset('../modules/quince_cmp/views/js/vendor/alpine-sort.min.js') ~ qcVer }}" defer></script>
     <script src="{{ asset('../modules/quince_cmp/views/js/panel.js') ~ qcVer }}" defer></script>

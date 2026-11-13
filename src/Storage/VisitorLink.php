@@ -17,12 +17,12 @@ use Db;
  * Połączenie anonimowego odwiedzającego z osobą.
  *
  * Zgoda kliknięta w banerze przez gościa zapisuje się z kluczem przeglądarki
- * i bez adresu — bo adresu wtedy nie ma. Ta sama osoba zakłada potem konto albo
+ * i bez adresu, bo adresu wtedy nie ma. Ta sama osoba zakłada potem konto albo
  * składa zamówienie i od tej chwili ma adres. Bez zapisanego połączenia oba
  * ślady zostają osobno i na pytanie „co ta osoba wybrała" nie ma pełnej
  * odpowiedzi: brakuje wszystkiego sprzed rejestracji.
  *
- * Łączymy je tutaj, w osobnej tabeli. Dziennik zostaje nietknięty — jest
+ * Łączymy je tutaj, w osobnej tabeli. Dziennik zostaje nietknięty: jest
  * dowodem i nie wolno go przepisywać wstecz. Zapis „ten klucz należał do tego
  * adresu" jest osobnym faktem, z własną datą, i tak samo daje się podważyć.
  */

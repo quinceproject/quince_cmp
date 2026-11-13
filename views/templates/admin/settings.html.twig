@@ -35,8 +35,8 @@
                 {{ 'Events are never overwritten. Retention only deletes what is older than the limit.'|trans }}
             </div>
 
-            {# Termin bez egzekucji jest obietnicą, za którą nic nie stoi — stąd
-               licznik i przycisk. Sam przebieg idzie z cronem. #}
+            {# Licznik i przycisk pokazują, że termin jest egzekwowany. Sam przebieg
+               idzie z cronem. #}
             <div class="qc-hstack" style="justify-content:space-between;gap:16px;padding-top:12px;border-top:1px solid var(--border)">
                 <div class="qc-line" style="margin:0">
                     {% if retentionPending %}

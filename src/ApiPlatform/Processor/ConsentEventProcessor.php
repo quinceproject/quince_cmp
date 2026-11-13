@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  *
  * **Nie ma tu własnej ścieżki zapisu.** Zdarzenie idzie przez `Inbox::accept()`,
  * czyli przez to samo sprawdzanie pól i to samo rozstrzyganie konfliktów, co
- * webhook. Dziennik zgód jest dowodem — musi znaczyć to samo niezależnie od tego,
+ * webhook. Dziennik zgód jest dowodem i musi znaczyć to samo niezależnie od tego,
  * którymi drzwiami zdarzenie weszło.
  *
  * Różnica jest jedna i dotyczy uwierzytelnienia: webhook sprawdza podpis HMAC,
@@ -47,11 +47,10 @@ final class ConsentEventProcessor implements ProcessorInterface
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): ConsentEvent
     {
-        // `shopId` rozstrzyga sklep, do którego trafia zdarzenie — bierzemy go
-        // wyłącznie z query stringu żądania (ten sam wzorzec co pozostałe
-        // zasoby API tego modułu), nigdy z ciała. Ciało jest tym samym
-        // obiektem `ConsentEvent`, który klient przysyła — ufanie jego
-        // `shopId` pozwoliłoby zapisać dowód zgody do dziennika innego sklepu.
+        // `shopId` rozstrzyga sklep, do którego trafia zdarzenie. Bierzemy go
+        // wyłącznie z query stringu żądania, nigdy z ciała: ciało przysyła
+        // klient, a ufanie jego `shopId` pozwoliłoby zapisać dowód zgody
+        // do dziennika innego sklepu.
         $idShop = $this->idShop();
 
         if ($idShop === null) {
@@ -64,9 +63,9 @@ final class ConsentEventProcessor implements ProcessorInterface
             'email' => $data->email,
             'version' => $data->version,
             'text_hash' => $data->textHash,
-            // `occurred_at` — nazwa pola z kontraktu webhooka. Na zewnątrz mówimy
-            // `recordedAt`, bo tak brzmi to po ludzku, ale do środka wchodzi ta
-            // sama nazwa, której pilnuje `Inbox::brakujacePola()`.
+            // `occurred_at`: nazwa pola z kontraktu webhooka. Na zewnątrz pole
+            // nazywa się `recordedAt`, ale do środka wchodzi ta sama nazwa,
+            // której pilnuje `Inbox::brakujacePola()`.
             'occurred_at' => $data->recordedAt,
             'source' => $data->source ?: 'external',
             'external_id' => $data->externalId,

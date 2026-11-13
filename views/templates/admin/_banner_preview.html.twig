@@ -1,7 +1,7 @@
 {# Podgląd banera z odczytem kontrastu. Wstawka ekranu „Banner & preferences". #}
 {% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
 
-{# Wstawka nie dziedziczy domeny po szablonie, ktory ja wlacza — bez tej
+{# Wstawka nie dziedziczy domeny po szablonie, ktory ja wlacza. Bez tej
    linii `|trans` szuka w domenie `messages` i oddaje angielski oryginal. #}
 {% trans_default_domain 'Modules.Quincecmp.Admin' %}
 
@@ -9,12 +9,12 @@
 
 {#
    Podgląd odwzorowuje wybrane umiejscowienie, a nie zawsze kartę pośrodku.
-   Domyślnym ustawieniem jest pasek przy dolnej krawędzi — bez tego sprzedawca
-   projektuje jedno, a na sklepie dostaje coś innego.
+   Domyślnym ustawieniem jest pasek przy dolnej krawędzi. Bez tego podgląd
+   pokazywałby co innego niż sklep.
 
-   `bar`    — pasek na całą szerokość, przy dolnej krawędzi okna
-   `modal`  — okno pośrodku, z przyciemnieniem strony pod spodem
-   `corner` — wąska karta w rogu, nad treścią sklepu
+   `bar`:    pasek na całą szerokość, przy dolnej krawędzi okna
+   `modal`:  okno pośrodku, z przyciemnieniem strony pod spodem
+   `corner`: wąska karta w rogu, nad treścią sklepu
 #}
 {% set ramka = {
     'bar':    'align-items:flex-end;padding:14px',

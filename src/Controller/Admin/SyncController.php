@@ -127,8 +127,7 @@ final class SyncController extends CmpController
     /**
      * Nadaje nowy klucz podpisu.
      *
-     * Stary przestaje działać natychmiast — klucz, który po wymianie nadal
-     * przechodzi, nie jest wymieniony.
+     * Stary przestaje działać natychmiast.
      */
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function rotateAction(Request $request): RedirectResponse
@@ -240,7 +239,7 @@ final class SyncController extends CmpController
 
     /**
      * Kody zaznaczone do wysyłki. Pusta lista w konfiguracji oznacza wszystkie,
-     * więc zwracamy wtedy pustą tablicę — zapytanie nie nakłada wtedy warunku.
+     * więc zwracamy wtedy pustą tablicę i zapytanie nie nakłada warunku.
      *
      * @return array<int,string>
      */
@@ -254,8 +253,7 @@ final class SyncController extends CmpController
     /**
      * Kody zgód używane w tym sklepie wraz z informacją, czy jadą na zewnątrz.
      *
-     * Domyślnie jadą wszystkie: wysyłka wybiórcza jest decyzją, którą sprzedawca
-     * podejmuje świadomie, a nie stanem, w którym budzi się po instalacji.
+     * Pusta lista w konfiguracji znaczy, że jadą wszystkie.
      *
      * @return array<int,array{code:string,name:string,on:bool}>
      */
@@ -289,7 +287,7 @@ final class SyncController extends CmpController
     /**
      * Token przebiegu crona.
      *
-     * Liczony tą samą metodą, którą sprawdza kontroler frontu — inaczej adres
+     * Liczony tą samą metodą, którą sprawdza kontroler frontu. Inaczej adres
      * pokazany w panelu przestałby działać po zmianie jednej z dwóch stron.
      */
     private function tokenCrona(int $idShop): string

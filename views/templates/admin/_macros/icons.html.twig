@@ -1,11 +1,11 @@
 {#
   Ikony panelu Quince CMP.
 
-  Własna kopia zestawu z `quince_engine` — moduł ma działać bez silnika,
+  Własna kopia zestawu z `quince_engine`: moduł ma działać bez silnika,
   a `{% import %}` z cudzego katalogu zamieniłby to w twardą zależność.
 
   Zestaw przeniesiony z paczki design systemu (components/icons/Icon.jsx). Inline SVG,
-  bez fontu ikon — moduł nie wczytuje żadnych zewnętrznych zasobów. Wszystkie ścieżki narysowane
+  bez fontu ikon, bo moduł nie wczytuje żadnych zewnętrznych zasobów. Wszystkie ścieżki narysowane
   na siatce 16×16, obrys dziedziczy kolor tekstu.
 
   Użycie:  {{ icons.icon('settings') }}
@@ -13,7 +13,7 @@
            {{ icons.icon('chevronDown', 14, 'qc-select-chevron') }}   ← klasa pozycjonująca
 
   Trzeci argument dokłada klasę obok qc-icon. Potrzebny wszędzie tam, gdzie paczka
-  design systemu pozycjonuje ikonę własnym selektorem — bez niego strzałka selecta
+  design systemu pozycjonuje ikonę własnym selektorem. Bez niego strzałka selecta
   wypada pod pole zamiast usiąść w jego prawej krawędzi.
 #}
 
@@ -57,13 +57,13 @@
 {#
   Ikona komunikatu dobrana do jego rodzaju.
 
-  `danger`  — coś się nie udało albo dane są nieważne  → wykrzyknik w kole
-  `warn`    — ustawienie jest niepełne, grozi skutkiem → wykrzyknik w trójkącie
-  `info`    — wyjaśnienie zasady, nic się nie psuje    → litera „i"
-  `success` — warunek spełniony                        → znak zatwierdzenia
+  `danger`:  coś się nie udało albo dane są nieważne  → wykrzyknik w kole
+  `warn`:    ustawienie jest niepełne, grozi skutkiem → wykrzyknik w trójkącie
+  `info`:    wyjaśnienie zasady, nic się nie psuje    → litera „i"
+  `success`: warunek spełniony                        → znak zatwierdzenia
 #}
 {% macro message(level, size = 14, extraClass = '') %}
-    {# Makra w Twigu 3 nie widzą zakresu pliku — import musi stać w ciele makra. #}
+    {# Makra w Twigu 3 nie widzą zakresu pliku, więc import musi stać w ciele makra. #}
     {%- import _self as ico -%}
     {%- set map = {
         'danger':  'alertCircle',

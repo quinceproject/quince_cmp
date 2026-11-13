@@ -19,9 +19,7 @@ use Shop;
 /**
  * Powiadomienie o zerwanym połączeniu z odbiorcą.
  *
- * Bez niego sprzedawca dowiaduje się o awarii dopiero wchodząc na ekran wymiany,
- * czyli zwykle wtedy, gdy ktoś już dostał mail po wypisaniu się. Wysyłamy jeden
- * list na dobę — awaria trwająca tydzień to jeden problem, nie dwieście.
+ * Wysyłany najwyżej raz na dobę, niezależnie od liczby nieudanych pozycji.
  */
 final class Alert
 {

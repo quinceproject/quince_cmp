@@ -8,7 +8,7 @@ services:
     # (`class X extends PrestaShopAdminController`) i dopiero wtedy dokłada im
     # tagi, dzięki którym Symfony podaje kontrolerowi jego lokalizator usług.
     # Nasze kontrolery dziedziczą po wspólnej klasie `CmpController`, więc ten
-    # wzorzec do nich nie pasuje — deklarujemy to sami, zamiast liczyć na wykrycie.
+    # wzorzec do nich nie pasuje i tagi trzeba zadeklarować tutaj.
     autoconfigure: true
     autowire: true
     tags: ['controller.service_arguments']
@@ -90,7 +90,7 @@ services:
 
   # Dostawca stanu dla Admin API PrestaShopa. Zasoby leza w
   # `src/ApiPlatform/Resources` i rdzen wczytuje je sam, ale dostawce trzeba
-  # zarejestrowac jak kazda inna usluge — API Platform siega po nia po nazwie klasy.
+  # zarejestrowac jak kazda inna usluge: API Platform siega po nia po nazwie klasy.
   Quince\Cmp\ApiPlatform\Provider\ConsentStateProvider:
     class: Quince\Cmp\ApiPlatform\Provider\ConsentStateProvider
     arguments:

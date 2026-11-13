@@ -57,7 +57,7 @@ final class SupportController extends CmpController
      * Podmiana plików modułu na nowsze wydanie.
      *
      * Wyłącznie po kliknięciu sprzedawcy. Stan wydania pobieramy tu ponownie
-     * i to on decyduje, co się pobierze — gdyby przycisk niósł adres paczki,
+     * i to on decyduje, co się pobierze. Gdyby przycisk niósł adres paczki,
      * wystarczyłoby podmienić go w formularzu, żeby moduł zainstalował cudzy kod.
      */
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
@@ -237,9 +237,8 @@ final class SupportController extends CmpController
     /**
      * Uruchamia skrypty z `upgrade/`, gdy pliki są już nowe, a baza jeszcze nie.
      *
-     * Osobna akcja, a nie skutek uboczny wyświetlenia ekranu: zapis do bazy przy
-     * zwykłym wejściu na stronę jest zaskoczeniem, a przy dwóch kartach otwartych
-     * naraz — dwoma przebiegami migracji jednocześnie.
+     * Osobna akcja, a nie skutek uboczny wyświetlenia ekranu: przy dwóch kartach
+     * otwartych naraz migracja poszłaby dwa razy jednocześnie.
      *
      * Podmiana plików i migracja bazy i tak muszą pójść w dwóch żądaniach: kod,
      * który podmienia pliki, działa jeszcze na starej wersji i nie widzi skryptów,
@@ -265,7 +264,7 @@ final class SupportController extends CmpController
         $modul->database_version = $wBazie;
 
         // Zwraca `true` tylko wtedy, gdy są skrypty do uruchomienia. Wydanie bez
-        // migracji też przechodzi tędy — PrestaShop podnosi wtedy numer w bazie
+        // migracji też przechodzi tędy: PrestaShop podnosi wtedy numer w bazie
         // samo, wewnątrz tego wywołania.
         if (Module::initUpgradeModule($modul)) {
             $modul->runUpgradeModule();
@@ -284,7 +283,7 @@ final class SupportController extends CmpController
      * Wersja zapisana w bazie, gdy jest starsza od plików. Pusty napis znaczy,
      * że nie ma czego migrować.
      *
-     * Odczytujemy ją sami, bo `getInstanceByName` jej nie wypełnia — robi to
+     * Odczytujemy ją sami, bo `getInstanceByName` jej nie wypełnia. Robi to
      * dopiero `getModulesOnDisk`, wołane przy budowaniu listy modułów.
      * Pozostawiona pusta, każe `initUpgradeModule` przyjąć, że baza jest równa
      * plikom, i migracja nigdy nie rusza.

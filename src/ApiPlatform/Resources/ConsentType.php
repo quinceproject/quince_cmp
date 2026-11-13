@@ -21,14 +21,11 @@ use Quince\Cmp\ApiPlatform\Provider\ConsentTypeProvider;
  * Rodzaj zgody tego sklepu: `newsletter`, `terms_shop`, `cookies_marketing`
  * i tak dalej.
  *
- * Potrzebny systemowi zewnętrznemu do mapowania WŁASNYCH rodzajów zgody na
- * kody tego sklepu — bez tego mapowanie trzeba by trzymać twardo zakodowane
- * po drugiej stronie, a każda zmiana w panelu (nowy kod, zmiana nazwy)
- * wymagałaby ręcznej synchronizacji.
+ * Służy systemowi zewnętrznemu do mapowania WŁASNYCH rodzajów zgody na kody
+ * tego sklepu, bez twardo zakodowanej listy po drugiej stronie.
  *
- * Rodzaj `cookie` jest tu widoczny tak samo jak każdy inny — filtrowanie go
- * poza zainteresowaniem systemu zewnętrznego jest decyzją WYWOŁUJĄCEGO
- * (parametr `kind`), nie czymś, co ten zasób narzuca.
+ * Rodzaj `cookie` jest tu widoczny tak samo jak każdy inny. Odfiltrowuje go
+ * wywołujący parametrem `kind`.
  */
 #[ApiResource(
     operations: [

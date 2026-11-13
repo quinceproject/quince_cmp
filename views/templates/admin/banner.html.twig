@@ -176,7 +176,7 @@
                 {# `x-data` siedzi tu, nie przy samym polu „Label" niżej: nasłuch
                    `@change` łapie tylko zdarzenia z własnych potomków, a te
                    radiowe przyciski są wcześniej w drzewie, nie w środku tamtego
-                   diva — bez wspólnego rodzica `mode` nigdy by się nie zmieniał. #}
+                   diva. Bez wspólnego rodzica `mode` nigdy by się nie zmieniał. #}
                 <div x-data="{ mode: '{{ fabMode }}' }" @change="mode = $event.target.name === 'fab_mode' ? $event.target.value : mode">
                 <div class="qc-field" style="margin-bottom:10px">
                     <label class="qc-label">{{ 'Shows'|trans }}</label>
@@ -191,7 +191,7 @@
                     </div>
                 </div>
 
-                {# Ikona bez napisu musi sama powiedzieć, o co chodzi — stąd wybór
+                {# Ikona bez napisu musi sama powiedzieć, o co chodzi, stąd wybór
                    zamiast jednego znaku na sztywno. #}
                 <div class="qc-field" style="margin-bottom:10px">
                     <label class="qc-label">{{ 'Icon'|trans }}</label>

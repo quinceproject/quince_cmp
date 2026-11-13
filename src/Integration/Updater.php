@@ -17,9 +17,9 @@ use ZipArchive;
  * Podmiana plików modułu na nowsze wydanie.
  *
  * Uruchamiana wyłącznie z ręki sprzedawcy, po kliknięciu. Moduł nie aktualizuje
- * się sam — sprawdza, czy jest nowsza wersja, i czeka.
+ * się sam.
  *
- * Operacja jest z natury niebezpieczna: moduł nadpisuje pliki, z których w tej
+ * Moduł nadpisuje pliki, z których w tej
  * właśnie chwili działa. Stąd kolejność, w której katalog na dysku nigdy nie
  * zostaje w stanie pośrednim dłużej, niż to konieczne:
  *
@@ -27,7 +27,7 @@ use ZipArchive;
  * 2. sprawdzenie, czy to w ogóle ten moduł i czy wersja jest nowsza
  * 3. kopia zapasowa działającego katalogu
  * 4. podmiana
- * 5. przy jakimkolwiek błędzie w kroku 4 — powrót z kopii
+ * 5. przy jakimkolwiek błędzie w kroku 4: powrót z kopii
  *
  * Po podmianie żądanie nie może już dotknąć żadnej klasy modułu, bo pliki pod
  * nią się zmieniły. Kontroler robi wyłącznie przekierowanie, a skrypty z
@@ -35,7 +35,7 @@ use ZipArchive;
  */
 final class Updater
 {
-    /** Wydanie modułu PrestaShopa waży pojedyncze megabajty; sto to już nie jest nasz plik. */
+    /** Górna granica rozmiaru paczki (100 MB). */
     private const MAX_BAJTOW = 104857600;
 
     private const TIMEOUT = 120;
@@ -45,8 +45,7 @@ final class Updater
     /**
      * Czego brakuje, żeby aktualizacja mogła się udać.
      *
-     * Sprawdzamy przed pokazaniem przycisku, nie po kliknięciu. Sprzedawca ma
-     * wiedzieć, że jego serwer tego nie zrobi, zanim zacznie.
+     * Sprawdzane przed pokazaniem przycisku, nie po kliknięciu.
      *
      * @return string[]
      */
@@ -110,9 +109,8 @@ final class Updater
         }
 
         // Sprawdzenie przed rozpakowaniem, nie po. Skrót pochodzi ze spisu wydań,
-        // a paczka z serwera plików — zgodność obu znaczy, że dostaliśmy to, co
-        // wydaliśmy. Bez tego całe zaufanie leży na samym TLS-ie, a przejęcie
-        // wydania albo podmiana w tranzycie dają wykonanie dowolnego kodu.
+        // a paczka z serwera plików. Bez tego przejęcie wydania albo podmiana
+        // w tranzycie dają wykonanie dowolnego kodu.
         if ($skrot !== '') {
             $policzony = hash_file('sha256', $paczka);
 
@@ -229,8 +227,8 @@ final class Updater
      *
      * Nazwa wpisu w archiwum jest danymi z zewnątrz. Wpis `../../config/settings.inc.php`
      * nadpisałby plik poza modułem, więc archiwum z takim wpisem odrzucamy w całości
-     * zamiast pomijać pojedynczy plik — skoro paczka jest spreparowana, reszta jej
-     * zawartości też nie zasługuje na zaufanie.
+     * zamiast pomijać pojedynczy plik: reszta spreparowanej paczki też nie
+     * zasługuje na zaufanie.
      */
     private function rozpakuj(string $paczka, string $dokad): string
     {
@@ -266,8 +264,8 @@ final class Updater
      * Katalog, w którym leży główny plik modułu.
      *
      * Zip zbudowany przez nasz workflow ma go w podkatalogu o nazwie modułu,
-     * a archiwum pobrane wprost z gałęzi — w katalogu z nazwą repozytorium
-     * i skrótem commita. Szukamy więc na dwóch poziomach zamiast zakładać jeden.
+     * a archiwum pobrane wprost z gałęzi w katalogu z nazwą repozytorium
+     * i skrótem commita. Dlatego szukamy na dwóch poziomach.
      */
     private function korzenModulu(string $katalog): string
     {

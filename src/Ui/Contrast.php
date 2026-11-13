@@ -14,9 +14,8 @@ namespace Quince\Cmp\Ui;
 /**
  * Kontrast pary kolorów według WCAG 2.1.
  *
- * Moduł zbierający zgody musi być dostępny, a przycisk odrzucenia nie może być
- * słabiej widoczny od przycisku akceptacji. Odczyt na ekranie banera pokazuje
- * wartości policzone z wybranych kolorów, nie wpisane ręcznie.
+ * Przycisk odrzucenia nie może być słabiej widoczny od przycisku akceptacji.
+ * Odczyt na ekranie banera pokazuje wartości policzone z wybranych kolorów.
  */
 final class Contrast
 {
@@ -38,7 +37,7 @@ final class Contrast
         return round(($jasniejszy + 0.05) / ($ciemniejszy + 0.05), 2);
     }
 
-    /** Czarny albo biały napis — ten, który daje wyższy kontrast na podanym tle. */
+    /** Czarny albo biały napis: ten, który daje wyższy kontrast na podanym tle. */
     public static function onColour(string $hexTla): string
     {
         return self::ratio($hexTla, '#000000') >= self::ratio($hexTla, '#ffffff') ? '#000000' : '#ffffff';

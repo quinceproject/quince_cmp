@@ -36,7 +36,7 @@ final class Options
     /** Strona CMS z polityką prywatności. */
     public const POLICY_CMS = 'QUINCE_CMP_POLICY_CMS';
 
-    /** Ile miesięcy trzymamy zdarzenia. Patrz SPEC §10.3 — decyzja otwarta. */
+    /** Ile miesięcy trzymamy zdarzenia. */
     public const RETENTION_MONTHS = 'QUINCE_CMP_RETENTION_MONTHS';
 
     /**
@@ -51,13 +51,13 @@ final class Options
     /**
      * Licznik ręcznych unieważnień.
      *
-     * Nie każdą zmianę widać w danych — nowy cel przetwarzania w istniejącej
+     * Nie każdą zmianę widać w danych: nowy cel przetwarzania w istniejącej
      * kategorii nie zostawia śladu w tabelach. Podbicie licznika każe zapytać
      * wszystkich od nowa.
      */
     public const CONSENT_EPOCH = 'QUINCE_CMP_CONSENT_EPOCH';
 
-    /** Po ilu miesiącach pytamy o zgodę ponownie. SPEC §10.4 — decyzja otwarta. */
+    /** Po ilu miesiącach pytamy o zgodę ponownie. */
     public const LIFETIME_MONTHS = 'QUINCE_CMP_LIFETIME_MONTHS';
 
     /** Po ilu miesiącach kasujemy zgodę kogoś, kto nigdy nie podał adresu. */
@@ -84,14 +84,14 @@ final class Options
     public const TEST_MODE = 'QUINCE_CMP_TEST_MODE';
     public const TEST_IPS = 'QUINCE_CMP_TEST_IPS';
 
-    /** Baner — pierwsza warstwa. Wartości językowe. */
+    /** Baner, pierwsza warstwa. Wartości językowe. */
     public const B1_TITLE = 'QUINCE_CMP_B1_TITLE';
     public const B1_BODY = 'QUINCE_CMP_B1_BODY';
     public const B1_ACCEPT = 'QUINCE_CMP_B1_ACCEPT';
     public const B1_REJECT = 'QUINCE_CMP_B1_REJECT';
     public const B1_PREFS = 'QUINCE_CMP_B1_PREFS';
 
-    /** Baner — druga warstwa. Wartości językowe. */
+    /** Baner, druga warstwa. Wartości językowe. */
     public const B2_TITLE = 'QUINCE_CMP_B2_TITLE';
     public const B2_BODY = 'QUINCE_CMP_B2_BODY';
     public const B2_SAVE = 'QUINCE_CMP_B2_SAVE';
@@ -113,7 +113,7 @@ final class Options
     public const FAB_POSITIONS = ['left', 'right'];
 
     /**
-     * Odległość przycisku od dolnej krawędzi, w pikselach — osobno dla telefonu.
+     * Odległość przycisku od dolnej krawędzi w pikselach, osobno dla telefonu.
      *
      * W tym samym rogu stoi zwykle czat, przycisk „do góry" albo przyklejony pasek
      * koszyka. Na telefonie takie paski są dużo częstsze, więc wartość dobrana pod
@@ -149,10 +149,8 @@ final class Options
     /**
      * Zasięg stanu domyślnego Consent Mode.
      *
-     * `everywhere` — odmowa dla całego świata; ustawienie bezpieczne i domyślne.
-     * `regions`    — odmowa tylko w wskazanych krajach, poza nimi zgoda z góry.
-     *                Tak działa większość sklepów sprzedających poza EOG: prawo
-     *                wymaga pytania tam, gdzie obowiązuje, a nie wszędzie.
+     * `everywhere`: odmowa dla całego świata (domyślnie).
+     * `regions`:    odmowa tylko we wskazanych krajach, poza nimi zgoda z góry.
      */
     public const CM_SCOPE = 'QUINCE_CMP_CM_SCOPE';
     public const CM_SCOPES = ['everywhere', 'regions'];
@@ -184,17 +182,15 @@ final class Options
     public const SYNC_KEY_OUT = 'QUINCE_CMP_SYNC_KEY_OUT';
     public const SYNC_KEY_IN = 'QUINCE_CMP_SYNC_KEY_IN';
 
-    /** Kody zgód wysyłane na zewnątrz. Lista rozdzielona przecinkami. */
     /**
      * Zgoda na wysyłkę pod adres w sieci lokalnej serwera.
      *
-     * Domyślnie wyłączone. Odbiorca stojący w tej samej sieci co sklep to sytuacja
-     * prawdziwa, ale rzadka — a bez tego przełącznika pole adresu jest narzędziem
-     * do odpytywania cudzej infrastruktury. Świadome kliknięcie zamienia przeoczenie
-     * w decyzję.
+     * Domyślnie wyłączone. Bez tej blokady pole adresu byłoby narzędziem
+     * do odpytywania cudzej infrastruktury.
      */
     public const SYNC_ALLOW_LOCAL = 'QUINCE_CMP_SYNC_ALLOW_LOCAL';
 
+    /** Kody zgód wysyłane na zewnątrz. Lista rozdzielona przecinkami. */
     public const SYNC_CODES = 'QUINCE_CMP_SYNC_CODES';
 
     /** Co ile minut rusza wysyłka. */

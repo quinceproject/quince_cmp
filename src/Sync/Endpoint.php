@@ -17,16 +17,16 @@ namespace Quince\Cmp\Sync;
  * Adres odbiorcy wpisuje sprzedawca, a moduł wysyła tam żądanie z serwera sklepu.
  * Bez tego sprawdzenia pole w panelu jest narzędziem do odpytywania sieci, w której
  * stoi sklep: `https://127.0.0.1:8080/`, `https://10.0.0.5/` albo
- * `https://169.254.169.254/` — usługa metadanych u dostawców chmurowych, zwracająca
- * poświadczenia instancji. Odpowiedź wraca do panelu, więc byłby to pełny odczyt,
+ * `https://169.254.169.254/` (usługa metadanych u dostawców chmurowych, zwracająca
+ * poświadczenia instancji). Odpowiedź wraca do panelu, więc byłby to pełny odczyt,
  * nie ślepe żądanie.
  *
- * W układzie, w którym sklep stoi na cudzym serwerze — hosting współdzielony, agencja
- * prowadząca sklep klienta — osoba z dostępem do panelu nie jest właścicielem maszyny.
+ * Na hostingu współdzielonym albo w sklepie prowadzonym przez agencję osoba
+ * z dostępem do panelu nie jest właścicielem maszyny.
  *
  * Sprawdzamy adres, pod który połączenie faktycznie pójdzie, a nie sam napis: domena
  * wskazująca na `127.0.0.1` wygląda niewinnie. Wynik rozwiązania nazwy zwracamy
- * wywołującemu, żeby przypiął go do połączenia — inaczej między sprawdzeniem
+ * wywołującemu, żeby przypiął go do połączenia. Inaczej między sprawdzeniem
  * a wysyłką DNS może odpowiedzieć czym innym.
  */
 final class Endpoint
@@ -106,9 +106,8 @@ final class Endpoint
      * Czy adres leży poza sieciami, do których serwer nie powinien sięgać na cudze polecenie.
      *
      * `FILTER_FLAG_NO_PRIV_RANGE` odcina `10/8`, `172.16/12`, `192.168/16` i `fc00::/7`,
-     * `FILTER_FLAG_NO_RES_RANGE` — pętlę zwrotną, `169.254/16` z usługą metadanych,
-     * `0.0.0.0/8` oraz odpowiedniki w IPv6. Obie flagi razem pokrywają to, co trzeba,
-     * bez wypisywania zakresów ręcznie.
+     * a `FILTER_FLAG_NO_RES_RANGE` pętlę zwrotną, `169.254/16` z usługą metadanych,
+     * `0.0.0.0/8` oraz odpowiedniki w IPv6.
      */
     private static function publiczny(string $ip): bool
     {

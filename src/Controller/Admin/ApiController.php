@@ -23,14 +23,9 @@ use Tools;
 /**
  * Ekran API: jak się podłączyć, czym, i czy ktoś już to zrobił.
  *
- * **Nie ma tu własnego generatora kluczy i nie będzie.** PrestaShop 9 ma
- * uwierzytelnianie OAuth2, ekran klientów API, zakresy uprawnień, wymianę
- * sekretu i odwoływanie dostępu. Moduł, który dorabia do tego drugi mechanizm,
- * rozprasza integracje sklepu po kilku miejscach i odbiera sprzedawcy jedno
- * miejsce, w którym widzi, kto ma dostęp do czego.
- *
- * Ten ekran robi trzy rzeczy, których rdzeń nie zrobi za nas: mówi, **co**
- * nasz moduł wystawia, zakłada klienta z **naszymi zakresami już zaznaczonymi**,
+ * Klucze, zakresy i odwoływanie dostępu obsługuje OAuth2 rdzenia PrestaShop 9,
+ * moduł nie ma własnego generatora kluczy. Ten ekran mówi, **co** moduł
+ * wystawia, zakłada klienta z **zakresami modułu już zaznaczonymi**
  * i pokazuje, **czy ktoś się połączył**.
  */
 final class ApiController extends CmpController
@@ -50,7 +45,7 @@ final class ApiController extends CmpController
             'baseUrl' => ApiSurface::baseUrl(),
             'clients' => ApiSurface::clients(),
             // Zadanie bierzemy z argumentu akcji. `FrameworkBundleAdminController`
-            // nie ma `getRequest()`, a siegniecie po nie wywracalo caly ekran.
+            // nie ma `getRequest()`, wywołanie go wywraca cały ekran.
             'freshSecret' => $request->getSession()->get('quince_cmp_api_secret'),
         ]);
     }
@@ -58,10 +53,8 @@ final class ApiController extends CmpController
     /**
      * Włączenie Admin API całego sklepu.
      *
-     * Osobna akcja z potwierdzeniem, a nie przełącznik przy okazji. To jest
-     * ustawienie **sklepu**, nie modułu: od tej chwili API wystawiają wszystkie
-     * moduły, które je zadeklarowały, nie tylko ten. Moduł, który włącza je po
-     * cichu, jest dokładnie tym, czego administrator ma prawo się bać.
+     * Osobna akcja z potwierdzeniem, bo to ustawienie **sklepu**, nie modułu:
+     * od tej chwili API wystawiają wszystkie moduły, które je zadeklarowały.
      */
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to do this.')]
     public function enableAction(Request $request): RedirectResponse
@@ -86,13 +79,11 @@ final class ApiController extends CmpController
     /**
      * Założenie klienta API z zakresami tego modułu.
      *
-     * Wołamy polecenie rdzenia, więc klient ląduje na jego liście jak każdy inny —
-     * sprzedawca może go tam obejrzeć, wyłączyć albo skasować. Nie obchodzimy
-     * niczego, tylko wypełniamy formularz za kogoś, kto musiałby zaznaczyć nasze
-     * zakresy ręcznie wśród wszystkich zakresów sklepu.
+     * Przez polecenie rdzenia, więc klient ląduje na liście klientów API jak
+     * każdy inny i tam można go wyłączyć albo skasować.
      *
      * **Sekret pokazujemy raz.** Rdzeń trzyma go zahaszowany i drugi raz go nie
-     * odda — jedyne, co zostaje, to wygenerowanie nowego.
+     * odda. Zgubiony sekret trzeba wygenerować od nowa.
      */
     #[AdminSecurity("is_granted('create', request.get('_legacy_controller'))", message: 'You do not have permission to do this.')]
     public function createClientAction(Request $request): RedirectResponse
@@ -144,7 +135,7 @@ final class ApiController extends CmpController
         return $this->redirectToRoute('quince_cmp_api');
     }
 
-    /** Zapomnienie pokazanego sekretu — po tym nie da się go już odczytać. */
+    /** Zapomnienie pokazanego sekretu. Po tym nie da się go już odczytać. */
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))")]
     public function forgetSecretAction(Request $request): RedirectResponse
     {

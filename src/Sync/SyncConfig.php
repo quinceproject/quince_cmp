@@ -23,9 +23,7 @@ use Shop;
  * Odczyt jest **zawsze** per sklep. Zasięg grupowy realizujemy powielaniem przy
  * zapisie, nie odczytem z poziomu grupy: `Configuration` na poziomie grupy
  * stempluje wiersz bieżącym sklepem i przy braku wpisu schodzi do wartości
- * globalnej, więc druga grupa widziała cudze ustawienia. Powielenie jest
- * przewidywalne i nie wymaga wskazywania „sklepu wiodącego", którego usunięcie
- * zabrałoby konfigurację reszcie.
+ * globalnej, więc druga grupa widziałaby cudze ustawienia.
  */
 final class SyncConfig
 {
@@ -82,7 +80,7 @@ final class SyncConfig
      * Przełącza zasięg i wyrównuje ustawienia w grupie.
      *
      * Przy wejściu w zasięg grupowy witryny rodzeństwa dostają wartości tej,
-     * na której dokonano zmiany — inaczej pokazywałyby „ta witryna osobno",
+     * na której dokonano zmiany. Inaczej pokazywałyby „ta witryna osobno",
      * trzymając cudze ustawienia. Wyjście dotyczy wyłącznie tej witryny, żeby
      * dało się odłączyć jeden sklep od wspólnego odbiorcy.
      */
@@ -148,9 +146,8 @@ final class SyncConfig
      * Zaklada brakujace klucze podpisu.
      *
      * Sklep bez klucza nadawcy odrzuca wszystko, co przyjdzie z zewnatrz, a bez
-     * klucza podpisu nie wysyla nic — i jedno, i drugie po cichu. Klucz nic nie
-     * kosztuje i nic nie wlacza, wiec zakladamy go od razu, zeby wymiana czekala
-     * gotowa zamiast wymagac kliknięcia, o ktorym nikt nie wie.
+     * klucza podpisu nie wysyla nic, i jedno, i drugie po cichu. Klucz sam niczego
+     * nie wlacza, wiec zakladamy go od razu.
      */
     public static function zapewnijKlucze(int $idShop): void
     {

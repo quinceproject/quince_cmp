@@ -20,7 +20,7 @@ use Quince\Cmp\Storage\SyncQueue;
  *
  * Ładunek jest podpisany kluczem współdzielonym (HMAC-SHA256) i niesie znacznik
  * czasu, żeby odbiorca mógł odrzucić powtórzone żądanie. Podpis liczony jest
- * z surowego ciała żądania — nie z posortowanych pól — bo tylko wtedy obie
+ * z surowego ciała żądania (nie z posortowanych pól), bo tylko wtedy obie
  * strony podpisują dokładnie to samo.
  */
 final class Transport

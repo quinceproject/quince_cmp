@@ -29,7 +29,7 @@ use Context;
  */
 final class ClauseText
 {
-    /** `[widoczny tekst](cel)` — cel to `cms:ID` albo zwykły adres. */
+    /** `[widoczny tekst](cel)`, gdzie cel to `cms:ID` albo zwykły adres. */
     private const WZOR = '/\[([^\]]+)\]\(([^)]+)\)/u';
 
     /**
@@ -79,7 +79,7 @@ final class ClauseText
         return $out;
     }
 
-    /** Sam tekst, bez odnośników — do miejsc, w których HTML nie wejdzie. */
+    /** Sam tekst, bez odnośników, do miejsc, w których HTML nie wejdzie. */
     public static function toPlain(string $raw): string
     {
         return (string) preg_replace(self::WZOR, '$1', $raw);

@@ -56,7 +56,7 @@ final class ConsentLogController extends CmpController
     /**
      * Profil po adresie.
      *
-     * Zasięg to grupa sklepów, w której siedzi sklep wybrany w panelu — o ile
+     * Zasięg to grupa sklepów, w której siedzi sklep wybrany w panelu, o ile
      * grupa dzieli klientów. Adres w takiej grupie oznacza jedną osobę, więc jej
      * zgody są jednym rekordem z kolumną na sklep. Poza grupą ten sam adres jest
      * kimś innym i tam nie zaglądamy.
@@ -72,10 +72,9 @@ final class ConsentLogController extends CmpController
 
         // Zasięg liczony jest od sklepu zdarzenia, z którego wiersz prowadzi
         // tutaj (parametr `shop` w adresie), a nie od sklepu wybranego akurat
-        // w górnym pasku panelu — dwa niezwiązane ze sobą stany. Bez tego klik
-        // w wiersz z innego sklepu niż kontekst panelu pokazywał pusty profil
-        // dla osoby, która ma realne zgody. Pracownik musi mieć dostęp do tego
-        // sklepu — inaczej zasięg wraca do sklepu z kontekstu panelu.
+        // w górnym pasku panelu. Inaczej wiersz z innego sklepu niż kontekst
+        // panelu pokazuje pusty profil osoby, która ma zgody. Gdy pracownik nie
+        // ma dostępu do tego sklepu, zasięg wraca do sklepu z kontekstu panelu.
         $sklepZeZdarzenia = (int) $request->query->get('shop', 0);
         $sklepyPracownika = $this->sklepyPracownika();
         $sklepOdniesienia = $sklepZeZdarzenia > 0 && in_array($sklepZeZdarzenia, $sklepyPracownika, true)
@@ -113,14 +112,14 @@ final class ConsentLogController extends CmpController
     /**
      * Odnotowanie wycofania zgody na żądanie osoby.
      *
-     * Żądanie przychodzi mailem albo telefonicznie, a więc poza sklepem —
+     * Żądanie przychodzi mailem albo telefonicznie, a więc poza sklepem,
      * i musi zostawić w dzienniku taki sam ślad jak kliknięcie, bo ma taką samą
      * moc. Zdarzenie dostaje pochodzenie `staff`, identyfikator pracownika oraz
      * podstawę, na jakiej powstało; bez podstawy wpis nie przechodzi, bo za rok
      * nikt nie odtworzy, skąd się wziął.
      *
      * Zasięg wybiera obsługa. Regulamin obowiązuje w jednym sklepie, ale żądanie
-     * może dotyczyć osoby, a nie witryny — i wtedy schodzi na całą grupę.
+     * może dotyczyć osoby, a nie witryny, i wtedy schodzi na całą grupę.
      */
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function withdrawAction(Request $request): RedirectResponse
@@ -191,7 +190,7 @@ final class ConsentLogController extends CmpController
     /**
      * Sklep, względem którego liczymy grupę.
      *
-     * Przy kontekście „wszystkie sklepy" bierzemy pierwszy dostępny — profil musi
+     * Przy kontekście „wszystkie sklepy" bierzemy pierwszy dostępny. Profil musi
      * pokazywać jedną grupę, a nie sklejać kilka, w których ten sam adres bywa
      * różnymi osobami.
      */
@@ -212,7 +211,7 @@ final class ConsentLogController extends CmpController
      * Konto klienta o tym adresie, jeśli w ogóle istnieje.
      *
      * Zgody zbieramy również od osób bez konta, więc brak wyniku jest zwykłym
-     * stanem, a nie błędem — profil zgód i karta klienta to dwie różne rzeczy.
+     * stanem, a nie błędem: profil zgód i karta klienta to dwie różne rzeczy.
      */
     private function kartaKlienta(string $email): int
     {
@@ -237,7 +236,7 @@ final class ConsentLogController extends CmpController
      *
      * Profil celowo nie ogląda się na sklep wybrany w pasku kontekstu. Kontekst
      * jest filtrem widoku, nie granicą uprawnień, a zgody jednej osoby w grupie
-     * dzielącej klientów są jednym rekordem — obcięcie ich do bieżącego sklepu
+     * dzielącej klientów są jednym rekordem. Obcięcie ich do bieżącego sklepu
      * pokazywałoby połowę stanu i sugerowało, że reszty nie ma.
      *
      * Granicą pozostają sklepy przypisane pracownikowi. Strumień zdarzeń trzyma

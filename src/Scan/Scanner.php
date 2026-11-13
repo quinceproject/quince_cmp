@@ -19,13 +19,12 @@ use Quince\Cmp\Storage\Schema;
  * Skaner: co sklep faktycznie zapisuje w przeglądarce.
  *
  * Nie da się tego ustalić z serwera. Nagłówek `Set-Cookie` pokazuje wyłącznie
- * to, co zapisał sam PrestaShop; wszystko, co dokłada JavaScript — a to jest
- * większość ciasteczek pomiarowych i reklamowych — powstaje dopiero
- * w przeglądarce i nigdy nie przechodzi przez PHP. Dlatego zbiera je skrypt
+ * to, co zapisał sam PrestaShop; wszystko, co dokłada JavaScript (większość
+ * ciasteczek pomiarowych i reklamowych), powstaje dopiero w przeglądarce i nigdy nie przechodzi przez PHP. Dlatego zbiera je skrypt
  * uruchomiony na sklepie, a serwer przyjmuje meldunek.
  *
  * Skanowanie działa w trybie, w którym **wszystkie kategorie są chwilowo
- * zwolnione** — inaczej wstrzymane usługi nigdy by się nie uruchomiły i skaner
+ * zwolnione**. Inaczej wstrzymane usługi nigdy by się nie uruchomiły i skaner
  * meldowałby, że sklep nie zapisuje niczego. Tryb obowiązuje wyłącznie
  * przeglądarkę, która ma ważny token, i nie zapisuje żadnej zgody w dzienniku.
  */
@@ -41,10 +40,7 @@ final class Scanner
     private const WAZNY_MINUT = 30;
 
     /**
-     * Nazwy, których nie melduje — własne ciasteczka modułu i sesja sklepu.
-     *
-     * Meldowanie ich zaśmiecałoby listę rzeczami, których sprzedawca i tak
-     * nie opisze, bo nie należą do żadnej usługi zewnętrznej.
+     * Nazwy, których nie melduje: własne ciasteczka modułu i sesja sklepu.
      */
     private const POMIJANE = [
         'quince_cmp',
@@ -91,7 +87,7 @@ final class Scanner
      * Zapisuje meldunek z przeglądarki.
      *
      * Ten sam wpis przy kolejnym przebiegu podbija licznik zamiast tworzyć
-     * duplikat — sprzedawca ma zobaczyć listę rzeczy, nie listę zdarzeń.
+     * duplikat.
      *
      * @param array<int,array{kind:string,name:string,domain?:string}> $znaleziska
      *
@@ -187,7 +183,7 @@ final class Scanner
         );
     }
 
-    /** Kasuje wszystkie znaleziska sklepu — przed nowym, czystym przebiegiem. */
+    /** Kasuje wszystkie znaleziska sklepu przed nowym, czystym przebiegiem. */
     public function reset(int $idShop): bool
     {
         return Db::getInstance()->execute(

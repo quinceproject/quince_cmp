@@ -20,7 +20,7 @@ use Quince\Cmp\Storage\Schema;
  *
  * `CoreBridge::MAPOWANIE` zostaje usunięta: odwzorowanie kolumn `ps_customer`
  * czyta się teraz z `core_field` na rodzaju zgody, ustawianego w panelu.
- * Dotąd `core_field` było puste dla wszystkich — ta aktualizacja wypełnia je
+ * Przed 0.3.3 `core_field` było puste dla wszystkich. Ta aktualizacja wypełnia je
  * dla dwóch kodów, które stała obsługiwała, żeby żaden sklep nie przestał
  * zwierciadlić newslettera i zgody na oferty partnerów po aktualizacji.
  */

@@ -21,7 +21,7 @@ use Language;
  * marketingowe oraz regulamin i politykę prywatności. Zgody branżowe dodaje
  * sprzedawca samodzielnie.
  *
- * Zakładane są wyłącznie rodzaje zgód, bez wersji — moduł nie dostarcza treści
+ * Zakładane są wyłącznie rodzaje zgód, bez wersji. Moduł nie dostarcza treści
  * klauzul, ponieważ odpowiada za nie sprzedawca. Do czasu opublikowania wersji
  * zgoda nie jest prezentowana klientowi.
  *
@@ -44,7 +44,7 @@ final class DefaultConsentTypes
         ['code' => 'cookies_preferences', 'kind' => Schema::KIND_COOKIE, 'required' => false, 'name' => 'Preference cookies',
             'signals' => ['functionality_storage', 'personalization_storage']],
 
-        // Kanały marketingowe rozdzielone — zgoda jest rozdzielna po celach.
+        // Kanały marketingowe osobno, bo zgoda jest rozdzielna po celach.
         ['code' => 'newsletter', 'kind' => Schema::KIND_FORM, 'required' => false, 'name' => 'Newsletter subscription',
             'core_field' => 'newsletter'],
         ['code' => 'marketing_email', 'kind' => Schema::KIND_FORM, 'required' => false, 'name' => 'Marketing messages by e-mail',
@@ -57,7 +57,7 @@ final class DefaultConsentTypes
     ];
 
     /**
-     * Zakłada zestaw w jednym sklepie. Operacja idempotentna — istniejące kody
+     * Zakłada zestaw w jednym sklepie. Operacja idempotentna: istniejące kody
      * pozostają bez zmian.
      */
     public function seedForShop(int $idShop): bool
@@ -132,9 +132,6 @@ final class DefaultConsentTypes
     }
 
     /**
-     * @return array<int,string>
-     */
-    /**
      * Kolumny Consent Mode dla zakladanej kategorii.
      *
      * Bez tego przypisania zgoda klienta nie ma jak dotrzec do Google: modul
@@ -143,7 +140,7 @@ final class DefaultConsentTypes
      * sprawia, ze „Akceptuje" nie zmienia nic, a Google traktuje kanal, ktory
      * nigdy nie mowi „tak", jak wylaczony w ogole.
      *
-     * Przypisanie jest **propozycja startowa**, nie regula prawa — sprzedawca
+     * Przypisanie jest **propozycja startowa**, nie regula prawa. Sprzedawca
      * zmienia je na ekranie skryptow.
      *
      * @param array{signals?:array<int,string>} $opis
@@ -161,6 +158,9 @@ final class DefaultConsentTypes
         return $out;
     }
 
+    /**
+     * @return array<int,string>
+     */
     private function kodyWSklepie(int $idShop): array
     {
         $wiersze = Db::getInstance()->executeS(

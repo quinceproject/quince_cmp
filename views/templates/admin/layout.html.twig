@@ -6,16 +6,16 @@
 
   To **własna kopia** layoutu z `quince_engine`, nie rozszerzenie go. Moduł ma
   działać w sklepie bez silnika, a `{% extends %}` z cudzego katalogu wywraca
-  się przy jego braku — i to na każdej podstronie naraz.
+  się przy jego braku, i to na każdej podstronie naraz.
 
   Językiem bazowym modułu jest angielski. Wszystkie napisy przechodzą przez
   filtr `trans` z domeną Modules.Quincecmp.Admin; tłumaczenia leżą
   w `translations/pl-PL/`.
 
   Zmienne od kontrolera:
-    nav        — pozycje bocznego paska (Quince\Cmp\Ui\PanelNavigation)
-    quinceRoute — nazwa bieżącej trasy, podświetla pozycję w pasku
-    qcVersion  — wersja modułu, znacznik przy plikach CSS i JS
+    nav:         pozycje bocznego paska (Quince\Cmp\Ui\PanelNavigation)
+    quinceRoute: nazwa bieżącej trasy, podświetla pozycję w pasku
+    qcVersion:   wersja modułu, znacznik przy plikach CSS i JS
 #}
 {% extends '@PrestaShop/Admin/layout.html.twig' %}
 {% import '@Modules/quince_cmp/views/templates/admin/_macros/icons.html.twig' as icons %}
@@ -24,8 +24,7 @@
 
 {# Znacznik wersji przy każdym pliku. Bez niego przeglądarka trzyma poprzedni
    arkusz i poprawki CSS nie docierają do panelu mimo poprawnego pliku na dysku.
-   W trybie deweloperskim znacznik czasu — plik zmienia się kilkanaście razy
-   dziennie. Na produkcji wersja modułu, więc cache działa aż do aktualizacji. #}
+   W trybie deweloperskim jest to znacznik czasu, na produkcji wersja modułu, więc cache działa aż do aktualizacji. #}
 {% set qcVer = '?v=' ~ (app.debug ? 'now'|date('U') : qcVersion|default('0.1.0')) %}
 
 {% block stylesheets %}
@@ -41,7 +40,7 @@
 {% block javascripts %}
     {{ parent() }}
     {# Alpine obsługuje pola wielojęzyczne z `_macros/fields.html.twig`.
-       Własna kopia w module, nie plik silnika — moduł ma działać bez niego. #}
+       Własna kopia w module, nie plik silnika: moduł ma działać bez niego. #}
     {# Przechwytuje komunikaty PrestaShopa i pokazuje je jako toast. Natywne alerty
        wchodzą nad treść, przesuwają cały układ w dół i zostają do przeładowania. #}
     <script src="{{ asset('../modules/quince_cmp/views/js/panel.js') ~ qcVer }}" defer></script>
@@ -75,7 +74,7 @@
                     </a>
                 {% else %}
                     {# Pozycja zaplanowana, ale jeszcze niezbudowana. Wyszarzona
-                       ze znacznikiem — czytelny sygnał, że to docelowe miejsce,
+                       ze znacznikiem, żeby było widać, że to docelowe miejsce,
                        a nie zepsuty odnośnik. #}
                     <span class="qc-nav-item qc-disabled" aria-disabled="true">
                         {{ icons.icon(item.icon) }}
@@ -98,13 +97,11 @@
             {# Dwie rzeczy naraz, bo dają co innego. Blok `quince_actionbar` pozwala
                ekranowi świadomie zgasić pasek albo podmienić go na własny.
                Sprawdzenie pustki gwarantuje, że pusty pasek nie wyjdzie nawet
-               wtedy, gdy ktoś o bloku zapomni — przyklejony do dna okna wygląda
-               wtedy na niedokończony formularz.
+               wtedy, gdy ktoś o bloku zapomni (przyklejony do dna okna wygląda
+               na niedokończony formularz).
 
-               Ta sama postać co w layoucie silnika i ta sama nazwa bloku po obu
-               stronach. Kopia layoutu jest tu świadomym kosztem tego, że moduł
-               działa bez silnika — ale nie ma powodu, żeby rozjeżdżała się
-               o rzeczy, które da się trzymać zgodnie. #}
+               Postać i nazwa bloku są takie same jak w layoucie silnika
+               i powinny takie zostać. #}
             {% block quince_actionbar %}
                 {% set qcAkcje %}{% block quince_actions %}{% endblock %}{% endset %}
                 {% set qcAkcjeInfo %}{% block quince_actions_info %}{% endblock %}{% endset %}

@@ -18,9 +18,8 @@ use Tools;
  * Co ten moduł wystawia przez Admin API PrestaShopa.
  *
  * Jedno miejsce na opis powierzchni API: operacje, zakresy i adres. Ekran czyta
- * stąd, a nie z własnej listy — inaczej dokumentacja w panelu rozjeżdżałaby się
- * z tym, co moduł naprawdę wystawia, i nikt by tego nie zauważył, bo jedno i
- * drugie wyglądałoby poprawnie.
+ * stąd, a nie z własnej listy, żeby dokumentacja w panelu nie rozjechała się
+ * z tym, co moduł naprawdę wystawia.
  *
  * Same zasoby leżą w `src/ApiPlatform/Resources`, skąd rdzeń wczytuje je sam.
  */
@@ -84,13 +83,13 @@ final class ApiSurface
      *
      * Trzy warunki i każdy z nich potrafi wyłączyć całość:
      *
-     * - `PS_ENABLE_ADMIN_API` — włącznik API w sklepie
-     * - HTTPS — `SSLMiddlewareListener` odrzuca żądania po zwykłym HTTP i poza
+     * - `PS_ENABLE_ADMIN_API`: włącznik API w sklepie
+     * - HTTPS: `SSLMiddlewareListener` odrzuca żądania po zwykłym HTTP i poza
      *   trybem deweloperskim nie ma od tego wyjątku
-     * - **wielosklepowość** — gdy jest włączona, `AdminAPIFeatureListener`
+     * - **wielosklepowość**: gdy jest włączona, `AdminAPIFeatureListener`
      *   odpowiada 404 na wszystko, dopóki nie włączy się flagi
-     *   `admin_api_multistore`. To zaskakuje najbardziej, bo nie ma o tym słowa
-     *   na ekranie API w rdzeniu, a objawia się jak brak trasy
+     *   `admin_api_multistore`. Ekran API w rdzeniu o tym nie wspomina,
+     *   a objawia się to jak brak trasy
      *
      * @return array{ok:bool,api:bool,ssl:bool,multistore:bool,flag:bool}
      */
@@ -116,8 +115,7 @@ final class ApiSurface
      * Klienci API, którzy mają którykolwiek z naszych zakresów.
      *
      * Czytamy wprost z tabeli rdzenia, bo pytanie brzmi „kto ma dostęp do zgód",
-     * a nie „jacy klienci istnieją". Reszta klientów sklepu do tego ekranu nie
-     * należy — od nich jest ekran rdzenia.
+     * a nie „jacy klienci istnieją". Resztę klientów sklepu pokazuje ekran rdzenia.
      *
      * @return array<int,array{name:string,clientId:string,enabled:bool,scopes:array<int,string>,write:bool}>
      */

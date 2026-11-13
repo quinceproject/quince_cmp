@@ -20,8 +20,7 @@ use Hook;
  *
  * 1. **Silnik**, jeśli jest w sklepie. Prowadzi spis wszystkich modułów Quince
  *    i pyta o niego raz, zamiast pozwolić każdemu modułowi pytać osobno.
- * 2. **Spis wydań**, gdy silnika nie ma — moduł musi działać sam, bo trafia
- *    do sklepów, w których nikt silnika nie instalował.
+ * 2. **Spis wydań**, gdy silnika nie ma. Moduł musi działać sam.
  *
  * Rozmowa z silnikiem idzie hookiem, a nie wywołaniem jego klasy. Moduł nie może
  * zależeć od kodu, którego w sklepie może nie być, a hook bez odbiorcy po prostu
@@ -41,8 +40,8 @@ final class Release
      * Stan aktualizacji.
      *
      * `configured` mówi, czy w ogóle jest się o co pytać. Fałsz oznacza, że
-     * wydania nie są jeszcze publikowane — ekran ma wtedy powiedzieć to wprost,
-     * zamiast pokazywać przycisk, który nie może zadziałać.
+     * wydania nie są jeszcze publikowane, a ekran nie pokazuje wtedy przycisku
+     * aktualizacji.
      *
      * @return array{configured:bool,source:string,checked:?string,current:string,latest:string,newer:bool,url:string,notes:string,zip:string,sha256:string,error:string}
      */
@@ -104,7 +103,7 @@ final class Release
      *
      * `Hook::exec` z `$array_return` zwraca wynik każdego modułu z osobna, więc
      * bierzemy pierwszy, który wygląda jak wpis o wydaniu. Cokolwiek innego
-     * traktujemy jak brak odpowiedzi — moduł ma wtedy własną drogę.
+     * traktujemy jak brak odpowiedzi i schodzimy do spisu wydań.
      *
      * @return array<string,mixed>|null
      */

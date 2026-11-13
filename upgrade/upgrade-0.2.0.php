@@ -22,7 +22,7 @@ use Quince\Cmp\Sync\SyncConfig;
  * Consent Mode w pelnym zakresie (siedem sygnalow zamiast czterech), wymiana
  * z systemem zewnetrznym, ekran ustawien i warstwa sklepu.
  *
- * Kolumny dokladane sa metoda, ktora pomija to, co juz zastanie — dzieki temu
+ * Kolumny dokladane sa metoda, ktora pomija to, co juz zastanie. Dzieki temu
  * skrypt wolno uruchomic ponownie, a instalacja od zera i aktualizacja koncza
  * sie tym samym schematem.
  */

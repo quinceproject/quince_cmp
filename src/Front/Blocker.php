@@ -18,7 +18,7 @@ use Quince\Cmp\Storage\Schema;
 /**
  * Wstrzymywanie usług do czasu zgody.
  *
- * Moduł nie przechowuje kodu usług — one siedzą w szablonie, w innych modułach
+ * Moduł nie przechowuje kodu usług: one siedzą w szablonie, w innych modułach
  * albo w menedżerze tagów. Rozpoznajemy je po wzorcu i przepisujemy gotowy HTML
  * strony, zanim trafi do przeglądarki: `<script>` traci wykonywalny typ,
  * `<iframe>` traci adres. Odzyskują je po zgodzie, po stronie przeglądarki.
@@ -29,7 +29,7 @@ use Quince\Cmp\Storage\Schema;
  *
  * Tagów Google nie ruszamy. Nimi steruje Consent Mode: mają się załadować
  * i same ograniczyć zakres. Zablokowanie ich odbiera Google pingi bez
- * ciasteczek i modelowanie, czyli kosztuje dane, których nikt nie chronił.
+ * ciasteczek i modelowanie.
  */
 final class Blocker
 {
@@ -92,7 +92,7 @@ final class Blocker
         foreach ($wiersze as $wiersz) {
             $kod = (string) $wiersz['category'];
 
-            // Bez kategorii nie wiadomo, czyja zgoda tę usługę zwalnia — a usługa,
+            // Bez kategorii nie wiadomo, czyja zgoda tę usługę zwalnia. Usługa,
             // której nic nigdy nie zwolni, nie działałaby w sklepie w ogóle.
             if ($kod === '' || in_array($kod, $przyznane, true)) {
                 continue;
@@ -137,8 +137,8 @@ final class Blocker
                     return $m[0];
                 }
 
-                // `type` bywa już ustawiony (`module`, `application/json`) —
-                // zapamiętujemy go, żeby po zgodzie wrócił ten sam.
+                // `type` bywa już ustawiony (`module`, `application/json`),
+                // więc zapamiętujemy go, żeby po zgodzie wrócił ten sam.
                 $poprzedni = 'text/javascript';
 
                 $atrybuty = (string) preg_replace_callback(
@@ -185,7 +185,7 @@ final class Blocker
                 }
 
                 // Adres wędruje do atrybutu, którego przeglądarka nie pobiera.
-                // Sam `sandbox` nie wystarcza — żądanie do usługi i tak by poszło.
+                // Sam `sandbox` nie wystarcza: żądanie do usługi i tak by poszło.
                 $atrybuty = (string) preg_replace(self::WZOR_SRC, ' data-qc-src=$1$2$1', $atrybuty, 1);
 
                 return '<iframe data-qc-code="' . htmlspecialchars($regula['code'], ENT_QUOTES) . '"'

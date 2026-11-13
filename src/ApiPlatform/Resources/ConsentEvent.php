@@ -22,13 +22,12 @@ use Quince\Cmp\ApiPlatform\Provider\ConsentEventProvider;
 /**
  * Zdarzenie zgody: jedna odpowiedź jednej osoby, w jednej chwili.
  *
- * Dziennik jest **dopisywany, nigdy nadpisywany** — nie ma tu operacji zmiany
- * ani usunięcia i nie będzie. Wycofanie zgody to nowe zdarzenie z `granted:
- * false`, a nie skasowanie poprzedniego; inaczej dowód przestałby być dowodem.
+ * Dziennik jest **dopisywany, nigdy nadpisywany**: nie ma tu operacji zmiany
+ * ani usunięcia. Wycofanie zgody to nowe zdarzenie z `granted: false`, a nie
+ * skasowanie poprzedniego.
  *
- * Dwa zakresy, bo to dwie różne rzeczy. Odczyt dziennika oddaje historię decyzji
- * klientów; zapis pozwala odnotować decyzję podjętą poza sklepem. System, który
- * tylko czyta, nie powinien móc pisać.
+ * Dwa zakresy: odczyt oddaje historię decyzji klientów, zapis pozwala odnotować
+ * decyzję podjętą poza sklepem. System, który tylko czyta, nie może pisać.
  */
 #[ApiResource(
     operations: [
@@ -87,7 +86,7 @@ class ConsentEvent
     /** Skrót treści, którą wtedy pokazano. Bez niego zdarzenie dowodzi kliknięcia, nie zgody. */
     public string $textHash = '';
 
-    /** Kiedy decyzja zapadła po tamtej stronie — nie kiedy do nas dotarła. */
+    /** Kiedy decyzja zapadła po tamtej stronie, nie kiedy do nas dotarła. */
     public string $recordedAt = '';
 
     /** Skąd: baner, kasa, rejestracja, konto, newsletter albo system zewnętrzny. */

@@ -1,12 +1,12 @@
 # Trasy panelu Quince CMP.
 #
 # `_legacy_controller` wskazuje zakładkę tego ekranu, a nie
-# zakładkę silnika — moduł stoi samodzielnie i musi mieć gdzie sprawdzać
+# zakładkę silnika. Moduł stoi samodzielnie i musi mieć gdzie sprawdzać
 # uprawnienia także wtedy, gdy `quince_engine` nie jest zainstalowany.
 #
-# Trasy dochodzą razem z ekranami, których dotyczą. Trasa wskazująca kontroler,
-# którego jeszcze nie ma, wywraca router całego panelu — a nie tylko tę jedną
-# podstronę. Pozycje bocznego paska bez trasy rysują się jako niedostępne.
+# Trasa wskazująca nieistniejący kontroler wywraca router całego panelu,
+# a nie tylko tę jedną podstronę. Pozycje bocznego paska bez trasy rysują się
+# jako niedostępne.
 
 quince_cmp_overview:
   path: quince/cmp

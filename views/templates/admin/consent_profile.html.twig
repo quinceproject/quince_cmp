@@ -1,11 +1,10 @@
 {# Profil po adresie.
 
-   Odstępstwo od prototypu `prototypy/LogProfile.dc.html`: prototyp trzymał
-   szczegół zdarzenia w osobnej kolumnie po prawej, wybieranej przeładowaniem
-   strony. Tutaj oba wykazy rozwijają wiersz w miejscu — widać, który rekord
-   jest otwarty, i nie gubi się pozycja na długiej liście.
+   Oba wykazy rozwijają wiersz w miejscu (inaczej niż osobna kolumna szczegółu
+   w `prototypy/LogProfile.dc.html`): widać, który rekord jest otwarty, i nie
+   gubi się pozycja na długiej liście.
 
-   Wartości dowodowe — skrót treści, klucz przeglądarki, user agent — pokazujemy
+   Wartości dowodowe (skrót treści, klucz przeglądarki, user agent) pokazujemy
    w całości. Skrócony skrót niczego nie dowodzi, a to jest ekran, z którego
    przepisuje się dane do odpowiedzi na żądanie osoby albo do akt sprawy. #}
 {% extends '@Modules/quince_cmp/views/templates/admin/layout.html.twig' %}
@@ -13,7 +12,7 @@
 
 {% trans_default_domain 'Modules.Quincecmp.Admin' %}
 
-{# `dlugi` zajmuje całą szerokość siatki i łamie wartość w dowolnym miejscu —
+{# `dlugi` zajmuje całą szerokość siatki i łamie wartość w dowolnym miejscu,
    inaczej sześćdziesięcioznakowy skrót rozpycha układ na bok. #}
 {% macro fakt(etykieta, wartosc, mono = false, dlugi = false) %}
     {% if wartosc is not empty %}
@@ -84,7 +83,7 @@
                 <a href="{{ customerLink }}" target="_blank" rel="noopener">{{ 'View in shop customers →'|trans }}</a>
                 ·
             {% else %}
-                {# Zgody zbieramy też od osób bez konta — brak karty jest zwykłym stanem. #}
+                {# Zgody zbieramy też od osób bez konta, więc brak karty jest zwykłym stanem. #}
                 <span title="{{ 'This address has no customer account in the shop.'|trans }}">{{ 'no customer account'|trans }}</span>
                 ·
             {% endif %}

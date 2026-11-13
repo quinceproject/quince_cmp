@@ -19,13 +19,12 @@ use Quince\Cmp\Storage\Scripts;
 /**
  * Sygnały Consent Mode wysyłane do tagów Google.
  *
- * Tagi Google nie są wstrzymywane — ładują się zawsze i pytają o zgodę tym
- * kanałem. Zablokowanie ich skryptu wygląda na ostrożność, a w praktyce kasuje
- * pingi bez ciasteczek i modelowanie konwersji: Google nie dostaje ani zgody,
- * ani odmowy, tylko ciszę, i traktuje to jak brak Consent Mode w ogóle.
- * Wstrzymujemy wszystko poza nimi.
+ * Tagi Google nie są wstrzymywane: ładują się zawsze i pytają o zgodę tym
+ * kanałem. Zablokowanie ich skryptu kasuje pingi bez ciasteczek i modelowanie
+ * konwersji, bo Google nie dostaje ani zgody, ani odmowy i traktuje to jak brak
+ * Consent Mode w ogóle. Wstrzymujemy wszystko poza nimi.
  *
- * Kolejność ma znaczenie i jest nienegocjowalna: `ads_data_redaction`
+ * Kolejności nie wolno zmieniać: `ads_data_redaction`
  * i `url_passthrough`, potem `consent default`, dopiero potem jakikolwiek tag.
  * `consent update` idzie po decyzji odwiedzającego.
  */
@@ -38,7 +37,7 @@ final class Signals
     /**
      * Skrypt dla sekcji `<head>`, przed czymkolwiek innym.
      *
-     * Zwraca pusty ciąg, gdy w sklepie nie ma czego mapować — pusta deklaracja
+     * Zwraca pusty ciąg, gdy w sklepie nie ma czego mapować. Pusta deklaracja
      * jest gorsza od żadnej, bo Google widzi wtedy odmowę wszystkiego na zawsze.
      */
     public function headScript(int $idShop, int $idLang): string
@@ -78,8 +77,8 @@ final class Signals
             $linie[] = 'gtag("consent","default",' . $this->json($domyslne) . ');';
         }
 
-        // Powracający z ważnym wyborem nie może czekać na skrypt przeglądarki —
-        // aktualizacja idzie od razu, w tym samym znaczniku co deklaracja.
+        // Powracający z ważnym wyborem nie może czekać na skrypt przeglądarki,
+        // więc aktualizacja idzie od razu, w tym samym znaczniku co deklaracja.
         $przyznane = Visitor::granted($idShop);
 
         if ($przyznane !== []) {
@@ -156,8 +155,7 @@ final class Signals
     /**
      * Stan poza regionami, w których wymagana jest zgoda.
      *
-     * Sygnały pozostają przyznane z góry — tam, gdzie prawo nie każe pytać,
-     * odmowa nie chroni nikogo, a kosztuje pomiar.
+     * Sygnały pozostają przyznane z góry.
      *
      * @param array<string,array<int,string>> $mapowanie
      *

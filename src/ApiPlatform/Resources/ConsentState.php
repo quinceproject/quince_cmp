@@ -19,20 +19,17 @@ use Quince\Cmp\ApiPlatform\Provider\ConsentStateProvider;
 /**
  * Stan zgód jednej osoby, czytany przez Admin API PrestaShopa.
  *
- * **Dlaczego przez API rdzenia, a nie własnym kluczem.** PrestaShop 9 ma
- * uwierzytelnianie OAuth2, ekran klientów API, zakresy uprawnień, wymianę
- * sekretu i dokumentację OpenAPI generowaną z tych klas. Własny mechanizm
- * kluczy w module powtarzałby to gorzej i rozpraszał integracje sklepu po
- * kilku ekranach.
+ * Uwierzytelnianie, zakresy i dokumentację OpenAPI daje Admin API rdzenia
+ * (OAuth2), moduł nie ma własnych kluczy.
  *
- * Rdzeń wczytuje ten katalog sam — `PrestaShopExtension` szuka zasobów w
+ * Rdzeń wczytuje ten katalog sam: `PrestaShopExtension` szuka zasobów w
  * `<moduł>/src/ApiPlatform/Resources`. Zakres z `scopes:` wędruje do
  * `extraProperties` i pojawia się na liście uprawnień przy tworzeniu klienta
  * API, a przy żądaniu sprawdza go `ScopeCheckerListener`.
  *
  * **Adres identyfikuje osobę adresem e-mail**, bo tak identyfikuje ją zgoda:
  * jedna osoba w całej grupie sklepów, a zgoda udzielona jednemu sklepowi nie
- * jest zgodą udzieloną drugiemu — stąd stan rozbity po sklepach.
+ * jest zgodą udzieloną drugiemu. Stąd stan rozbity po sklepach.
  */
 #[ApiResource(
     operations: [

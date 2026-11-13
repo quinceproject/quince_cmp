@@ -18,8 +18,8 @@ use Db;
  *
  * Dziennik jest dowodem, więc nic w nim nie nadpisujemy i niczego nie zmieniamy.
  * Retencja robi jedyną rzecz, jaką wolno: usuwa całe zdarzenia, które
- * przekroczyły termin. To nie jest sprzątanie dla porządku — trzymanie danych
- * osobowych bez terminu jest samo w sobie naruszeniem.
+ * przekroczyły termin. Trzymanie danych osobowych bez terminu jest samo w sobie
+ * naruszeniem.
  *
  * Dwa terminy, bo dwie różne rzeczy. Zdarzenie z adresem to ślad po osobie,
  * którą sklep zna; zdarzenie samego gościa wisi na kluczu przeglądarki i traci

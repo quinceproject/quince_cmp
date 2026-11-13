@@ -20,14 +20,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * Dziennik zgód czytany przez Admin API.
  *
- * Te same zapytania, te same filtry i ta sama stronicowość co ekran dziennika —
- * bo to ten sam dziennik. Osobne zapytanie pisane pod API znaczyłoby, że sklep
- * ma dwie wersje własnej historii.
+ * Te same zapytania, te same filtry i ta sama stronicowość co ekran dziennika,
+ * bo to ten sam dziennik.
  *
- * **Adresu IP i nagłówka przeglądarki nie oddajemy.** Są w dzienniku po to, żeby
- * sklep mógł udowodnić okoliczności zgody, gdy ktoś ją zakwestionuje — a nie po
- * to, żeby wyjeżdżały z niego przy każdym odpytaniu. Kto ich potrzebuje, ma
- * ekran dziennika i eksport CSV, oba pod kontrolą uprawnień pracownika.
+ * **Adresu IP i nagłówka przeglądarki nie oddajemy.** Służą do udowodnienia
+ * okoliczności zgody i są dostępne tylko na ekranie dziennika i w eksporcie CSV,
+ * pod kontrolą uprawnień pracownika.
  *
  * @implements ProviderInterface<ConsentEvent>
  */
@@ -91,7 +89,7 @@ final class ConsentEventProvider implements ProviderInterface
 
     /**
      * Wiersz dziennika na zasób API. Jedno miejsce dla listy i dla pojedynczego
-     * zdarzenia — inaczej te same dane wychodziłyby z API w dwóch kształtach.
+     * zdarzenia, żeby te same dane nie wychodziły z API w dwóch kształtach.
      *
      * @param array<string,mixed> $wiersz
      */

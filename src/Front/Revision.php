@@ -20,15 +20,14 @@ use Quince\Cmp\Storage\Schema;
  *
  * Zgoda dotyczy konkretnego zestawu: tych kategorii, tych ciasteczek, tej
  * treści klauzuli. Gdy sklep dokłada nowego dostawcę albo wydaje nową wersję
- * regulaminu, dawna zgoda przestaje opisywać stan faktyczny — klient zgodził
+ * regulaminu, dawna zgoda przestaje opisywać stan faktyczny: klient zgodził
  * się na coś węższego niż to, co go teraz spotyka.
  *
  * Odcisk zapisujemy w ciasteczku razem z wyborem. Inny odcisk przy kolejnej
  * wizycie znaczy, że pytanie zmieniło treść, więc trzeba je zadać ponownie.
  *
- * Świadomie nie wchodzą tu opisy ciasteczek ani teksty banera. Poprawiona
- * literówka nie zmienia zakresu zgody, a wliczona kazałaby pytać wszystkich
- * od nowa — i nauczyłaby sprzedawcę bać się poprawiania własnych tekstów.
+ * Nie wchodzą tu opisy ciasteczek ani teksty banera: poprawiona literówka
+ * nie zmienia zakresu zgody, a wliczona kazałaby pytać wszystkich od nowa.
  */
 final class Revision
 {
@@ -40,7 +39,7 @@ final class Revision
      *
      * Wchodzą: kody czynnych kategorii, nazwy i dostawcy ich ciasteczek oraz
      * skrót treści obowiązującej wersji każdej klauzuli. Do tego licznik
-     * ręcznych unieważnień, bo nie każdą zmianę widać w danych — nowy cel
+     * ręcznych unieważnień, bo nie każdą zmianę widać w danych: nowy cel
      * przetwarzania w tej samej kategorii nie zostawia śladu w tabelach.
      */
     public static function current(int $idShop): string
@@ -67,7 +66,7 @@ final class Revision
     /**
      * Unieważnia wszystkie zgody w sklepie.
      *
-     * Nie kasuje niczego z dziennika — tam zostaje dowód, że ktoś kiedyś się
+     * Nie kasuje niczego z dziennika, tam zostaje dowód, że ktoś kiedyś się
      * zgodził. Zmienia wyłącznie odcisk, więc przy najbliższej wizycie każdy
      * dostanie pytanie jeszcze raz.
      */

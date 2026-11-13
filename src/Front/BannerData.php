@@ -118,8 +118,8 @@ final class BannerData
     /**
      * Kategorie z ciasteczkami, które do nich należą.
      *
-     * Tabela ciasteczek jest częścią zgody, nie ozdobą okna: odwiedzający ma
-     * prawo wiedzieć, co konkretnie zostanie zapisane i na jak długo.
+     * Tabela ciasteczek jest częścią zgody: odwiedzający ma prawo wiedzieć,
+     * co konkretnie zostanie zapisane i na jak długo.
      *
      * @return array<int,array<string,mixed>>
      */
@@ -202,7 +202,7 @@ final class BannerData
      * Czy właśnie oglądana strona jest wskazaną polityką prywatności.
      *
      * Sprawdzane po stronie serwera, bo decyduje o tym, czy baner w ogóle
-     * zasłoni stronę — a to musi być pewne, zanim cokolwiek się wyrenderuje.
+     * zasłoni stronę, a to musi być pewne, zanim cokolwiek się wyrenderuje.
      */
     private function naStroniePolityki(int $idShop): bool
     {

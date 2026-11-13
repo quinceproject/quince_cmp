@@ -1,9 +1,7 @@
 /**
  * Kolejność rodzajów zgód na liście.
  *
- * Przeciąganie robi Alpine (`x-sort` z paczki alpine-sort) — ten sam
- * mechanizm, co rozstawianie elementów strony głównej w `quince_engine`.
- * Samo przeciągnięcie niczego nie zapisuje: dopiero ten skrypt, tuż przed
+ * Przeciąganie robi Alpine (`x-sort` z paczki alpine-sort). Samo przeciągnięcie niczego nie zapisuje: dopiero ten skrypt, tuż przed
  * wysłaniem formularza, spisuje aktualny układ DOM (po ewentualnym
  * przeciągnięciu) do ukrytego pola `order`.
  */

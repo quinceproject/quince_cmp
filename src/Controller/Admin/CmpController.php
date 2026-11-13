@@ -80,7 +80,7 @@ abstract class CmpController extends PrestaShopAdminController
      * Sama wersja modułu nie wystarcza: sklep z wyłączonym trybem debugowania
      * trzyma arkusz w przeglądarce do następnej zmiany numeru wersji, więc każda
      * poprawka stylu jest niewidoczna aż do wydania paczki. Doklejamy czas zmiany
-     * najświeższego z plików — w gotowym sklepie to wartość stała, a przy pracy
+     * najświeższego z plików: w gotowym sklepie to wartość stała, a przy pracy
      * nad modułem zmienia się razem z plikiem.
      */
     private function moduleVersion(): string
