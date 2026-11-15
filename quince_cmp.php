@@ -94,7 +94,7 @@ class Quince_Cmp extends Module
     {
         $this->name = 'quince_cmp';
         $this->tab = 'administration';
-        $this->version = '0.3.9';
+        $this->version = '0.4.0';
         $this->author = 'Quince Project';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '9.2.0', 'max' => '9.99.99'];
@@ -131,6 +131,7 @@ class Quince_Cmp extends Module
             && $this->registerHook('actionCustomerAccountAdd')
             && $this->registerHook('actionCustomerAccountUpdate')
             && $this->registerHook('actionNewsletterRegistrationBefore')
+            && $this->registerHook('actionNewsletterRegistrationAfter')
             // Panel: sekcja ze zgodami na karcie klienta w rdzeniu.
             && $this->registerHook('displayAdminCustomers')
             // Front: sygnaly Consent Mode i warstwa dla innych modulow.
@@ -415,16 +416,59 @@ class Quince_Cmp extends Module
     }
 
     /**
-     * Newsletter zapisany bez konta.
+     * Wypisanie z newslettera bez konta.
      *
-     * @param array{email?:string} $params
+     * Rdzeń przy wypisaniu nie woła hooka „po”, więc wycofanie zapisujemy tutaj,
+     * ale tylko dla adresu, który rzeczywiście jest zapisany: inaczej każdy
+     * mógłby nabić dziennik wycofaniami cudzych adresów. Zapisu na newsletter
+     * tu nie zapisujemy, bo ten hook rusza przed sprawdzeniem adresu.
+     *
+     * @param array{email?:string,action?:int|string} $params
      */
     public function hookActionNewsletterRegistrationBefore(array $params): void
     {
+        $email = trim((string) ($params['email'] ?? ''));
+        $wypisanie = (int) ($params['action'] ?? 0) === 1;
+        $newsletter = Module::getInstanceByName('ps_emailsubscription');
+
+        if (!$wypisanie || !Validate::isEmail($email) || !$newsletter || !method_exists($newsletter, 'isNewsletterRegistered')) {
+            return;
+        }
+
+        if ((int) $newsletter->isNewsletterRegistered($email) < 1) {
+            return;
+        }
+
         $this->most()->recordGuestNewsletter(
-            (string) ($params['email'] ?? ''),
+            $email,
+            false,
             (int) $this->context->shop->id,
             (int) $this->context->language->id
+        );
+    }
+
+    /**
+     * Zapis na newsletter bez konta, już przyjęty przez rdzeń.
+     *
+     * Rdzeń woła ten hook po udanym zapisie bez potwierdzenia mailowego i po
+     * kliknięciu w link potwierdzający (wtedy bez `hookName`). Gdy sklep wymaga
+     * potwierdzenia, sam formularz kończy się wysłaniem maila i tego hooka nie
+     * ma: zgoda trafi do dziennika dopiero po kliknięciu w link.
+     *
+     * @param array{email?:string,action?:int|string,error?:string|null,hookName?:string|null} $params
+     */
+    public function hookActionNewsletterRegistrationAfter(array $params): void
+    {
+        if ((int) ($params['action'] ?? 0) !== 0 || !empty($params['error'])) {
+            return;
+        }
+
+        $this->most()->recordGuestNewsletter(
+            trim((string) ($params['email'] ?? '')),
+            true,
+            (int) $this->context->shop->id,
+            (int) $this->context->language->id,
+            ($params['hookName'] ?? null) === null
         );
     }
 

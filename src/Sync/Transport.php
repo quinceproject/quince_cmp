@@ -131,6 +131,10 @@ final class Transport
             'version' => (string) ($zdarzenie['version'] ?? ''),
             'text_hash' => (string) ($zdarzenie['text_hash'] ?? ''),
             'source' => (string) ($zdarzenie['source'] ?? ''),
+            // false: adres wpisany w formularzu, którego nikt nie potwierdził
+            // (np. zgoda z formularza oferty). System zewnętrzny powinien wtedy
+            // poprosić o potwierdzenie, zanim uzna zgodę.
+            'verified' => (bool) ($zdarzenie['verified'] ?? true),
             'origin' => Schema::ORIGIN_SHOP,
             'occurred_at' => (string) $zdarzenie['date_add'],
         ], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);

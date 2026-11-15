@@ -259,7 +259,7 @@ quince_cmp_sync_run:
 
 quince_cmp_sync_retry:
   path: quince/cmp/sync/retry/{idSync}
-  methods: [GET]
+  methods: [POST]
   requirements:
     idSync: '\d+'
   defaults:
@@ -309,7 +309,7 @@ quince_cmp_scan_start:
 
 quince_cmp_scan_mark:
   path: quince/cmp/cookies/scan/{idFinding}
-  methods: [GET]
+  methods: [POST]
   requirements:
     idFinding: '\d+'
   defaults:

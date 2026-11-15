@@ -207,7 +207,10 @@
         return fetch(cfg.endpoint, {
             method: 'POST',
             credentials: 'same-origin',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            // Własny nagłówek: zwykły formularz z obcej strony go nie wyśle, a fetch
+            // z innej domeny z takim nagłówkiem przeglądarka zatrzyma. Serwer bez
+            // niego odmawia zapisu, więc nikt nie ustawi odwiedzającemu zgody z zewnątrz.
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Quince-Cmp': '1' },
             body: 'codes=' + encodeURIComponent(unikalne.join(','))
         })
             .then(function (r) { return r.json(); })

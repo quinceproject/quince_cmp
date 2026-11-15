@@ -45,14 +45,17 @@ final class ClauseText
         $tekst = (string) preg_replace_callback(
             self::WZOR,
             static function (array $trafienie) use (&$linki, $idLang): string {
-                $linki[] = self::adres($trafienie[2], $idLang);
+                // Rdzeń (`TermsAndConditions::format()`) wkleja adres w `href`
+                // bez escapowania, a krok płatności wypisuje całość przez
+                // `nofilter`. Escapujemy więc tutaj, adres i tekst.
+                $linki[] = htmlspecialchars(self::adres($trafienie[2], $idLang), ENT_QUOTES, 'UTF-8');
 
                 return '[' . $trafienie[1] . ']';
             },
             $raw
         );
 
-        return ['text' => $tekst, 'links' => $linki];
+        return ['text' => htmlspecialchars($tekst, ENT_QUOTES, 'UTF-8'), 'links' => $linki];
     }
 
     /** Treść jako HTML. Renderowane są wyłącznie odnośniki, reszta jest eskejpowana. */
@@ -86,12 +89,16 @@ final class ClauseText
     }
 
     /**
-     * Rozwija cel odnośnika. `cms:ID` zamieniane jest na adres strony sklepu;
-     * schematy wykonywalne (`javascript:`, `data:`, `vbscript:`) są odrzucane.
+     * Rozwija cel odnośnika. `cms:ID` zamieniane jest na adres strony sklepu.
+     * Przepuszczamy tylko `http(s):`, `mailto:`, `tel:` i adresy bez schematu
+     * (względne); każdy inny schemat, w tym `javascript:` zapisany encją HTML,
+     * daje `#`.
      */
     private static function adres(string $cel, ?int $idLang = null): string
     {
-        $cel = trim($cel);
+        // Encje odkodowujemy przed sprawdzeniem, bo przeglądarka zrobi to samo
+        // z wartością `href`: `&#106;avascript:` to dla niej `javascript:`.
+        $cel = trim(html_entity_decode($cel, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
 
         if (str_starts_with($cel, 'cms:')) {
             $idCms = (int) substr($cel, 4);
@@ -104,7 +111,16 @@ final class ClauseText
                 : '#';
         }
 
-        if (preg_match('/^\s*(javascript|data|vbscript):/i', $cel)) {
+        // Znaki sterujące i spacje w środku służą do ukrycia schematu
+        // (`java\tscript:`), więc usuwamy je przed sprawdzeniem.
+        $bezOdstepow = (string) preg_replace('/[\x00-\x20\x7F]+/', '', $cel);
+
+        if (preg_match('/^(https?|mailto|tel):/i', $bezOdstepow)) {
+            return $cel;
+        }
+
+        // Jakikolwiek inny schemat (`litery:` przed pierwszym ukośnikiem).
+        if (preg_match('/^[a-z][a-z0-9+.\-]*:/i', $bezOdstepow)) {
             return '#';
         }
 

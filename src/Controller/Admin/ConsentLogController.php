@@ -274,8 +274,13 @@ final class ConsentLogController extends CmpController
                 'text_hash', 'state', 'source', 'origin', 'ip',
             ], ';');
 
+            // Komórka zaczynająca się od = + - @ (albo tabulatora, CR) to dla
+            // arkusza formuła. Adres i źródło mogą pochodzić od odwiedzającego,
+            // więc poprzedzamy je apostrofem.
+            $komorka = static fn ($v): string => preg_match('/^[=+\-@\t\r]/', (string) $v) ? "'" . $v : (string) $v;
+
             foreach ($rejestr->exportRows($sklepy, $filtry) as $wiersz) {
-                fputcsv($out, [
+                fputcsv($out, array_map($komorka, [
                     $wiersz['date_add'],
                     $wiersz['shop_name'] ?? '',
                     $wiersz['email'],
@@ -287,7 +292,7 @@ final class ConsentLogController extends CmpController
                     $wiersz['source'],
                     $wiersz['origin'],
                     $wiersz['ip'],
-                ], ';');
+                ]), ';');
             }
 
             fclose($out);

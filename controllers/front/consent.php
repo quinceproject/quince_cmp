@@ -46,6 +46,29 @@ class Quince_CmpConsentModuleFrontController extends ModuleFrontController
             $this->wyslij(405, ['error' => 'Use POST.']);
         }
 
+        // Wybór przychodzi tylko z warstwy JS tego sklepu. Formularz wysłany
+        // z obcej strony nie ma naszego nagłówka; przeglądarka, która podaje
+        // Sec-Fetch-Site, mówi też wprost, że żądanie przyszło z innej witryny.
+        // Bez tego obca strona ustawiłaby odwiedzającemu zgodę na wszystko.
+        $zObcejStrony = ($_SERVER['HTTP_SEC_FETCH_SITE'] ?? '') === 'cross-site';
+
+        if (($_SERVER['HTTP_X_QUINCE_CMP'] ?? '') !== '1' || $zObcejStrony) {
+            $this->wyslij(403, ['error' => 'Forbidden.']);
+        }
+
+        // Limit zapisów z jednego adresu: każdy zapis to wiersz w dzienniku
+        // i pozycja w kolejce do CRM. Licznik dostarcza strażnik formularzy
+        // silnika, gdy jest zainstalowany.
+        if (class_exists(\Quince\Engine\Form\FormGuard::class)) {
+            $licznik = new \Quince\Engine\Form\FormGuard();
+
+            if ($licznik->tooOften('cmp_consent', 30, 600)) {
+                $this->wyslij(429, ['error' => 'Too many requests.']);
+            }
+
+            $licznik->accept('cmp_consent');
+        }
+
         $idShop = (int) $this->context->shop->id;
         $idLang = (int) $this->context->language->id;
 
@@ -81,7 +104,7 @@ class Quince_CmpConsentModuleFrontController extends ModuleFrontController
         foreach ($wszystkie as $kod => $wymagana) {
             $zgoda = in_array($kod, $przyznane, true);
 
-            if ($dziennik->bezZmiany($kod, $zgoda, $idShop, $email, $idKlienta)) {
+            if ($dziennik->bezZmiany($kod, $zgoda, $idShop, $email, $idKlienta, $klucz)) {
                 continue;
             }
 

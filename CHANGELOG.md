@@ -4,6 +4,38 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-11-15
+
+### Security
+
+- **Newsletter consent is recorded only when PrestaShop accepts the subscription:**
+  after a direct sign-up, or after the confirmation link when the shop asks for one.
+  Before, it was recorded from the form alone, for any address anyone typed in, and
+  an unsubscription was recorded as consent. An unsubscription now records the
+  consent as withdrawn, and only for an address that is on the list. The visitor's
+  browser is linked to the address only after the confirmation link.
+- **The consent endpoint accepts only requests from the banner script.** It needs the
+  banner's header and refuses requests the browser marks as cross-site. Before, a
+  form on another site could set a visitor's consent to everything. Requests are also
+  rate-limited when Quince Engine is installed.
+- **Choices of guests without an account are no longer lost from the log.** Unchanged
+  choices were compared with the last guest's entry instead of this guest's.
+- **Links in consent clauses are escaped at checkout** and accept only `http(s)`,
+  `mailto`, `tel`, CMS pages and relative addresses. Before, a link could add
+  attributes to the checkout page or run a script through `javascript:` written as an
+  HTML entity.
+- Retrying a sync event and ignoring a scan finding are POST actions with a security
+  token. Retry applies only to outgoing events that were not sent.
+- An employee with read-only access to Sync sees that the signing keys exist, not the
+  keys. Adding past consents to the queue needs edit access.
+- The CSV export of the consent log neutralises cells that a spreadsheet would read
+  as formulas.
+
+### Added
+
+- Events sent to the external system carry `verified`: false when the e-mail address
+  was typed into a form and nobody confirmed it.
+
 ## [0.3.9] - 2026-11-13
 
 ### Fixed

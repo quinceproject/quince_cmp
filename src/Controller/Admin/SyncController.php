@@ -42,12 +42,18 @@ final class SyncController extends CmpController
         $stan = in_array($filtr, [Schema::SYNC_PENDING, Schema::SYNC_SENT, Schema::SYNC_FAILED], true) ? $filtr : null;
         $ostatni = $this->queue->lastRun($idShop);
 
+        // Kluczem przychodzącym podpisuje się zapisy zgód dowolnej osoby, więc
+        // w całości widzi go tylko ten, kto może go też zmienić. Przy samym
+        // odczycie ekran pokazuje tylko, że klucz istnieje.
+        $mozeZmieniac = $this->isGranted('update', $request->get('_legacy_controller'));
+        $klucz = static fn (string $v): string => $mozeZmieniac || $v === '' ? $v : '••••••••••••';
+
         return $this->renderPanel('@Modules/quince_cmp/views/templates/admin/sync.html.twig', [
             'syncOn' => SyncConfig::bool(Options::SYNC_ON, false, $idShop),
             'endpoint' => SyncConfig::text(Options::SYNC_ENDPOINT, '', $idShop),
             'allowLocal' => SyncConfig::bool(Options::SYNC_ALLOW_LOCAL, false, $idShop),
-            'keyOut' => SyncConfig::text(Options::SYNC_KEY_OUT, '', $idShop),
-            'keyIn' => SyncConfig::text(Options::SYNC_KEY_IN, '', $idShop),
+            'keyOut' => $klucz(SyncConfig::text(Options::SYNC_KEY_OUT, '', $idShop)),
+            'keyIn' => $klucz(SyncConfig::text(Options::SYNC_KEY_IN, '', $idShop)),
             'every' => SyncConfig::int(Options::SYNC_EVERY, 15, $idShop),
             'intervals' => Options::SYNC_INTERVALS,
             'keepDays' => SyncConfig::int(Options::SYNC_KEEP_DAYS, 30, $idShop),
@@ -152,6 +158,12 @@ final class SyncController extends CmpController
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function retryAction(Request $request, int $idSync): RedirectResponse
     {
+        if (!$this->isCsrfTokenValid('quince_cmp_sync_retry', $request->request->get('_csrf_token'))) {
+            $this->addFlash('error', $this->trans('Invalid security token, please try again.', [], 'Modules.Quincecmp.Admin'));
+
+            return $this->redirectToRoute('quince_cmp_sync');
+        }
+
         $this->queue->retry(Options::biezacySklep(), $idSync);
 
         $this->addFlash('success', $this->trans('Queued for another attempt.', [], 'Modules.Quincecmp.Admin'));
@@ -206,7 +218,7 @@ final class SyncController extends CmpController
      * Jednorazowe. Kolejka pilnuje, żeby to samo zdarzenie nie trafiło do niej
      * dwa razy, więc powtórne kliknięcie nie duplikuje niczego.
      */
-    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))", message: 'You do not have permission to view this.')]
+    #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function backlogAction(Request $request): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('quince_cmp_sync_backlog', $request->request->get('_csrf_token'))) {

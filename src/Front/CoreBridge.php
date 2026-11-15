@@ -212,19 +212,35 @@ final class CoreBridge
         }
     }
 
-    /** Zapisuje zapis do newslettera dokonany bez konta; identyfikacją jest adres. */
-    public function recordGuestNewsletter(string $email, int $idShop, int $idLang): void
+    /**
+     * Zapis do newslettera bez konta albo wypisanie; identyfikacją jest adres.
+     *
+     * Wołane dopiero, gdy rdzeń zapis przyjął (albo, przy wypisaniu, gdy adres
+     * rzeczywiście jest na liście), nigdy na samą treść formularza: wpisać da się
+     * każdy adres, więc sam formularz niczego o zgodzie tej osoby nie dowodzi.
+     *
+     * @param bool $confirmed adres potwierdzony kliknięciem w link z maila; tylko
+     *                        wtedy wiążemy przeglądarkę z adresem, bo tylko wtedy
+     *                        wiadomo, że klikający ma dostęp do tej skrzynki
+     */
+    public function recordGuestNewsletter(string $email, bool $granted, int $idShop, int $idLang, bool $confirmed = false): void
     {
-        if ($email === '') {
+        if ($email === '' || !\Validate::isEmail($email)) {
             return;
         }
 
-        $this->polaczZOsoba($idShop, $email);
+        if ($confirmed) {
+            $this->polaczZOsoba($idShop, $email);
+        }
 
-        $this->log->record('newsletter', true, $idShop, $idLang, [
+        if ($this->log->bezZmiany('newsletter', $granted, $idShop, $email, 0)) {
+            return;
+        }
+
+        $this->log->record('newsletter', $granted, $idShop, $idLang, [
             'email' => $email,
             'source' => ConsentLog::SOURCE_NEWSLETTER,
-            'form_id' => 'emailsubscription',
+            'form_id' => $confirmed ? 'emailsubscription:confirmed' : 'emailsubscription',
         ]);
     }
 

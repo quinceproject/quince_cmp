@@ -179,7 +179,13 @@ final class CookiesController extends CmpController
     #[AdminSecurity("is_granted('update', request.get('_legacy_controller'))", message: 'You do not have permission to change this.')]
     public function scanMarkAction(Request $request, int $idFinding): RedirectResponse
     {
-        $status = (string) $request->query->get('status', Schema::FOUND_IGNORED);
+        if (!$this->isCsrfTokenValid('quince_cmp_scan_mark', $request->request->get('_csrf_token'))) {
+            $this->addFlash('error', $this->trans('Invalid security token, please try again.', [], 'Modules.Quincecmp.Admin'));
+
+            return $this->redirectToRoute('quince_cmp_cookies');
+        }
+
+        $status = (string) $request->request->get('status', Schema::FOUND_IGNORED);
 
         (new Scanner())->mark(Options::biezacySklep(), $idFinding, $status);
 

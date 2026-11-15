@@ -129,6 +129,7 @@ final class ConsentLog
             'version' => $wersja['version'],
             'text_hash' => $wersja['text_hash'],
             'source' => (string) ($kontekst['source'] ?? ''),
+            'verified' => !str_ends_with((string) ($kontekst['form_id'] ?? ''), ':unverified'),
             'date_add' => $kiedy,
         ], (string) $sklep->name));
     }
@@ -147,11 +148,21 @@ final class ConsentLog
      * Hook `actionCustomerAccountUpdate` wywoływany jest przy każdym zapisie karty
      * klienta, niezależnie od tego, czy zgody uległy zmianie.
      */
-    public function bezZmiany(string $code, bool $granted, int $idShop, string $email, int $idCustomer): bool
+    public function bezZmiany(string $code, bool $granted, int $idShop, string $email, int $idCustomer, string $visitorKey = ''): bool
     {
-        $warunek = $idCustomer > 0
-            ? '`id_customer` = ' . $idCustomer
-            : '`email` = "' . pSQL($email) . '"';
+        // Osobę poznajemy po koncie, potem po adresie, a gościa bez adresu po
+        // kluczu przeglądarki. Pusty adres nie może być warunkiem: pasowałby do
+        // ostatniego wpisu dowolnego anonimowego gościa i wybór tego gościa
+        // nie trafiłby do dziennika.
+        if ($idCustomer > 0) {
+            $warunek = '`id_customer` = ' . $idCustomer;
+        } elseif ($email !== '') {
+            $warunek = '`email` = "' . pSQL($email) . '"';
+        } elseif ($visitorKey !== '') {
+            $warunek = '`id_customer` = 0 AND `email` = "" AND `visitor_key` = "' . pSQL($visitorKey) . '"';
+        } else {
+            return false;
+        }
 
         $ostatnie = Db::getInstance()->getValue(
             'SELECT `granted` FROM `' . _DB_PREFIX_ . Schema::TABLE_LOG . '`

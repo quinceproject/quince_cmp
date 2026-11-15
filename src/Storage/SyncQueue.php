@@ -265,14 +265,20 @@ final class SyncQueue
         ], '`id_cmp_sync` = ' . $idSync);
     }
 
-    /** Przywraca pozycję do kolejki bez zerowania licznika prób. */
+    /**
+     * Przywraca pozycję do kolejki bez zerowania licznika prób.
+     *
+     * Tylko wychodzące, które nie doszły: ponowienie wysłanego zdarzenia
+     * zrobiłoby w systemie zewnętrznym duplikat.
+     */
     public function retry(int $idShop, int $idSync): bool
     {
         return Db::getInstance()->update(Schema::TABLE_SYNC, [
             'status' => Schema::SYNC_PENDING,
             'next_try' => date('Y-m-d H:i:s'),
             'date_upd' => date('Y-m-d H:i:s'),
-        ], '`id_cmp_sync` = ' . $idSync . ' AND `id_shop` = ' . $idShop);
+        ], '`id_cmp_sync` = ' . $idSync . ' AND `id_shop` = ' . $idShop
+            . ' AND `direction` = "' . Schema::DIRECTION_OUT . '" AND `status` <> "' . Schema::SYNC_SENT . '"');
     }
 
     /** Przywraca do kolejki wszystko, co odpadło po wyczerpaniu prób. */

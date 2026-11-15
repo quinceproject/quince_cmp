@@ -227,7 +227,10 @@
                     <span class="qc-badge qc-badge-{{ tone[row.status]|default('accent') }}">{{ row.status|trans }}</span>
 
                     {% if row.status != 'sent' %}
-                        <a href="{{ path('quince_cmp_sync_retry', {'idSync': row.id}) }}" class="qc-linkbtn">{{ 'Retry'|trans }}</a>
+                        <form method="post" action="{{ path('quince_cmp_sync_retry', {'idSync': row.id}) }}" class="qc-hstack">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('quince_cmp_sync_retry') }}">
+                            <button type="submit" class="qc-linkbtn">{{ 'Retry'|trans }}</button>
+                        </form>
                     {% endif %}
                 </div>
             </div>
