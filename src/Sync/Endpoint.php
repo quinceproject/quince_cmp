@@ -89,11 +89,18 @@ final class Endpoint
 
         $out = [];
 
-        foreach ((array) @gethostbynamel($host) as $ip) {
+        // Przy błędzie obie funkcje zwracają false, a `(array) false` to [false],
+        // czyli jeden pusty adres. Taki adres odrzucał każdy host bez rekordu A
+        // (np. tylko IPv6), więc sprawdzamy wynik, zamiast go rzutować.
+        $v4 = @gethostbynamel($host);
+
+        foreach (is_array($v4) ? $v4 : [] as $ip) {
             $out[] = (string) $ip;
         }
 
-        foreach ((array) @dns_get_record($host, DNS_AAAA) as $wpis) {
+        $v6 = @dns_get_record($host, DNS_AAAA);
+
+        foreach (is_array($v6) ? $v6 : [] as $wpis) {
             if (isset($wpis['ipv6'])) {
                 $out[] = (string) $wpis['ipv6'];
             }

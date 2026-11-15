@@ -4,6 +4,13 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2026-11-15
+
+### Fixed
+
+- Sending to the external system works for a host without an IPv4 address. A failed
+  IPv4 lookup was read as an empty address and refused every such host.
+
 ## [0.4.0] - 2026-11-15
 
 ### Security
