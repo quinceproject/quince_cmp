@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Cmp\Ui;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Pozycje bocznego paska panelu.
  *

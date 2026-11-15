@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Cmp\ApiPlatform\Resources;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;

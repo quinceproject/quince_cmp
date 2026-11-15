@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Cmp\ApiPlatform\Processor;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use Quince\Cmp\ApiPlatform\Resources\ConsentEvent;

@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Cmp\Sync;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Sprawdzenie, czy pod wskazany adres wolno wysłać żądanie.
  *

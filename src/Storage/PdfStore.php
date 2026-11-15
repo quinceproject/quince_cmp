@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Cmp\Storage;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Dokumenty PDF dołączone do wersji klauzuli.
  *

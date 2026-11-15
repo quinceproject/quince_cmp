@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Cmp\Controller\Admin;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Configuration;
 use PrestaShop\PrestaShop\Core\Domain\ApiClient\Command\AddApiClientCommand;
 use PrestaShopBundle\Security\Attribute\AdminSecurity;

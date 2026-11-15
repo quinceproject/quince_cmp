@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Cmp\Controller\Admin;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use Quince\Cmp\Identity\IdentityScope;
 use Quince\Cmp\Integration\Engine;

@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Cmp\Sync;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Quince\Cmp\Storage\Options;
 use Quince\Cmp\Storage\Schema;
 use Quince\Cmp\Storage\SyncQueue;

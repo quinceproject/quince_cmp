@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Cmp\Integration;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Module;
 
 /**

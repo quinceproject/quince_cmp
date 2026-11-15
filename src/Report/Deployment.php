@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Cmp\Report;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Db;
 use Quince\Cmp\Storage\ConsentVersions;
 use Quince\Cmp\Storage\Options;

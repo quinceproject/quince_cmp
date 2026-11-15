@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Cmp\Front;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Quince\Cmp\Scan\Scanner;
 use Quince\Cmp\Storage\Options;
 

@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace Quince\Cmp\Controller\Admin;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use PrestaShopBundle\Controller\Admin\PrestaShopAdminController;
 use Quince\Cmp\Ui\PanelNavigation;
 use Symfony\Component\HttpFoundation\Response;
