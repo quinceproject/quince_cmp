@@ -110,13 +110,16 @@ final class Updater
 
         // Sprawdzenie przed rozpakowaniem, nie po. Skrót pochodzi ze spisu wydań,
         // a paczka z serwera plików. Bez tego przejęcie wydania albo podmiana
-        // w tranzycie dają wykonanie dowolnego kodu.
-        if ($skrot !== '') {
-            $policzony = hash_file('sha256', $paczka);
+        // w tranzycie dają wykonanie dowolnego kodu. Wydanie bez sumy w spisie
+        // odrzucamy: nie ma czym sprawdzić, co przyszło.
+        if (preg_match('/^[a-f0-9]{64}$/', $skrot) !== 1) {
+            return $this->blad('The release list gives no checksum for this package, so it cannot be verified.');
+        }
 
-            if (!hash_equals($skrot, (string) $policzony)) {
-                return $this->blad('The downloaded package does not match the checksum published for this release.');
-            }
+        $policzony = hash_file('sha256', $paczka);
+
+        if (!hash_equals($skrot, (string) $policzony)) {
+            return $this->blad('The downloaded package does not match the checksum published for this release.');
         }
 
         $rozpakowane = $roboczy . '/new';
