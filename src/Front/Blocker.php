@@ -127,11 +127,18 @@ final class Blocker
                 $atrybuty = $m[1];
                 $tresc = $m[2];
 
-                if ($this->tagGoogle($atrybuty . $tresc) || stripos($atrybuty, 'data-qc-code') !== false) {
+                if (stripos($atrybuty, 'data-qc-code') !== false) {
                     return $m[0];
                 }
 
-                $regula = $this->dopasuj($atrybuty . $tresc, $reguly);
+                // Tag Google przepuszczamy, ale tylko wobec reguł wskazujących
+                // Google. Inna usługa w tym samym bloku (piksel obok GTM) zostaje
+                // wstrzymana: sama wzmianka o Google nie może zwalniać ze zgody.
+                $doSprawdzenia = $this->tagGoogle($atrybuty . $tresc)
+                    ? array_values(array_filter($reguly, fn (array $r): bool => !$this->tagGoogle($r['pattern'])))
+                    : $reguly;
+
+                $regula = $this->dopasuj($atrybuty . $tresc, $doSprawdzenia);
 
                 if ($regula === null) {
                     return $m[0];

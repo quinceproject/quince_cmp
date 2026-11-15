@@ -4,6 +4,25 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.3] - 2026-11-15
+
+### Security
+
+- **A service script is held back even when it also mentions Google.** Google tags are
+  still never held back (Consent Mode controls them), but a script that loads another
+  listed service next to a Google tag, in the same `<script>` block, now waits for
+  consent like any other. Before, any mention of a Google address in the script let the
+  whole script run.
+- **The custom floating button icon is read as SVG, not as HTML.** The browser now
+  parses the icon with the same kind of parser that cleaned it on the server, and the
+  cleaning also removes CDATA sections, which the two parsers read differently.
+
+### Fixed
+
+- **A custom icon for the floating button is saved.** Before, the uploaded icon was
+  accepted with a success message but stored empty, so the shop kept showing the built-in
+  icon. Icons need to be uploaded again after this update.
+
 ## [0.4.2] - 2026-11-15
 
 ### Security

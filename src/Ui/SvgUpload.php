@@ -108,6 +108,26 @@ final class SvgUpload
     }
 
     /**
+     * Postać do zapisu w konfiguracji.
+     *
+     * `Configuration::updateValue()` bez flagi HTML wycina znaczniki, a z flagą
+     * przepuszcza wartość przez HTMLPurifier, który nie zna SVG. W obu
+     * przypadkach ze znaku nie zostaje nic, więc zapisujemy go zakodowany.
+     */
+    public static function encode(string $svg): string
+    {
+        return $svg === '' ? '' : base64_encode($svg);
+    }
+
+    /** Znak z konfiguracji albo pusty tekst, gdy zapis nie jest znakiem. */
+    public static function decode(string $zapisany): string
+    {
+        $svg = $zapisany === '' ? false : base64_decode($zapisany, true);
+
+        return is_string($svg) && str_starts_with($svg, '<svg') ? $svg : '';
+    }
+
+    /**
      * Usuwa wszystko spoza listy: obce znaczniki, obce atrybuty, atrybuty
      * zdarzeń oraz adresy inne niż odwołanie wewnętrzne.
      */
@@ -126,8 +146,10 @@ final class SvgUpload
                 continue;
             }
 
-            // Komentarze i instrukcje przetwarzania nie rysują niczego.
-            if ($dziecko instanceof \DOMComment || $dziecko instanceof \DOMProcessingInstruction) {
+            // Komentarze, instrukcje przetwarzania i sekcje CDATA nie rysują
+            // niczego, a CDATA parser HTML czyta inaczej niż parser XML.
+            if ($dziecko instanceof \DOMComment || $dziecko instanceof \DOMProcessingInstruction
+                || $dziecko instanceof \DOMCdataSection) {
                 $wezel->removeChild($dziecko);
             }
         }

@@ -290,9 +290,14 @@
         if (typeof cfg.fab.offsetMobile === 'number') {
             b.style.setProperty('--qcmp-fab-bottom-m', cfg.fab.offsetMobile + 'px');
         }
-        // Własny znak jest już oczyszczony po stronie serwera, tutaj trafia
-        // wprost, bo inaczej nie dałoby się go narysować.
-        b.innerHTML = cfg.fab.svg || ikona(cfg.fab.icon);
+        // Własny znak jest oczyszczony po stronie serwera parserem XML. Tutaj
+        // czytamy go tym samym rodzajem parsera i wstawiamy gotowy węzeł, a nie
+        // przez `innerHTML`: parser HTML czyta część konstrukcji SVG inaczej.
+        var znakWezel = znak(cfg.fab.svg) || znak(ikona(cfg.fab.icon));
+
+        if (znakWezel) {
+            b.appendChild(znakWezel);
+        }
 
         if (cfg.fab.mode !== 'icon') {
             b.appendChild(el('span', 'qcmp-fab-label', cfg.fab.label || ''));
@@ -300,6 +305,28 @@
 
         b.addEventListener('click', pokazPreferencje);
         root.appendChild(b);
+    }
+
+    /** Tekst SVG jako węzeł strony albo `null`, gdy to nie jest poprawny SVG. */
+    function znak(tekst) {
+        if (!tekst || typeof DOMParser === 'undefined') {
+            return null;
+        }
+
+        // Bez przestrzeni nazw SVG parser XML zbuduje zwykłe węzły, których
+        // przeglądarka nie narysuje. Starsze zapisane znaki mogą jej nie mieć.
+        if (!/^<svg\b[^>]*\sxmlns\s*=/.test(tekst)) {
+            tekst = tekst.replace(/^<svg\b/, '<svg xmlns="http://www.w3.org/2000/svg"');
+        }
+
+        var dokument = new DOMParser().parseFromString(tekst, 'image/svg+xml');
+        var korzen = dokument.documentElement;
+
+        if (!korzen || korzen.localName !== 'svg' || dokument.getElementsByTagName('parsererror').length) {
+            return null;
+        }
+
+        return document.importNode(korzen, true);
     }
 
     function ikona(nazwa) {

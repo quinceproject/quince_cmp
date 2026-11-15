@@ -93,7 +93,7 @@ final class BannerController extends CmpController
             'fabModes' => Options::FAB_MODES,
             'fabIcon' => Options::text(Options::FAB_ICON, 'cookie', $idShop),
             'fabIcons' => Options::FAB_ICONS,
-            'fabSvg' => Options::text(Options::FAB_SVG, '', $idShop),
+            'fabSvg' => SvgUpload::decode(Options::text(Options::FAB_SVG, '', $idShop)),
             'onAccent' => Contrast::onColour(Options::text(Options::B_COLOUR_ACCENT, '#f49000', $idShop)),
             'contrast' => $this->kontrasty($idShop),
             'categories' => $this->cookies->categories($idShop, $idLang),
@@ -216,7 +216,7 @@ final class BannerController extends CmpController
             return;
         }
 
-        Options::save(Options::FAB_SVG, $wynik['svg'], $idShop);
+        Options::save(Options::FAB_SVG, SvgUpload::encode($wynik['svg']), $idShop);
         $this->addFlash('success', $this->trans('Custom icon accepted.', [], 'Modules.Quincecmp.Admin'));
     }
 

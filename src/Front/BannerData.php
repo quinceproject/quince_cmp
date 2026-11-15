@@ -16,6 +16,7 @@ use Db;
 use Quince\Cmp\Storage\Options;
 use Quince\Cmp\Storage\Schema;
 use Quince\Cmp\Ui\Contrast;
+use Quince\Cmp\Ui\SvgUpload;
 use Tools;
 
 /**
@@ -110,7 +111,7 @@ final class BannerData
             'offsetMobile' => Options::int(Options::FAB_OFFSET_MOBILE, Options::FAB_OFFSET_DEFAULT, $idShop),
             'mode' => Options::text(Options::FAB_MODE, 'icon_label', $idShop),
             'icon' => Options::text(Options::FAB_ICON, 'cookie', $idShop),
-            'svg' => Options::text(Options::FAB_SVG, '', $idShop),
+            'svg' => SvgUpload::decode(Options::text(Options::FAB_SVG, '', $idShop)),
             'label' => Options::lang(Options::FAB_LABEL, $idLang, 'Cookie settings', $idShop),
         ];
     }
