@@ -4,6 +4,13 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.4] - 2026-11-16
+
+### Changed
+
+- New module logo: the letter Q in the project gradient.
+- Files in `src/` stop when opened directly instead of through PrestaShop.
+
 ## [0.4.3] - 2026-11-15
 
 ### Security
