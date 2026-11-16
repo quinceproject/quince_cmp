@@ -4,6 +4,15 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.5] - 2026-11-16
+
+### Fixed
+
+- **A cookie category can no longer be required at checkout or mirrored into the
+  customer account.** The "Where it appears" tab of a cookie consent no longer shows
+  "Show in checkout" or "Mirror in customer account", and saving a cookie consent
+  always keeps both off. No upgrade script: installed cookie consents never had them on.
+
 ## [0.4.4] - 2026-11-16
 
 ### Changed
