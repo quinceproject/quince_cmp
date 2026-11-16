@@ -257,6 +257,7 @@
                 </div>
             {% endif %}
 
+            {% if type.kind != 'cookie' %}
             <div class="qc-grid" style="padding:16px 18px">
                 {% if isNative %}
                     <div class="qc-field">
@@ -292,6 +293,7 @@
                     <button type="submit" class="qc-btn qc-btn-primary">{{ icons.icon('check', 14) }} {{ 'Save'|trans }}</button>
                 </div>
             </div>
+            {% endif %}
 
             <div class="qc-grid">
                 <div style="padding:14px 18px;border-bottom:1px solid var(--border);font-size:var(--text-sm);font-weight:var(--weight-bold)">

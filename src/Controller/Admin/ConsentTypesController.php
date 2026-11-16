@@ -169,7 +169,10 @@ final class ConsentTypesController extends CmpController
             return $this->redirectToRoute('quince_cmp_types');
         }
 
-        $poleCore = (string) $request->request->get('core_field', '');
+        // Kategorii ciasteczek nie ma w kasie ani w `ps_customer`: wymuszenie jej
+        // przed zamówieniem byłoby zgodą wymuszoną.
+        $cookie = $typ['kind'] === Schema::KIND_COOKIE;
+        $poleCore = $cookie ? '' : (string) $request->request->get('core_field', '');
 
         if ($poleCore !== '' && !array_key_exists($poleCore, self::POLA_CORE)) {
             $poleCore = '';
@@ -192,7 +195,7 @@ final class ConsentTypesController extends CmpController
 
         // `terms_shop`/`privacy_policy` mają działający natywny odpowiednik
         // i moduł trwale ustępuje mu miejsca, patrz `CoreBridge::NATYWNE`.
-        $pokazWCheckoucie = in_array($typ['code'], CoreBridge::NATYWNE, true)
+        $pokazWCheckoucie = $cookie || in_array($typ['code'], CoreBridge::NATYWNE, true)
             ? false
             : $request->request->getBoolean('show_in_checkout');
 
