@@ -358,13 +358,21 @@ final class ConfigTransfer
     {
         $db = Db::getInstance();
 
+        // Plik mógł przyjść z innej wersji modułu: nieznana jednostka staje się
+        // `session`, tak samo jak przy zapisie z panelu.
+        $jednostka = (string) ($ciasteczko['lifetime_unit'] ?? 'session');
+
+        if (!in_array($jednostka, Schema::LIFETIME_UNITS, true)) {
+            $jednostka = 'session';
+        }
+
         $db->insert(Schema::TABLE_COOKIE, [
             'id_shop' => $idShop,
             'name' => pSQL((string) ($ciasteczko['name'] ?? '')),
             'provider' => pSQL((string) ($ciasteczko['provider'] ?? '')),
             'category' => pSQL((string) ($ciasteczko['category'] ?? '')),
             'lifetime_value' => (int) ($ciasteczko['lifetime_value'] ?? 0),
-            'lifetime_unit' => pSQL((string) ($ciasteczko['lifetime_unit'] ?? 'session')),
+            'lifetime_unit' => $jednostka,
             'source' => pSQL((string) ($ciasteczko['source'] ?? '')),
             'position' => (int) ($ciasteczko['position'] ?? 0),
             'active' => (int) ($ciasteczko['active'] ?? 1),

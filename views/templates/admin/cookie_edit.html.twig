@@ -63,15 +63,17 @@
                 <div class="qc-field">
                     <label class="qc-label" for="lifetime_value">{{ 'Lifetime'|trans }}</label>
                     <div class="qc-hstack" style="gap:8px;flex-wrap:nowrap">
-                        <input class="qc-field-base qc-focusable" type="number" min="0" style="width:100px"
+                        <input class="qc-field-base qc-focusable" type="number" min="0"
+                               style="width:100px{{ cookie.lifetime_unit|default('session') == 'persistent' ? ';display:none' : '' }}"
                                id="lifetime_value" name="lifetime_value"
                                value="{{ cookie.lifetime_value|default(0) }}">
                         <div class="qc-select-wrap" style="flex:1">
-                            <select class="qc-field-base qc-select qc-focusable" name="lifetime_unit">
+                            <select class="qc-field-base qc-select qc-focusable" name="lifetime_unit"
+                                    data-qc-hide="lifetime_value" data-qc-hide-when="persistent">
                                 {% for unit in units %}
                                     <option value="{{ unit }}"
                                         {{ cookie.lifetime_unit|default('session') == unit ? 'selected' : '' }}>
-                                        {{ unit|trans }}
+                                        {{ unit == 'persistent' ? 'until deleted'|trans : unit|trans }}
                                     </option>
                                 {% endfor %}
                             </select>

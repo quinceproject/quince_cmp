@@ -16,6 +16,7 @@ if (!defined('_PS_VERSION_')) {
 }
 
 use PrestaShopBundle\Security\Attribute\AdminSecurity;
+use Quince\Cmp\Front\Lifetime;
 use Quince\Cmp\Integration\Engine;
 use Quince\Cmp\Scan\Scanner;
 use Quince\Cmp\Storage\ConsentTypes;
@@ -45,7 +46,12 @@ final class CookiesController extends CmpController
         $idLang = (int) \Context::getContext()->language->id;
 
         return $this->renderPanel('@Modules/quince_cmp/views/templates/admin/cookies.html.twig', [
-            'cookies' => $this->cookies->all($idShop, $idLang),
+            'cookies' => array_map(
+                static fn (array $c): array => $c + [
+                    'lifetime_label' => Lifetime::label($c['lifetime_value'], $c['lifetime_unit'], $idLang),
+                ],
+                $this->cookies->all($idShop, $idLang)
+            ),
             'categories' => $this->cookies->categories($idShop, $idLang),
             // Kategorie banera: ta sama zgoda co regulamin czy newsletter, z treścią
             // i wersją wydawaną na jej karcie. Widoczna i edytowalna tylko tutaj,

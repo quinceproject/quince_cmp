@@ -2957,6 +2957,31 @@
         <target>W tym sklepie nie ustawiono jeszcze żadnego rodzaju zgody.</target>
         <note>views/templates/hook/admin_customer.html.twig</note>
       </trans-unit>
+      <trans-unit id="6adcae4fcf249a8f6fcbaeffcde912dc">
+        <source>until deleted</source>
+        <target>do usunięcia</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="640fd0cc0ffa0316ae087652871f4486">
+        <source>minutes</source>
+        <target>min.</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="73cdddd7730abfc13a55efb9f5685a3b">
+        <source>hours</source>
+        <target>godz.</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="44fdec47036f482b68b748f9d786801b">
+        <source>days</source>
+        <target>dni</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
+      <trans-unit id="75aeb98e5241592ad6a6c2c4c78a16ef">
+        <source>years</source>
+        <target>lata</target>
+        <note>views/templates/admin/cookie_edit.html.twig</note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

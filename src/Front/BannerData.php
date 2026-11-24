@@ -17,6 +17,7 @@ if (!defined('_PS_VERSION_')) {
 
 use CMS;
 use Db;
+use Language;
 use Quince\Cmp\Storage\Options;
 use Quince\Cmp\Storage\Schema;
 use Quince\Cmp\Ui\Contrast;
@@ -96,9 +97,9 @@ final class BannerData
             $out[$klucz] = Options::lang($opcja, $idLang, $domyslnie, $idShop);
         }
 
-        $out['policy'] = 'Privacy policy';
-        $out['always'] = 'Always active';
-        $out['close'] = 'Close';
+        $out['policy'] = self::tlumacz('Privacy policy', $idLang);
+        $out['always'] = self::tlumacz('Always active', $idLang);
+        $out['close'] = self::tlumacz('Close', $idLang);
 
         return $out;
     }
@@ -178,7 +179,7 @@ final class BannerData
             $out[(string) $wiersz['category']][] = [
                 'name' => (string) $wiersz['name'],
                 'provider' => (string) $wiersz['provider'],
-                'lifetime' => $this->okres((int) $wiersz['lifetime_value'], (string) $wiersz['lifetime_unit']),
+                'lifetime' => Lifetime::label((int) $wiersz['lifetime_value'], (string) $wiersz['lifetime_unit'], $idLang),
                 'description' => (string) ($wiersz['description'] ?? ''),
             ];
         }
@@ -186,14 +187,15 @@ final class BannerData
         return $out;
     }
 
-    /** Czas życia w formie do odczytania, nie w sekundach. */
-    private function okres(int $wartosc, string $jednostka): string
+    /** Tekst stały banera w języku odwiedzającego (domena `Modules.Quincecmp.Shop`). */
+    public static function tlumacz(string $tekst, int $idLang): string
     {
-        if ($wartosc <= 0) {
-            return 'session';
-        }
-
-        return $wartosc . ' ' . rtrim($jednostka, 's') . ($wartosc === 1 ? '' : 's');
+        return \Context::getContext()->getTranslator()->trans(
+            $tekst,
+            [],
+            'Modules.Quincecmp.Shop',
+            Language::getLocaleById($idLang) ?: null
+        );
     }
 
     private function politykaUrl(int $idShop, int $idLang): string

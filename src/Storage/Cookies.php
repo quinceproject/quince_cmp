@@ -150,12 +150,14 @@ final class Cookies
         array $opisy,
         string $source = self::SOURCE_MANUAL
     ): bool {
+        $jednostka = in_array($lifetimeUnit, Schema::LIFETIME_UNITS, true) ? $lifetimeUnit : 'session';
+
         $dane = [
             'name' => pSQL($name),
             'provider' => pSQL($provider),
             'category' => pSQL($category),
-            'lifetime_value' => max(0, $lifetimeValue),
-            'lifetime_unit' => in_array($lifetimeUnit, Schema::LIFETIME_UNITS, true) ? $lifetimeUnit : 'session',
+            'lifetime_value' => $jednostka === Schema::LIFETIME_PERSISTENT ? 0 : max(0, $lifetimeValue),
+            'lifetime_unit' => $jednostka,
         ];
 
         if ($idCookie > 0) {

@@ -295,4 +295,14 @@
             event.preventDefault();
         }
     });
+
+    /** Pole z `data-qc-hide` znika, gdy lista ma wartość z `data-qc-hide-when`. */
+    document.addEventListener('change', function (event) {
+        var select = event.target.closest('select[data-qc-hide]');
+        var target = select && document.getElementById(select.getAttribute('data-qc-hide'));
+
+        if (target) {
+            target.style.display = select.value === select.getAttribute('data-qc-hide-when') ? 'none' : '';
+        }
+    });
 })();

@@ -115,11 +115,7 @@
                     {% endif %}
                 </div>
                 <div style="font-size:var(--text-xs);color:var(--fg-2)">
-                    {%- if cookie.lifetime_unit == 'session' -%}
-                        {{ 'session'|trans }}
-                    {%- else -%}
-                        {{ cookie.lifetime_value }} {{ cookie.lifetime_unit|trans }}
-                    {%- endif -%}
+                    {{- cookie.lifetime_label -}}
                 </div>
                 <div><span class="qc-badge">{{ cookie.source }}</span></div>
                 <div style="font-size:var(--text-xs);color:var(--fg-2)">{{ cookie.description ?: '-' }}</div>

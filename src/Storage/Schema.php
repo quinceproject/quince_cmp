@@ -115,7 +115,13 @@ final class Schema
     public const BLOCK_DEFERRED = 'deferred';
 
     /** Jednostki czasu życia ciasteczka. Wartości kolumny `lifetime_unit`. */
-    public const LIFETIME_UNITS = ['session', 'minutes', 'hours', 'days', 'months', 'years'];
+    public const LIFETIME_UNITS = ['session', 'minutes', 'hours', 'days', 'months', 'years', 'persistent'];
+
+    /**
+     * Zapis bez daty wygaśnięcia (np. `localStorage`): trwa, dopóki ktoś go
+     * nie usunie. Bez liczby, tak jak `session`.
+     */
+    public const LIFETIME_PERSISTENT = 'persistent';
 
     /**
      * Kolumny dołożone po pierwszym wydaniu.

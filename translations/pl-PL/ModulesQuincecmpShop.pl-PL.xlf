@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="ModulesQuincecmpShop" source-language="en-US" target-language="pl-PL" datatype="plaintext">
+    <body>
+      <trans-unit id="de31291360fc7b4f832afcc772a889bd">
+        <source>Always active</source>
+        <target>Zawsze aktywne</target>
+        <note>src/Front/BannerData.php</note>
+      </trans-unit>
+      <trans-unit id="d3d2e617335f08df83599665eef8a418">
+        <source>Close</source>
+        <target>Zamknij</target>
+        <note>src/Front/BannerData.php</note>
+      </trans-unit>
+      <trans-unit id="56c34c6410dd45c5cec44149ad0ce037">
+        <source>Privacy policy</source>
+        <target>Polityka prywatności</target>
+        <note>src/Front/BannerData.php</note>
+      </trans-unit>
+      <trans-unit id="438960bba156cdeb3696bb26b39ba3ca">
+        <source>%count% day|%count% days</source>
+        <target>%count% dzień|%count% dni|%count% dni</target>
+        <note>src/Front/BannerData.php</note>
+      </trans-unit>
+      <trans-unit id="64bcc89c6e48e7dc5056804a835a9526">
+        <source>%count% hour|%count% hours</source>
+        <target>%count% godzina|%count% godziny|%count% godzin</target>
+        <note>src/Front/BannerData.php</note>
+      </trans-unit>
+      <trans-unit id="abc357295aa3a32cf573f251a043a9a6">
+        <source>%count% minute|%count% minutes</source>
+        <target>%count% minuta|%count% minuty|%count% minut</target>
+        <note>src/Front/BannerData.php</note>
+      </trans-unit>
+      <trans-unit id="11f9143c1e04db978d6b84a636b6e01c">
+        <source>%count% month|%count% months</source>
+        <target>%count% miesiąc|%count% miesiące|%count% miesięcy</target>
+        <note>src/Front/BannerData.php</note>
+      </trans-unit>
+      <trans-unit id="af0204f5922cf77cebb4a3d07fee4f38">
+        <source>%count% year|%count% years</source>
+        <target>%count% rok|%count% lata|%count% lat</target>
+        <note>src/Front/BannerData.php</note>
+      </trans-unit>
+      <trans-unit id="21d6f40cfb511982e4424e0e250a9557">
+        <source>session</source>
+        <target>sesja</target>
+        <note>src/Front/BannerData.php</note>
+      </trans-unit>
+      <trans-unit id="6adcae4fcf249a8f6fcbaeffcde912dc">
+        <source>until deleted</source>
+        <target>do usunięcia</target>
+        <note>src/Front/BannerData.php</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
