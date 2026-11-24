@@ -4,6 +4,25 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.6] - 2026-11-24
+
+### Added
+
+- **New cookie lifetime "until deleted"** for entries that never expire on their own,
+  such as `localStorage`. It has no number and no longer has to be entered as
+  "session". Moving settings between shops carries it over.
+
+### Fixed
+
+- **Cookie lifetimes are shown in the shop's language**, with the right plural form
+  ("1 miesiąc", "2 miesiące", "12 miesięcy"), in the banner and in the cookie list in
+  the back office. Before, the banner always said "12 months", "session".
+- **"Privacy policy", "Always active" and "Close" in the banner are translated.**
+  Other languages can translate them in the module's `Shop` domain.
+- Lifetime units in the cookie form have Polish names.
+
+No upgrade script.
+
 ## [0.4.5] - 2026-11-16
 
 ### Fixed
