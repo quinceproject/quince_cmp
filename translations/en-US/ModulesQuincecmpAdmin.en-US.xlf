@@ -2792,6 +2792,11 @@
         <target>until deleted</target>
         <note>views/templates/admin/cookie_edit.html.twig</note>
       </trans-unit>
+      <trans-unit id="fec767cb3e88053e4af67b23639135eb">
+        <source>Put %tag% in the content of a CMS page, such as the privacy policy, to show this table there in the visitor's language.</source>
+        <target>Put %tag% in the content of a CMS page, such as the privacy policy, to show this table there in the visitor's language.</target>
+        <note>views/templates/admin/cookies.html.twig</note>
+      </trans-unit>
       <trans-unit id="640fd0cc0ffa0316ae087652871f4486">
         <source>minutes</source>
         <target>minutes</target>

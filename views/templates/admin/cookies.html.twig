@@ -87,7 +87,12 @@
     {# --- tabela ciasteczek --- #}
     <div class="qc-grid" style="margin-bottom:20px">
         <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-            <div style="font-size:var(--text-sm);font-weight:var(--weight-bold)">{{ 'Cookie table'|trans }}</div>
+            <div>
+                <div style="font-size:var(--text-sm);font-weight:var(--weight-bold)">{{ 'Cookie table'|trans }}</div>
+                <div style="font-size:var(--text-xs);color:var(--fg-2)">
+                    {{ 'Put %tag% in the content of a CMS page, such as the privacy policy, to show this table there in the visitor\'s language.'|trans({'%tag%': '[quince_cookies]'}) }}
+                </div>
+            </div>
             <a href="{{ path('quince_cmp_cookie_edit', {'idCookie': 0}) }}" class="qc-btn qc-btn-sm qc-btn-outline">
                 {{ icons.icon('plus', 13) }} {{ 'Add cookie'|trans }}
             </a>
