@@ -4,6 +4,20 @@ All notable changes to this module are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.8] - 2026-11-25
+
+### Added
+
+- The Cookies screen says under "Cookie table" how to show the table on a CMS page
+  with `[quince_cookies]`.
+
+### Fixed
+
+- **Updating to 0.4.7 no longer warns that `hookFilterCmsContent` is not defined,**
+  and no longer stops in debug mode. The upgrade script registers the hook without
+  asking the old module class, which is still loaded while the update runs. Shops
+  where the 0.4.7 update did not finish get the hook registered by this update.
+
 ## [0.4.7] - 2026-11-25
 
 ### Added
