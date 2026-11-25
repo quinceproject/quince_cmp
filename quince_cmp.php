@@ -44,6 +44,7 @@ use Quince\Cmp\Storage\PdfStore;
 use Quince\Cmp\Storage\ConsentVersions;
 use Quince\Cmp\Front\BannerData;
 use Quince\Cmp\Front\Blocker;
+use Quince\Cmp\Front\CookieList;
 use Quince\Cmp\Front\Signals;
 use Quince\Cmp\Front\Visitor;
 use Quince\Cmp\Storage\DefaultConsentTypes;
@@ -138,7 +139,33 @@ class Quince_Cmp extends Module
             && $this->registerHook('displayHeader')
             && $this->registerHook('actionOutputHTMLBefore')
             && $this->registerHook('actionFrontControllerSetMedia')
-            && $this->registerHook('actionAuthentication');
+            && $this->registerHook('actionAuthentication')
+            // Znacznik `[quince_cookies]` w treści stron CMS.
+            && $this->registerHook('filterCmsContent');
+    }
+
+    /**
+     * Tabela ciasteczek w miejscu znacznika `[quince_cookies]` na stronie CMS.
+     *
+     * Hook łańcuchowy: zwracamy obiekt strony, który dostanie następny moduł.
+     *
+     * @param array{object?:array<string,mixed>} $params
+     *
+     * @return array{object?:array<string,mixed>}
+     */
+    public function hookFilterCmsContent(array $params): array
+    {
+        if (!isset($params['object']['content']) || !is_string($params['object']['content'])) {
+            return $params;
+        }
+
+        $params['object']['content'] = (new CookieList())->replace(
+            $params['object']['content'],
+            (int) $this->context->shop->id,
+            (int) $this->context->language->id
+        );
+
+        return $params;
     }
 
     /**

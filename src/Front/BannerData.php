@@ -56,6 +56,16 @@ final class BannerData
     }
 
     /**
+     * Aktywne kategorie z ciasteczkami w danym języku, jak w drugiej warstwie banera.
+     *
+     * @return array<int,array<string,mixed>>
+     */
+    public function cookieCategories(int $idShop, int $idLang): array
+    {
+        return $this->kategorie($idShop, $idLang);
+    }
+
+    /**
      * @return array<string,string>
      */
     private function kolory(int $idShop): array

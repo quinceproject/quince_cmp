@@ -2,6 +2,26 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file original="ModulesQuincecmpShop" source-language="en-US" target-language="pl-PL" datatype="plaintext">
     <body>
+      <trans-unit id="49ee3087348e8d44e1feda1917443987">
+        <source>Name</source>
+        <target>Nazwa</target>
+        <note>src/Front/CookieList.php</note>
+      </trans-unit>
+      <trans-unit id="27703c8f150ac4bb0a3a83a7857353af">
+        <source>Provider</source>
+        <target>Dostawca</target>
+        <note>src/Front/CookieList.php</note>
+      </trans-unit>
+      <trans-unit id="1a10be3692cec335c74387f33221a6fa">
+        <source>Lifetime</source>
+        <target>Okres ważności</target>
+        <note>src/Front/CookieList.php</note>
+      </trans-unit>
+      <trans-unit id="261addf78c7b2c961032b3dd08ba0b1f">
+        <source>Purpose</source>
+        <target>Przeznaczenie</target>
+        <note>src/Front/CookieList.php</note>
+      </trans-unit>
       <trans-unit id="de31291360fc7b4f832afcc772a889bd">
         <source>Always active</source>
         <target>Zawsze aktywne</target>

@@ -35,6 +35,11 @@ decision together with a hash of the wording that was on screen at that moment.
 - **Cookie table and scanner.** A list of the shop's cookies by category, and a scanner
   that opens the shop in a browser with everything unblocked and reports the cookies,
   storage keys and third-party hosts it finds.
+- **Cookie list on the privacy policy page.** Put `[quince_cookies]` in the content of
+  any CMS page, on its own line, and the module replaces it with the cookie table, grouped
+  by category: name, provider, lifetime and purpose of each cookie. The list follows the
+  language the visitor browses in and always matches what the banner asks about, so the
+  policy never needs editing when a cookie is added. It uses the theme's `table` style.
 - **Consent history on the customer page.** A **Quince consents** section on
   PrestaShop's own customer page in the back office.
 - **Log screen and CSV export,** with filters by consent, source and date.
@@ -152,6 +157,7 @@ next to the module in the Module Manager. The sidebar holds the screens:
   **`ConsentVersions`** hold the consent types and their history.
 - **`Blocker`** rewrites the finished page on `actionOutputHTMLBefore` so held-back
   services do not run; **`Signals`** builds the Consent Mode declarations.
+- **`CookieList`** replaces `[quince_cookies]` in CMS pages on `filterCmsContent`.
 - **`CoreBridge`** records consents given in PrestaShop's own forms, orders and
   customer accounts.
 - **`Sync`** classes sign, queue and retry the webhook exchange; the `inbox` and `cron`
