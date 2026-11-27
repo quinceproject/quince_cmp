@@ -18,6 +18,7 @@ use Quince\Cmp\Integration\Release;
 use Quince\Cmp\Integration\Updater;
 use Quince\Cmp\Storage\ConfigTransfer;
 use Quince\Cmp\Storage\Options;
+use Quince\Cmp\Ui\SupportLinks;
 use Shop;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -48,6 +49,9 @@ final class SupportController extends CmpController
             'transfer' => (new ConfigTransfer())->export($idShop),
             'shopName' => (string) (new Shop($idShop))->name,
             'shopScoped' => Shop::getContextShopID() === null,
+            'kofi' => SupportLinks::KOFI,
+            'project' => SupportLinks::PROJECT,
+            'issues' => SupportLinks::ISSUES,
             'layoutTitle' => 'Support',
             'quinceRoute' => 'quince_cmp_support',
         ]);

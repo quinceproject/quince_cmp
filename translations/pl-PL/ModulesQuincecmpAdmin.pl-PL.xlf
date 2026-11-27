@@ -2987,6 +2987,71 @@
         <target>lata</target>
         <note>views/templates/admin/cookie_edit.html.twig</note>
       </trans-unit>
+      <trans-unit id="eea80435e6302f8db5f7bf57401846e5">
+        <source>Support Quince</source>
+        <target>Wesprzyj Quince</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="fb2487e5bf975c88ac8e9065b82e569d">
+        <source>Quince modules are free. If they are useful to you, support their development on Ko-fi.</source>
+        <target>Moduły Quince są darmowe. Jeśli Ci się przydają, wesprzyj ich rozwój na Ko-fi.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5dc4a5bd36dc8b81f76f1336858f6864">
+        <source>Support on Ko-fi</source>
+        <target>Wesprzyj na Ko-fi</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="8c22008c2a8298b9d7aa98d82b3b0057">
+        <source>You use %module% in your shop. Help us develop it.</source>
+        <target>Korzystasz z %module% w swoim sklepie. Pomóż nam go rozwijać.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b3ff4eed427f80b776ae1a26033ad1ee">
+        <source>Report a bug, describe what your shop is missing or share a remark on the module page on GitHub. %module% is part of Quince Project, a set of free modules for PrestaShop.</source>
+        <target>Zgłoś błąd, opisz, czego brakuje w Twoim sklepie, albo podziel się uwagą na stronie modułu na GitHubie. %module% należy do Quince Project, zestawu darmowych modułów do PrestaShop.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3406147c3ce729ce17ed76d45c2896f9">
+        <source>Report a bug</source>
+        <target>Zgłoś błąd</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2a3b4d741461df0608307174f4e58896">
+        <source>Say what happened and how to repeat it. Give the versions of PrestaShop and the module.</source>
+        <target>Napisz, co się stało i jak to powtórzyć. Podaj wersję PrestaShopa i modułu.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="3ec6e5830bb6dffcc6ab9d696e32044c">
+        <source>Suggest a change</source>
+        <target>Zaproponuj zmianę</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="2b2fe07a4dea172bdc993424ca987f01">
+        <source>Describe what you need and in what situation in your shop.</source>
+        <target>Opisz, czego potrzebujesz i w jakiej sytuacji w sklepie.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="92491c0606fcab14b27c80738ea7aaab">
+        <source>Share a remark</source>
+        <target>Podziel się uwagą</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="1a450be06e2dc0e5ec400d353d29a509">
+        <source>What is unclear in the panel or in the module description.</source>
+        <target>Co jest niejasne w panelu albo w opisie modułu.</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="b617df13a8c4ec16ed294c579f4b866b">
+        <source>Report on GitHub</source>
+        <target>Zgłoś na GitHubie</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
+      <trans-unit id="5d6d968a6ed1d9d4f16c0abcc5e42021">
+        <source>Project website</source>
+        <target>Strona projektu</target>
+        <note>views/templates/admin/support.html.twig</note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

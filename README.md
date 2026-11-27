@@ -202,7 +202,14 @@ may not use the name.
 
 ## Supporting the project
 
-Quince modules are free downloads and there is nothing to buy. If the module is useful
-to you, you can support its development by buying me a coffee:
+Quince modules are free downloads and there is nothing to buy. You can help in two ways.
 
-**[buymeacoffee.com/marcingajewski](https://buymeacoffee.com/marcingajewski)**
+**Report what you find.** Open an issue in this repository to report a bug, suggest a
+change or share a remark: [github.com/quinceproject/quince_cmp/issues](https://github.com/quinceproject/quince_cmp/issues).
+Reports from working shops decide what gets built next. When reporting a bug, say what
+happened, how to repeat it, and which versions of PrestaShop and the module you run.
+
+**Support the development** on Ko-fi:
+**[Ko-fi](https://ko-fi.com/quinceproject)**
+
+The whole project, with every module: [quinceproject.github.io](https://quinceproject.github.io/)

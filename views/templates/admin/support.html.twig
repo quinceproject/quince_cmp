@@ -7,6 +7,63 @@
 {% block quince_body %}
 <div class="qc-screen">
 
+    {# --- wsparcie projektu ---
+       Dwa bloki jak na ekranie Support w Quince Engine, w barwach i kroju
+       strony projektu. Pastelowy blok w wariancie samodzielnego modułu:
+       zamiast listy modułów prowadzi wprost do zgłoszeń tego repozytorium.
+       Adresy w `Quince\Cmp\Ui\SupportLinks`. #}
+    <div class="qc-support" style="margin-bottom:20px">
+
+        <section class="qc-support-kofi">
+            <span class="qc-support-heart">{{ icons.icon('heart', 32) }}</span>
+            <div>
+                <h2>{{ 'Support Quince'|trans }}</h2>
+                <p>{{ 'Quince modules are free. If they are useful to you, support their development on Ko-fi.'|trans }}</p>
+            </div>
+            <a class="qc-support-kofi-btn" href="{{ kofi }}" target="_blank" rel="noopener">
+                {{ 'Support on Ko-fi'|trans }}
+                {{ icons.icon('arrowRight', 16) }}
+            </a>
+        </section>
+
+        <section class="qc-support-hero">
+            <div class="qc-support-wash" aria-hidden="true"></div>
+            <i class="qc-support-beam b1" aria-hidden="true"></i><i class="qc-support-beam b2" aria-hidden="true"></i><i class="qc-support-beam b3" aria-hidden="true"></i><i class="qc-support-beam b4" aria-hidden="true"></i>
+
+            <div class="qc-support-mark">
+                <img src="{{ asset('../modules/quince_cmp/views/img/quince-q.png') }}" width="64" height="64" alt="">
+                <p class="qc-support-word">Quince Project</p>
+            </div>
+
+            <p class="qc-support-sub">{{ 'You use %module% in your shop. Help us develop it.'|trans({'%module%': 'CMP'}) }}</p>
+            <p class="qc-support-text">{{ 'Report a bug, describe what your shop is missing or share a remark on the module page on GitHub. %module% is part of Quince Project, a set of free modules for PrestaShop.'|trans({'%module%': 'CMP'}) }}</p>
+
+            <div class="qc-support-ways">
+                <div class="qc-support-way" style="--qs-way: var(--qs-amber)">
+                    <b>{{ 'Report a bug'|trans }}</b>
+                    <span>{{ 'Say what happened and how to repeat it. Give the versions of PrestaShop and the module.'|trans }}</span>
+                </div>
+                <div class="qc-support-way" style="--qs-way: var(--qs-lilac)">
+                    <b>{{ 'Suggest a change'|trans }}</b>
+                    <span>{{ 'Describe what you need and in what situation in your shop.'|trans }}</span>
+                </div>
+                <div class="qc-support-way" style="--qs-way: var(--qs-sky)">
+                    <b>{{ 'Share a remark'|trans }}</b>
+                    <span>{{ 'What is unclear in the panel or in the module description.'|trans }}</span>
+                </div>
+            </div>
+
+            <div class="qc-support-actions">
+                <a class="qc-support-btn" href="{{ issues }}" target="_blank" rel="noopener">
+                    {{ 'Report on GitHub'|trans }}
+                    {{ icons.icon('arrowRight', 16) }}
+                </a>
+                <a class="qc-support-btn qc-support-btn--line" href="{{ project }}" target="_blank" rel="noopener">{{ 'Project website'|trans }}</a>
+            </div>
+        </section>
+
+    </div>
+
     {# --- wizytówka --- #}
     <div class="qc-grid qc-about">
         <div class="qc-about-mark">{{ icons.icon('shield', 26) }}</div>

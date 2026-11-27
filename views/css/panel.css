@@ -1606,3 +1606,347 @@ body:has(.qc-root) .alert.d-print-none {
         transition: none;
     }
 }
+
+/* ===================================================================
+   System → Support
+
+   Jedyny ekran panelu w barwach i kroju strony projektu
+   (quinceproject.github.io): to wizytówka projektu, nie ekran ustawień.
+   Ciemny blok wsparcia jak sekcja instalacji na stronie, pastelowy blok
+   zgłoszeń jak jej nagłówek, napis „Quince Project” jak znak w stopce.
+   Barwy wpisane wprost, bo należą do marki projektu, nie do palety sklepu.
+   Projekt ekranu: `quince/widoki/panel-wsparcie.html`.
+   =================================================================== */
+@font-face {
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 400 600;
+    font-display: swap;
+    src: url(../fonts/instrument-sans-latin-ext.woff2) format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 400 600;
+    font-display: swap;
+    src: url(../fonts/instrument-sans-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.qc-support {
+    --qs-ink: #161b28;
+    --qs-charcoal: #1f2533;
+    --qs-muted: #5d6576;
+    --qs-amber: #ffc56b;
+    --qs-lilac: #b8aef6;
+    --qs-sky: #8fd3f7;
+
+    display: grid;
+    gap: 20px;
+    font-family: 'Instrument Sans', Arial, sans-serif;
+    color: var(--qs-ink);
+}
+
+/* --- wsparcie: ciemny blok, akcja w bursztynie --- */
+.qc-support-kofi {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 28px;
+    padding: 36px 40px;
+    border-radius: var(--radius-lg, 12px);
+    background: var(--qs-charcoal);
+    color: #fff;
+}
+
+/* Bursztynowa poświata za przyciskiem: przyciąga oko do akcji. */
+.qc-support-kofi::after {
+    content: "";
+    position: absolute;
+    inset: auto -10% -60% auto;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255, 197, 107, .28), transparent);
+    pointer-events: none;
+}
+
+.qc-support-heart {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(255, 197, 107, .14);
+    color: var(--qs-amber);
+}
+
+/* Ikony panelu mają stały rozmiar z arkusza; serce w kółku jest większe. */
+.qc-support-heart .qc-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.qc-support-kofi h2 {
+    margin: 0;
+    font-family: inherit;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -.03em;
+    color: #fff;
+}
+
+.qc-support-kofi p {
+    margin: 10px 0 0;
+    max-width: 36rem;
+    font-size: 16px;
+    line-height: 1.55;
+    color: #c9cfdb;
+}
+
+/* Barwy przycisków z selektorem `.qc-root a…`: panel zeruje barwę
+   odnośników regułą `.qc-root a { color: inherit }`, która ma wyższą
+   specyficzność niż sama klasa. */
+.qc-root a.qc-support-kofi-btn {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 56px;
+    padding: 0 30px;
+    font-size: 16px;
+    font-weight: 600;
+    background: var(--qs-amber);
+    color: var(--qs-ink);
+    transition: filter .15s, transform .15s;
+}
+
+.qc-root a.qc-support-kofi-btn:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+    color: var(--qs-ink);
+}
+
+/* --- zgłoszenia: pastelowy blok jak nagłówek strony projektu --- */
+.qc-support-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 48px 48px 44px;
+    border-radius: var(--radius-lg, 12px);
+    background: #f3f5f8;
+}
+
+.qc-support-wash {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(60% 70% at 8% 10%, rgba(255, 197, 107, .55), transparent 70%),
+        radial-gradient(45% 60% at 62% 0%, rgba(184, 174, 246, .55), transparent 70%),
+        radial-gradient(50% 70% at 100% 20%, rgba(143, 211, 247, .6), transparent 70%);
+}
+
+.qc-support-beam {
+    position: absolute;
+    top: -10%;
+    width: 150px;
+    height: 80%;
+    background: rgba(255, 255, 255, .35);
+    transform: skewY(-18deg);
+    pointer-events: none;
+}
+
+.qc-support-beam.b1 { left: 6%; }
+.qc-support-beam.b2 { left: 24%; width: 90px; background: rgba(255, 255, 255, .25); }
+.qc-support-beam.b3 { left: 58%; width: 120px; }
+.qc-support-beam.b4 { left: 78%; width: 60px; background: rgba(255, 255, 255, .3); }
+
+.qc-support-hero > :not(.qc-support-wash):not(.qc-support-beam) {
+    position: relative;
+}
+
+.qc-support-mark {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.qc-support-mark img {
+    width: 64px;
+    height: 64px;
+}
+
+/* Napis jak znak „Quince” w stopce strony projektu. Wyściółka od dołu,
+   bo gradient wypełnia tylko pudełko napisu, a przy wysokości linii .9
+   ogonek „j” wychodził poza nie. */
+.qc-support-word {
+    margin: 0 0 -.18em;
+    padding: 0 .04em .18em 0;
+    font-size: 56px;
+    font-weight: 500;
+    line-height: .9;
+    letter-spacing: -.06em;
+    background: linear-gradient(90deg, var(--qs-amber) 0%, var(--qs-lilac) 55%, var(--qs-sky) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.qc-support-sub {
+    margin: 22px 0 0;
+    max-width: 40rem;
+    font-size: 22px;
+    line-height: 1.4;
+    letter-spacing: -.01em;
+}
+
+.qc-support-text {
+    margin: 14px 0 0;
+    max-width: 46rem;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--qs-muted);
+}
+
+.qc-support-ways {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    max-width: 60rem;
+    margin-top: 28px;
+}
+
+.qc-support-way {
+    padding: 18px 20px;
+    background: rgba(255, 255, 255, .75);
+    box-shadow: 0 1px 0 #dfe3ea;
+}
+
+.qc-support-way::before {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 4px;
+    margin-bottom: 14px;
+    background: var(--qs-way);
+}
+
+.qc-support-way b {
+    display: block;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+}
+
+.qc-support-way span {
+    display: block;
+    margin-top: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--qs-muted);
+}
+
+/* Lista repozytoriów: silnik, motyw i każdy zainstalowany moduł. */
+.qc-support-repos {
+    margin-top: 28px;
+    max-width: 60rem;
+}
+
+.qc-support-repos-title {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.qc-support-repos-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.qc-root a.qc-support-repo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 14px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, .75);
+    box-shadow: inset 0 0 0 1px rgba(22, 27, 40, .15);
+    color: var(--qs-ink);
+    transition: background .15s, box-shadow .15s;
+}
+
+.qc-root a.qc-support-repo:hover {
+    background: #fff;
+    box-shadow: inset 0 0 0 1px rgba(22, 27, 40, .45);
+    color: var(--qs-ink);
+}
+
+.qc-support-repo--core {
+    font-weight: 600;
+}
+
+.qc-support-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.qc-root a.qc-support-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 48px;
+    padding: 0 24px;
+    font-size: 15px;
+    font-weight: 500;
+    background: var(--qs-charcoal);
+    color: #fff;
+    transition: background .15s;
+}
+
+.qc-root a.qc-support-btn:hover {
+    background: #0b1730;
+    color: #fff;
+}
+
+.qc-root a.qc-support-btn--line {
+    background: transparent;
+    color: var(--qs-ink);
+    box-shadow: inset 0 0 0 1px rgba(22, 27, 40, .35);
+}
+
+.qc-root a.qc-support-btn--line:hover {
+    background: rgba(255, 255, 255, .5);
+    color: var(--qs-ink);
+}
+
+@media (max-width: 900px) {
+    .qc-support-kofi {
+        grid-template-columns: 1fr;
+        justify-items: start;
+    }
+
+    .qc-support-hero {
+        padding: 32px 24px;
+    }
+
+    .qc-support-word {
+        font-size: 42px;
+    }
+
+    .qc-support-ways {
+        grid-template-columns: 1fr;
+    }
+}

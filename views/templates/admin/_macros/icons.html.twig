@@ -47,11 +47,27 @@
         'shield':       'M8 1.8 3 3.6v4.1c0 3 2.1 5.4 5 6.5 2.9-1.1 5-3.5 5-6.5V3.6L8 1.8zM5.8 8l1.6 1.6L10.4 6',
         'user':         'M8 8.2a2.7 2.7 0 100-5.4 2.7 2.7 0 000 5.4zM2.8 14c0-2.5 2.3-4.2 5.2-4.2s5.2 1.7 5.2 4.2'
     } -%}
+    {#- Ikony ekranu Support, tak jak w zestawie silnika. Lucide (licencja ISC),
+        przepisane bez zmian z plików źródłowych. Rysunek Lucide ma siatkę 24 px
+        i kreskę 2; przy siatce 24 kreska 2.25 daje w wyświetlanych 16 px tę samą
+        grubość 1.5 co reszta zestawu. -#}
+    {%- set lucide = {
+        'heart':         '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+        'arrowRight':    '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>'
+    } -%}
+    {%- if lucide[name] is defined -%}
+    <svg class="qc-icon{{ extraClass ? ' ' ~ extraClass }}" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"
+         aria-hidden="true">
+        {{ lucide[name]|raw }}
+    </svg>
+    {%- else -%}
     <svg class="qc-icon{{ extraClass ? ' ' ~ extraClass }}" width="{{ size }}" height="{{ size }}" viewBox="0 0 16 16" fill="none"
          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
          aria-hidden="true">
         <path d="{{ paths[name]|default(paths['box']) }}"/>
     </svg>
+    {%- endif -%}
 {% endmacro %}
 
 {#
